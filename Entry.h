@@ -10,7 +10,7 @@ class Entry {
 
 private:
 	int key;
-	int value;
+	int value; // we're only doing ints, right?
 
 public:
 	Entry(int k, int v);
