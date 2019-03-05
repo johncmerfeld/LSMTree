@@ -11,10 +11,8 @@ class Entry {
 private:
 	int key;
 	int value; // we're only doing ints, right?
-
 public:
 	Entry(int k, int v);
-
 };
 
 #endif /* ENTRY_H_ */
