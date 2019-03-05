@@ -12,9 +12,11 @@ Let's say that at its core, the LSM tree stores integers. This makes the `key` f
 | k : 1 |
 +-------+
 | v : 1 |
++-------+
+| r : 0 |
 ---------
 ```
-Whenever a new `Entry` is inserted into the tree, it is added to a sorted array of Entries in main memory called a `Run`. Main memory only contains a single `Run`, and it looks like this:
+The `r` bit indicates whether this is a "remove" `Entry`: 0 for 'no' and 1 for 'yes.' Whenever a new `Entry` is inserted into the tree, it is added to a sorted array of Entries in main memory called a `Run`. Main memory only contains a single `Run`, and it looks like this:
 
 ```
 -------------------------

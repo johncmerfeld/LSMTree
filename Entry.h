@@ -9,9 +9,11 @@
 class Entry {
     private:
         int key;
-        int value; // yes just ints
+        int value;
+        bool isRemove;
+
     public:
-        Entry(int k, int v);
+        Entry(int k, int v, bool remove);
 };
 
 #endif /* ENTRY_H_ */
