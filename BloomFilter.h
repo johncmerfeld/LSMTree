@@ -3,8 +3,6 @@
  *
  */
 
-using bitVector = bool*[];
-
 #ifndef BLOOMFILTER_H_
 #define BLOOMFILTER_H_
 
@@ -13,7 +11,7 @@ class BloomFilter {
 private:
 	int size;
 	int numHashes;
-	bitVector bits;
+	char * bitVector;
 	// however we do hashing
 public:
 	BloomFilter(int s, int nh);

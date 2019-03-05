@@ -5,15 +5,13 @@
 
 #include "Entry.h"
 
-using entryVector = Entry*[];
-
 #ifndef RUN_H_
 #define RUN_H_
 
 class Run {
 
 private:
-	entryVector entries;
+	Entry * entries;
 	int nextPos;
 
 public:
