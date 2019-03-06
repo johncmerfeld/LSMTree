@@ -42,6 +42,15 @@ Because if the `DiskTree` is tierd, a `Level` is just an array of `Runs`, where 
 
 Then again, it could be better to hide that information fromt eh tree itself and just have some kind of boolean flag for leveling or tiering.
 
-Anyway, then there's the question of a `DiskTree` and how information about `Levels` is stored. Is it just an array of pointers to the levels? Do we have some kind of other struct containing the pointer to the level, its fence pointer, and its bloom filter all together?
+Anyway, then there's the question of a `DiskTree` and how information about `Levels` is stored. Is it just an array of pointers to the levels? Do we have some kind of other struct containing the pointer to the level, its fence pointers, and its bloom filters all together?
 
+I decided that the answer is "yes," so I added the `Searchable` class (I'm not married to this name because it sounds like an interface, but...). In memory, the levels of the tree can be represented as a 2D array of `Searchable` objects (for a leveled tree, this degenerates into a 1D array. A `Searchable` has the pointer to the `Run` and its associated `BloomFilter` and `FencePointer`. They are ordered left-to-right within the tree levels. So in main memory for a tiered tree with T = 3, this would look like:
+```
+0: 0 1 _ 
+1: 222 333 444
+2: 555555555 666666666 _________
+```
+Where the number of repeated digits represents the size of the run. In this example, inserting a new run into the tree would cause a cascading merge that would fill the bottom level.
+
+When our `Run` in memory fills up, we use its endpoints to make a new `FencePointer`, insert all of its keys into a new `BloomFilter`, and write the `Run` to disk, adding a pointer to it to the new `Searchable` object.
 
