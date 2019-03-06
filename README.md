@@ -54,3 +54,5 @@ Where the number of repeated digits represents the size of the run. In this exam
 
 When our `Run` in memory fills up, we use its endpoints to make a new `FencePointer`, insert all of its keys into a new `BloomFilter`, and write the `Run` to disk, adding a pointer to it to the new `Searchable` object.
 
+So main memory just contains a sorted array and a 2D array of searchables. That's what's in our cache.
+
