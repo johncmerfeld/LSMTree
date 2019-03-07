@@ -56,3 +56,20 @@ When our `Run` in memory fills up, we use its endpoints to make a new `FencePoin
 
 So main memory just contains a sorted array and a 2D array of searchables. That's what's in our cache.
 
+## API support
+
+### `Get(int k) `
+**Returns either the value or some NULL result**: First, check the `Run` in memory for `k`. Then, one by one, check the `Searchables`. First the fence pointer, then the bloom filter. If both of those give promising results, check the corresponding `Run` in disk and return when the entry is found.
+
+### `GetRange(int min, int max)`
+**Returns either all values in range or some NULL result**: First, check for any values in the main memory `Run` that can be added to the return set. Then, go about a similar process as the one for point queries (this time we only need to check the fence pointers). The key difference is that we do not stop once we find the run that contains the values we want. We must continue to check each run for more values to add to the return set.
+
+### `Insert(int k, int val)`
+**Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` bit set to false. If the main memory array is full: create a bloom filter and fence pointer for it, sort-flush it to disk, and check for merges in the lower `Runs`.
+
+### `Update(int k, int newVal)`
+**Returns nothing**: Updates consist of an `Insert(k, newVal)` call. Whenever runs in the tree are merged, the hotter `Entry` takes precedence and removes the colder one.
+
+### `Delete(int k)`
+**Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` bit set to 1. Whenever runs in the tree are merged, matching keys with different `isRemove` bits annihilate each other.
+

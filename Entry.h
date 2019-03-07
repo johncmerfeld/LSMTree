@@ -14,6 +14,7 @@ class Entry {
 
     public:
         Entry(int k, int v, bool remove);
+        void update(int newValue);
 };
 
 #endif /* ENTRY_H_ */
