@@ -13,6 +13,8 @@ class Run {
 private:
 	Entry * entries;
 	int nextPos;
+    int size;
+    RunMetadata metadata;
 
 public:
 	Run();
