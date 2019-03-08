@@ -71,3 +71,9 @@ We will focus on implementing a leveled version of the LSM tree, focusing on fas
 ### `Delete(int k)`
 **Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` bit set to 1. Whenever runs in the tree are merged, matching keys with different `isRemove` bits annihilate each other.
 
+## Experiments
+Since we will start from implementing the leveling version of the LSM tree our experiments will focus on efficient and fast reads.
+Of course we will try to optimize memory management to optimize organization of the data and get the best possible performance.
+We will experiment with both dense and sparse data.
+We will also check how well will our system perform on increasing loads of data, thus if we will have an expected scalability.
+We will also try to identify any bottlenecks in the performance of our LSM so we can figure a way to deal with it.
