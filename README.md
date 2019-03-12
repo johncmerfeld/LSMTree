@@ -51,7 +51,7 @@ Once `r_main` reaches capacity, we write it to disk. This involves three steps:
 
 For each level we will maintain a metadata object containing parallel lists of the bloomfilters and fencePointers. Each entry of these lists will refer to 1 run.
 
-We will focus on implementing a leveled version of the LSM tree, focusing on fast reads and potentially slower writes. After this, we will try to implement the leveling version of the LSM tree and try to add tunability to our code.
+We will focus on implementing a leveled version of the LSM tree, focusing on fast reads and potentially slower writes. After this, we will try to implement the tiered version of the LSM tree and try to add tunability to our code.
 
 
 ## API support
@@ -63,13 +63,13 @@ We will focus on implementing a leveled version of the LSM tree, focusing on fas
 **Returns either all values in range or some NULL result**: First, check for any values in the main memory `Run` that can be added to the return set. Then, go about a similar process as the one for point queries (this time we only need to check the fence pointers). The key difference is that we do not stop once we find the run that contains the values we want. We must continue to check each run for more values to add to the return set.
 
 ### `Insert(int k, int val)`
-**Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` bit set to false. If the main memory array is full: create a bloom filter and fence pointer for it, sort-flush it to disk, and check for merges in the lower `Runs`.
+**Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` boolean set to false. If the main memory array is full: create a bloom filter and fence pointer for it, sort-flush it to disk, and check for merges in the lower `Runs`.
 
 ### `Update(int k, int newVal)`
 **Returns nothing**: Updates consist of an `Insert(k, newVal)` call. Whenever runs in the tree are merged, the hotter `Entry` takes precedence and removes the colder one.
 
 ### `Delete(int k)`
-**Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` bit set to 1. Whenever runs in the tree are merged, matching keys with different `isRemove` bits annihilate each other.
+**Returns nothing**: Inserts a new `Entry` into the `Run` in main memory with its `isRemove` boolean set to 1. Whenever runs in the tree are merged, matching keys with different `isRemove` bits annihilate each other.
 
 ## Experiments
 Since we will start from implementing the leveling version of the LSM tree our experiments will focus on efficient and fast reads.
