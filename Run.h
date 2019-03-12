@@ -12,8 +12,8 @@ class Run {
 
 private:
 	Entry * entries;
-	int nextPos;
-    int size;
+    static int maxEntries;
+    int nextPos;
     RunMetadata metadata;
 
 public:

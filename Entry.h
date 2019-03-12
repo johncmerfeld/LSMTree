@@ -10,11 +10,12 @@ class Entry {
     private:
         int key;
         int value;
-        bool isRemove;
 
     public:
-        Entry(int k, int v, bool remove);
+        Entry(int k, int v);
         void update(int newValue);
+        int getKey();
+        int getValue();
 };
 
 #endif /* ENTRY_H_ */

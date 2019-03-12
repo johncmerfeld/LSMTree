@@ -5,19 +5,26 @@
 
 #ifndef BLOOMFILTER_H_
 #define BLOOMFILTER_H_
+#include <stdint.h>
 
 class BloomFilter {
 
 private:
-	int size;
-	int numHashes;
-	char * bitVector;
-	// however we do hashing
+    int size;
+    int numHashes;
+    char *bitVector;
+
 public:
-	BloomFilter(int s, int nh);
-	int getSize();
-	void put(int key);
-	bool contains(int key);
+    BloomFilter(int size, int numHashes);
+
+    void add(int key);
+
+    bool contains(int key);
+
+    int getSize();
+
+    static uint32_t murmurhash (const int *key, uint32_t len, uint32_t seed);
+
 };
 
 #endif /* BLOOMFILTER_H_ */

@@ -4,12 +4,14 @@
 #include "BloomFilter.h"
 #include "FencePointer.h"
 
-#ifndef LSMTREE_RUNMETADATA_H
-#define LSMTREE_RUNMETADATA_H
-Class RunMetadata{
+#ifndef RUNMETADATA_H
+#define RUNMETADATA_H
+
+
+class RunMetadata {
 private:
-        BloomFilter bloomfilter *;
-        FencePointer fencePointers **;
+    BloomFilter *bloomfilter;
+    FencePointer **fencePointers;
 };
 
-#endif //LSMTREE_RUNMETADATA_H
+#endif //RUNMETADATA_H
