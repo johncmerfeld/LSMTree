@@ -12,7 +12,7 @@ class Entry {
         int value;
 
     public:
-        Entry(int k, int v);
+        Entry(int key = 0, int value = 0);
         void update(int newValue);
         int getKey();
         int getValue();

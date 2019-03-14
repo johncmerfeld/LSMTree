@@ -4,6 +4,7 @@
  */
 
 #include "Entry.h"
+#include "RunMetadata.h"
 
 #ifndef RUN_H_
 #define RUN_H_

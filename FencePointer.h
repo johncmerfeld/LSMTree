@@ -13,7 +13,11 @@ private:
 	int highest;
 
 public:
-	FencePointer(int low, int high);
+	FencePointer(int low = 0, int high = 0);
+	int getLowest();
+	int getHighest();
+	void setLowest(int newLow);
+	void setHighest(int newHigh);
 
 };
 
