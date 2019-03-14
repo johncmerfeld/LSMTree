@@ -18,11 +18,12 @@ private:
     RunMetadata metadata;
 
 public:
-	Run();
-	void insert(Entry e);
-	void insert(Entry e, int pos);
-	void/*?*/ remove(Entry e);
-	void/*?*/ remove(int pos);
+	Run(int size);
+	int numElements();
+	bool insert(Entry e);
+	bool insert(Entry e, int pos);
+	bool remove(Entry e);
+	bool remove(int pos);
 	Entry get(int pos);
 
 };
