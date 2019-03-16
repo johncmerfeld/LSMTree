@@ -18,4 +18,6 @@ class Entry {
         int getValue();
 };
 
+
+
 #endif /* ENTRY_H_ */

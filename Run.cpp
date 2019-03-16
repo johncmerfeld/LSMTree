@@ -5,7 +5,7 @@
 
 #include "Run.h"
 
-Run::Run(int size) {
+MemoryRun::MemoryRun(int size) {
 	entries = new Entry[size];
 	nextPos = 0;
 	maxEntries = size;
@@ -13,11 +13,11 @@ Run::Run(int size) {
 
 }
 
-int Run::numElements() {
+int MemoryRun::numElements() {
 	return this->nextPos;
 }
 
-bool Run::insert(Entry e) {
+bool MemoryRun::insert(Entry e) {
 	/* so, we can either:
 	 * 1. insert first and return false if our insertion makes the array full...
 	 * 2. check the position first and return false if we CANNOT insert
@@ -34,3 +34,7 @@ bool Run::insert(Entry e) {
 
 /* do we need a copy constructor etc.? */
 
+
+int Run::maxEntries;
+
+void Run::setMaxEntries(int max) {Run::maxEntries = max;}

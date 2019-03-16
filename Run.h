@@ -3,31 +3,50 @@
  *
  */
 
-#include "Entry.h"
-#include "RunMetadata.h"
-
 #ifndef RUN_H_
 #define RUN_H_
 
-class Run {
+#include "Entry.h"
+#include "RunMetadata.h"
 
-private:
-	Entry * entries;
+class Run {
+protected:
     static int maxEntries;
-    int nextPos;
-    RunMetadata metadata;
 
 public:
 	Run(int size);
-	int numElements();
-	bool insert(Entry e);
-	bool insert(Entry e, int pos);
-	bool remove(Entry e);
-	bool remove(int pos);
-	Entry get(int pos);
+    Run();
+
+    static void setMaxEntries(int max);
+};
+
+class MemoryRun : private Run {
+private:
+    Entry *entries;
+    int nextPos;
+
+    
+public:
+    MemoryRun(int size)
+
+    bool insert(Entry e);
+    bool insert(Entry e, int pos);
+
+    bool remove(Entry e);
+    bool remove(int pos);
+
+    int numElements();
+    Entry get(int pos);
+
+public:
+    Entry *getEntries();
 
 };
 
-
+class DiskRun : private Run {
+private:
+    int runId;
+    RunMetadata metadata;
+};
 
 #endif /* RUN_H_ */

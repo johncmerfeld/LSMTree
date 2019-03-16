@@ -23,6 +23,8 @@ public:
 
     int getSize();
 
+    void reset();
+
     static uint32_t murmurhash (const int *key, uint32_t len, uint32_t seed);
 
 };

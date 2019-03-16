@@ -5,6 +5,7 @@
 #include "BloomFilter.h"
 #include <iostream>
 #include <bitset>
+#include <cstring>
 
 using namespace std;
 
@@ -56,6 +57,10 @@ void BloomFilter::add(int key) {
         this->bitVector[bytePos] |= 1 << bitPos;
     }
     return;
+}
+
+void BloomFilter::reset() {
+    memset(this->bitVector, this->size, 0);
 }
 
 uint32_t BloomFilter::murmurhash(const int *key, uint32_t len, uint32_t seed) {

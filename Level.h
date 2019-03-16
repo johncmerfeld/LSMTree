@@ -9,18 +9,38 @@
 
 class Level {
 
-private:
-	Run * runs;
-	int currentRun; /* the Run being inserted into */
-	bool isTiered; // maybe?
-	Run merge(Run r1, Run r2); // maybe
+protected:
+    Run *runs;
+    int currentRun; /* the Run being inserted into */
+    int runsPerLevel;
 
 public:
-	Level();
-	void insert(Run run);
+    Level();
+
+    Level(int runsPerLevel);
+
+    static void setRunsPerLevel(int runs);
+
+    virtual bool insert(Run run) = 0;
+
+    virtual bool mergeLevels(Level *level) = 0;
+
 
 };
 
+class TieringLevel : public Level {
+public:
+    bool insert(Run run);
+
+    bool mergeLevels(Level *level);
+};
+
+class LevelingLevel : public Level {
+public:
+    bool insert(Run run);
+
+    bool mergeLevels(Level *level);
+};
 
 
 #endif /* LEVEL_H_ */
