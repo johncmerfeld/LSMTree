@@ -27,7 +27,7 @@ private:
 
     
 public:
-    MemoryRun(int size)
+    MemoryRun(int size);
 
     bool insert(Entry e);
     bool insert(Entry e, int pos);
@@ -40,6 +40,7 @@ public:
 
 public:
     Entry *getEntries();
+    int search(int key);
 
 };
 
