@@ -89,7 +89,9 @@ LMSTree::insert(int key) {
      collect metadata
      write to file
      add file address to metadata
-     DiskTree.insert(metadata)
+     DiskTree.insert(metadata) // this may need to reallocate memory for a new level
+     Reset memoryrun nextPos
+  
   
 
 }
@@ -122,3 +124,17 @@ LSMTree::RangeQuery(int min, int max) {
 
 LSM tree contains a "level 0" array of entries, which is always checked first. It also contains an array of levels. Each level contains an array of metedata objects. Each metadata object contains a fence pointer, a bloom filter, and a pointer to the data file on disk. When that file is loaded into memory, its entries are written into an array. 
 
+
+# I will do memory stuff
+# look up the command `memset`
+
+# New class model
+
+LSMTree: (needs to know the current number of levels, bits per bloom filter value)
+  MemoryRun:: (needs to know its own capacity_ 
+    Entry
+  Level:: 
+    DiskRun:: 
+	  FencePointer
+	  BloomFilter
+	  (file pointer)
