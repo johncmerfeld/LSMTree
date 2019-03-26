@@ -18,7 +18,7 @@ private:
 
 
 public:
-    MemoryRun(int size)
+    MemoryRun(int size);
 
     bool insert(Entry e);
 
@@ -31,6 +31,10 @@ public:
     int numElements();
 
     Entry get(int pos);
+
+public:
+    Entry *getEntries();
+    int search(int key);
 
 };
 

@@ -1,6 +1,5 @@
 /*
  * Run.cpp
- *
  */
 
 #include "Run.h"
@@ -33,6 +32,16 @@ bool MemoryRun::insert(Entry e) {
 }
 
 /* do we need a copy constructor etc.? */
+
+int MemoryRun::search(int key) {
+	for (int i = 0; i < nextPos; i++) {
+		if (entries[i].getKey() == key) {
+			return entries[i].getValue();
+		}
+	}
+
+	return INT_MIN; /* or some null sentinal */
+}
 
 
 int Run::maxEntries;
