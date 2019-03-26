@@ -18,7 +18,7 @@ LsmTree::LsmTree(int runsPerLevel, int bitsPerValue, int entriesPerRun) {
     this->levels = new TieringLevel[1];
     this->levelsCount = 1;
     Level::setRunsPerLevel(runsPerLevel);
-    Run::setMaxEntries(entriesPerRun);
+    memRun = new MemoryRun(entriesPerRun);
 }
 
 
