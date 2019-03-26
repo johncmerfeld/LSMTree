@@ -10,14 +10,14 @@
 class Level {
 
 protected:
-    Run *runs;
-    int currentRun; /* the Run being inserted into */
-    int runsPerLevel;
+    DiskRun *diskRuns;
+    int runsInLevel;
+    static maxRuns;
 
 public:
     Level();
 
-    Level(int runsPerLevel);
+    Level(runsInLevel = 0);
 
     static void setRunsPerLevel(int runs);
 

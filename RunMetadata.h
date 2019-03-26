@@ -9,9 +9,7 @@
 
 
 class RunMetadata {
-private:
-    BloomFilter *bloomfilter;
-    FencePointer **fencePointers;
+
 };
 
 #endif //RUNMETADATA_H
