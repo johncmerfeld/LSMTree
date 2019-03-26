@@ -11,6 +11,8 @@ LsmTree::LsmTree():LsmTree(2, 4, 4096/ sizeof(Entry)) {
 
 }
 
+
+
 LsmTree::LsmTree(int runsPerLevel, int bitsPerValue, int entriesPerRun) {
     this->levels = new TieringLevel[1];
     this->levelsCount = 1;

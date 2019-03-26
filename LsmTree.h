@@ -9,15 +9,18 @@
 
 class LsmTree {
 private:
-    Level * levels;
-    int runsPerLevel;
-    int bitsPerLevel;
-    int entriesPerRun;
+
+    Level * diskLevels;
+    MemoryRun memRun;
+
     int levelsCount;
+    short bitsPerValue;
 
 public:
     LsmTree();
-    LsmTree(int runsPerLevel, int bitsPerValue, int entriesPerRun);
+    LsmTree(int bitsPerValue);
+
+
     void insert(int key, int value);
 
     void remove(int key);

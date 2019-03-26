@@ -9,33 +9,27 @@
 #include "Entry.h"
 #include "RunMetadata.h"
 
-class Run {
-protected:
-    static int maxEntries;
 
-public:
-	Run(int size);
-    Run();
-
-    static void setMaxEntries(int max);
-};
-
-class MemoryRun : private Run {
+class MemoryRun {
 private:
     Entry *entries;
+    int maxEntries;
     int nextPos;
 
-    
+
 public:
     MemoryRun(int size);
 
     bool insert(Entry e);
+
     bool insert(Entry e, int pos);
 
     bool remove(Entry e);
+
     bool remove(int pos);
 
     int numElements();
+
     Entry get(int pos);
 
 public:
@@ -44,10 +38,12 @@ public:
 
 };
 
-class DiskRun : private Run {
+class DiskRun {
 private:
-    int runId;
-    RunMetadata metadata;
+    int fileDesc;
+    BloomFilter *bloomfilter;
+    FencePointer *fencePointers;
 };
+
 
 #endif /* RUN_H_ */
