@@ -6,6 +6,8 @@
 #define SIMPLE_EXAMPLE_LSMTREE_H
 
 #include "Level.h"
+#include "MemoryRun.h"
+#include "DiskRun.h"
 
 class LsmTree {
 private:

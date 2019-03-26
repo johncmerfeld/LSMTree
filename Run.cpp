@@ -2,7 +2,7 @@
  * Run.cpp
  */
 
-#include "Run.h"
+#include "MemoryRun.h"
 
 MemoryRun::MemoryRun(int size) {
 	entries = new Entry[size];

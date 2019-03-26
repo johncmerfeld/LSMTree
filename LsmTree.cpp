@@ -3,7 +3,8 @@
 //
 
 #include "LsmTree.h"
-#include "Run.h"
+
+#include "MemoryRun.h"
 
 #define pageSize 4096
 
@@ -19,3 +20,16 @@ LsmTree::LsmTree(int runsPerLevel, int bitsPerValue, int entriesPerRun) {
     Level::setRunsPerLevel(runsPerLevel);
     Run::setMaxEntries(entriesPerRun);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

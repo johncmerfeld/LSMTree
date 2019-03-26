@@ -3,8 +3,8 @@
  *
  */
 
-#ifndef RUN_H_
-#define RUN_H_
+#ifndef MEMORYRUN_H_
+#define MEMORYRUN_H_
 
 #include "Entry.h"
 #include "RunMetadata.h"
@@ -38,12 +38,5 @@ public:
 
 };
 
-class DiskRun {
-private:
-    int fileDesc;
-    BloomFilter *bloomfilter;
-    FencePointer *fencePointers;
-};
 
-
-#endif /* RUN_H_ */
+#endif /* MEMORYRUN_H_ */

@@ -2,7 +2,7 @@
  * Level.h
  */
 
-#include "Run.h"
+#include "MemoryRun.h"
 
 #ifndef LEVEL_H_
 #define LEVEL_H_
