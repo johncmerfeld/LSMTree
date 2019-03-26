@@ -77,3 +77,48 @@ Of course we will try to optimize memory management to optimize organization of 
 We will experiment with both dense and sparse data.
 We will also check how well will our system perform on increasing loads of data, thus if we will have an expected scalability.
 We will also try to identify any bottlenecks in the performance of our LSM so we can figure a way to deal with it.
+
+
+## Insert
+
+LMSTree::insert(int key) {
+
+  append to memory run
+  if memory run becomes full:
+     sort it
+     collect metadata
+     write to file
+     add file address to metadata
+     DiskTree.insert(metadata)
+  
+
+}
+
+## Delete
+
+  search memory run. 
+  If found, delete
+  If not found, insert a delete entry into memory run
+
+## Point query
+
+LSMTree::pointQuery(int key) {
+
+
+
+}
+
+
+## Range query
+
+LSMTree::RangeQuery(int min, int max) {
+
+  initialize a blank array of results
+  Search memory run
+  
+
+}
+
+
+LSM tree contains a "level 0" array of entries, which is always checked first. It also contains an array of levels. Each level contains an array of metedata objects. Each metadata object contains a fence pointer, a bloom filter, and a pointer to the data file on disk. When that file is loaded into memory, its entries are written into an array. 
+
