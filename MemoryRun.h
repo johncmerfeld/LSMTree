@@ -16,25 +16,19 @@ private:
     int maxEntries;
     int nextPos;
 
-
 public:
+    // implemented
     MemoryRun(int size);
-
+    int numElements();
     bool insert(Entry e);
+    int search(int key);
+    void remove(int key);
+    Entry *getEntries();
 
+    // not implemented
     bool insert(Entry e, int pos);
 
-    bool remove(Entry e);
-
-    bool remove(int pos);
-
-    int numElements();
-
     Entry get(int pos);
-
-public:
-    Entry *getEntries();
-    int search(int key);
 
 };
 
