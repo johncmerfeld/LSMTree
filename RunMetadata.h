@@ -7,8 +7,15 @@
 #ifndef RUNMETADATA_H
 #define RUNMETADATA_H
 
-
 class RunMetadata {
+
+private:
+	BloomFilter bloomfilter;
+	FencePointer fencepointer;
+	// disk location...
+
+public:
+	RunMetadata(BloomFilter bloomftr, FencePointer fenceptr);
 
 };
 

@@ -20,9 +20,9 @@ private:
 
 public:
     LsmTree();
-    LsmTree(int bitsPerValue);
+    LsmTree(short bitsPerValue);
 
-
+    void insert(int value);
     void insert(int key, int value);
 
     void remove(int key);
