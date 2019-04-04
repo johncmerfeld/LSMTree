@@ -10,8 +10,8 @@
 class DiskRun {
 private:
     int fileDesc;
-    BloomFilter *bloomfilter;
-    FencePointer *fencePointers;
+    BloomFilter* bloomfilter;
+    FencePointer* fencePointers;
 };
 
 

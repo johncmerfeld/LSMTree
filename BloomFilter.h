@@ -12,7 +12,7 @@ class BloomFilter {
 private:
     int size;
     int numHashes;
-    char *bitVector;
+    char* bitVector;
 
 public:
     BloomFilter(int size, int numHashes);

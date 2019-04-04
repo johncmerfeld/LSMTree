@@ -3,6 +3,7 @@
  */
 
 #include "MemoryRun.h"
+#include "DiskRun.h"
 
 #ifndef LEVEL_H_
 #define LEVEL_H_
@@ -10,18 +11,18 @@
 class Level {
 
 protected:
-    DiskRun *diskRuns;
+    DiskRun* diskRuns;
     int runsInLevel;
-    static maxRuns;
+    static int maxRuns;
 
 public:
     Level();
 
-    Level(runsInLevel = 0);
+    Level(int runsInLevel = 0);
 
     static void setRunsPerLevel(int runs);
 
-    virtual bool insert(Run run) = 0;
+    virtual bool insert(DiskRun run) = 0;
 
     virtual bool mergeLevels(Level *level) = 0;
 
