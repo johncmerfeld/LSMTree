@@ -23,9 +23,10 @@ public:
     bool insert(Entry e);
     int get(int key);
     bool remove(int key);
-    Entry *getEntries();
+    Entry* getEntries();
 
     // not implemented
+    int* getRange(int low, int high);
     bool insert(Entry e, int pos);
 
     Entry get(int pos);

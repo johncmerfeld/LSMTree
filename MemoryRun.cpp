@@ -40,6 +40,15 @@ int MemoryRun::get(int key) {
 	return NULL; /* or some null sentinal */
 }
 
+int* MemoryRun::getRange(int low, int high) {
+
+	/* create an array the size of memrun?
+	 * fill it with everything that matches
+	 *
+	 * search each disk level. How to do this dynamically?
+	 */
+}
+
 bool MemoryRun::remove(int key) {
 
 	for (int i = nextPos; i >= 0; i--) {
