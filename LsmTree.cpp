@@ -71,6 +71,9 @@ void LsmTree::flushToDisk(Entry* entries) {
 	//RunMetadata runmeta = new RunMetaData(bloomftr, fenceptr, disk pointer);
 }
 
+string LsmTree::getNextFilename() {
+	// read next file number...
+}
 
 
 
