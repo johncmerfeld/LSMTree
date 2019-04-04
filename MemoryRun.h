@@ -21,8 +21,8 @@ public:
     MemoryRun(int size);
     int numElements();
     bool insert(Entry e);
-    int search(int key);
-    void remove(int key);
+    int get(int key);
+    bool remove(int key);
     Entry *getEntries();
 
     // not implemented

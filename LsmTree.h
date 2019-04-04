@@ -8,15 +8,22 @@
 #include "Level.h"
 #include "MemoryRun.h"
 #include "DiskRun.h"
+#include <string>
+
+using namespace std;
 
 class LsmTree {
 private:
 
-    Level * diskLevels;
+    Level* diskLevels;
     MemoryRun memRun;
 
     int levelsCount;
+    int nextFileNumber;
     short bitsPerValue;
+
+    string getNextFilename();
+    void flushToDisk(Entry* entries);
 
 public:
     LsmTree();
@@ -27,6 +34,8 @@ public:
 
     void remove(int key);
     void removeMany();
+
+    int get(int key);
 
 
 };

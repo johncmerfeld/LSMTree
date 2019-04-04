@@ -3,6 +3,9 @@
 //
 #include "BloomFilter.h"
 #include "FencePointer.h"
+#include <string>
+
+using namespace std;
 
 #ifndef RUNMETADATA_H
 #define RUNMETADATA_H
@@ -12,7 +15,7 @@ class RunMetadata {
 private:
 	BloomFilter bloomfilter;
 	FencePointer fencepointer;
-	// disk location...
+	string filename;
 
 public:
 	RunMetadata(BloomFilter bloomftr, FencePointer fenceptr);

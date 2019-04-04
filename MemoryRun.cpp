@@ -30,7 +30,7 @@ bool MemoryRun::insert(Entry e) {
 	return true;
 }
 
-int MemoryRun::search(int key) {
+int MemoryRun::get(int key) {
 	for (int i = nextPos; i >= 0; i--) {
 		if (entries[i].getKey() == key) {
 			/* if the entry is a delete entry, we will get the delete sentinal */
@@ -40,21 +40,21 @@ int MemoryRun::search(int key) {
 	return NULL; /* or some null sentinal */
 }
 
-void MemoryRun::remove(int key) {
+bool MemoryRun::remove(int key) {
 
 	for (int i = nextPos; i >= 0; i--) {
 		if (entries[i].getKey() == key) {
 			if (entries[i].isRemove()) {
-				return;
+				return true;
 			}
 			entries[i].updateRemove(true);
-			return;
+			return true;
 		}
 	}
 
 	/* we didn't find it */
 	Entry e = new Entry(key, NULL, true);
-	this->insert(e);
+	return this->insert(e);
 
 }
 
