@@ -3,8 +3,10 @@
 //
 
 #include "LsmTree.h"
-
 #include "MemoryRun.h"
+#include <string>
+
+using namespace std;
 
 #define pageSize 4096
 
@@ -34,21 +36,40 @@ void LsmTree::insert(int key, int value) {
 
 	/* insert into memory run. If it's full: */
 	if (! memRun.insert(e)) {
-		/* sort it */
-		//BloomFilter bloomftr = new BloomFilter(...);
-		//FencePointer fenceptr = new FencePointer(lowest, highest);
-		//disk pointer...
-		//RunMetadata runmeta = new RunMetaData(bloomftr, fenceptr, disk pointer);
-
+		this->flushToDisk(memRun.entries);
 	}
-
-
-
 
 }
 
+void LsmTree::remove(int key) {
 
+	/* delete from memory run. If that fills it: */
+	if (! memRun.remove(key)) {
+		this->flushToDisk(memRun.entries);
+	}
+}
 
+/* returns NULl if not in tree */
+int LsmTree::get(int key) {
+
+	int result = memRun.get(key);
+
+	/* if we can't find it in memory */
+	if (result == NULL) {
+		// result = search disk levels()
+	}
+
+	return result;
+
+}
+
+void LsmTree::flushToDisk(Entry* entries) {
+	/* sort it */
+	//BloomFilter bloomftr = new BloomFilter(...);
+	//FencePointer fenceptr = new FencePointer(lowest, highest);
+	//
+	//RunMetadata runmeta = new RunMetaData(bloomftr, fenceptr, disk pointer);
+}
 
 
 

@@ -31,14 +31,14 @@ public:
 
 class TieringLevel : public Level {
 public:
-    bool insert(Run run);
+    bool insert(DiskRun run);
 
     bool mergeLevels(Level *level);
 };
 
 class LevelingLevel : public Level {
 public:
-    bool insert(Run run);
+    bool insert(DiskRun run);
 
     bool mergeLevels(Level *level);
 };

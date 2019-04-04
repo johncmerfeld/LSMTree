@@ -12,7 +12,7 @@
 
 class MemoryRun {
 private:
-    Entry *entries;
+    Entry* entries;
     int maxEntries;
     int nextPos;
 
