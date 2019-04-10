@@ -69,6 +69,7 @@ int LsmTree::get(int key) {
 void LsmTree::flushToDisk(Entry* entries) {
 
 	BloomFilter bloomftr = new BloomFilter(); // args?
+	// insert into bloomftr
 	FencePointer fenceptr = new FencePointer(entries[0].value, entries[entriesPerRun - 1].value);
 	string filename = getNextFilename();
 	RunMetadata runmeta = new RunMetadata(bloomftr, fenceptr, filename);
