@@ -18,7 +18,7 @@ private:
 	string filename;
 
 public:
-	RunMetadata(BloomFilter bloomftr, FencePointer fenceptr);
+	RunMetadata(BloomFilter bloomftr, FencePointer fenceptr, string filename);
 
 };
 

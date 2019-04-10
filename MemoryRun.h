@@ -24,6 +24,7 @@ public:
     int get(int key);
     bool remove(int key);
     Entry* getEntries();
+    Entry* getEntriesSorted();
 
     // not implemented
     int* getRange(int low, int high);

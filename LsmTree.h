@@ -20,6 +20,7 @@ private:
 
     int levelsCount;
     int nextFileNumber;
+    int entriesPerRun;
     short bitsPerValue;
 
     string getNextFilename();

@@ -4,6 +4,7 @@
 
 #include "LsmTree.h"
 #include "MemoryRun.h"
+#include "RunMetadata.h"
 #include <string>
 
 using namespace std;
@@ -19,10 +20,14 @@ LsmTree::LsmTree():LsmTree(4) {
 LsmTree::LsmTree(int bitsPerValue) {
 	this->bitsPerValue = bitsPerValue;
 	this->levelsCount = 0;
+	this->nextFileNumber = 0;
     /*this->levels = new TieringLevel[1];
     this->levelsCount = 1;
-    Level::setRunsPerLevel(runsPerLevel);
-    memRun = new MemoryRun(entriesPerRun); */
+    Level::setRunsPerLevel(runsPerLevel); */
+
+	/* fix how this is assigned */
+	this->entriesPerRun = 1000;
+    this->memRun = new MemoryRun(entriesPerRun);
 }
 
 void LsmTree::insert(int value) {
@@ -36,7 +41,7 @@ void LsmTree::insert(int key, int value) {
 
 	/* insert into memory run. If it's full: */
 	if (! memRun.insert(e)) {
-		this->flushToDisk(memRun.entries);
+		this->flushToDisk(memRun.getEntriesSorted());
 	}
 
 }
@@ -45,7 +50,7 @@ void LsmTree::remove(int key) {
 
 	/* delete from memory run. If that fills it: */
 	if (! memRun.remove(key)) {
-		this->flushToDisk(memRun.entries);
+		this->flushToDisk(memRun.getEntriesSorted());
 	}
 }
 
@@ -58,21 +63,21 @@ int LsmTree::get(int key) {
 	if (result == NULL) {
 		// result = search disk levels()
 	}
-
 	return result;
-
 }
 
 void LsmTree::flushToDisk(Entry* entries) {
-	/* sort it */
-	//BloomFilter bloomftr = new BloomFilter(...);
-	//FencePointer fenceptr = new FencePointer(lowest, highest);
-	//
-	//RunMetadata runmeta = new RunMetaData(bloomftr, fenceptr, disk pointer);
+
+	BloomFilter bloomftr = new BloomFilter(); // args?
+	FencePointer fenceptr = new FencePointer(entries[0].value, entries[entriesPerRun - 1].value);
+	string filename = getNextFilename();
+	RunMetadata runmeta = new RunMetadata(bloomftr, fenceptr, filename);
+
+	/* write to the file and give the run metadata to disk tree */
 }
 
 string LsmTree::getNextFilename() {
-	// read next file number...
+	return "file" + (string) nextFileNumber++ + ".dat";
 }
 
 

@@ -70,3 +70,9 @@ bool MemoryRun::remove(int key) {
 Entry* MemoryRun::getEntries() {
 	return entries;
 }
+
+Entry* MemoryRun::getEntriesSorted() {
+
+	// FILL THIS IN
+	return null;
+}
