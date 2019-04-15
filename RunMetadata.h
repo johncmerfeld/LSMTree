@@ -13,12 +13,12 @@ using namespace std;
 class RunMetadata {
 
 private:
-	BloomFilter bloomfilter;
-	FencePointer fencepointer;
+	BloomFilter* bloomfilter;
+	FencePointer* fencepointer;
 	string filename;
 
 public:
-	RunMetadata(BloomFilter bloomftr, FencePointer fenceptr, string filename);
+	RunMetadata(BloomFilter* bloomftr, FencePointer* fenceptr, string filename);
 
 };
 

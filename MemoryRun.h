@@ -20,7 +20,7 @@ public:
     // implemented
     MemoryRun(int size);
     int numElements();
-    bool insert(Entry e);
+    bool insert(Entry* e);
     int get(int key);
     bool remove(int key);
     Entry* getEntries();
@@ -28,9 +28,6 @@ public:
 
     // not implemented
     int* getRange(int low, int high);
-    bool insert(Entry e, int pos);
-
-    Entry get(int pos);
 
 };
 

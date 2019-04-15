@@ -9,7 +9,7 @@
 
 using namespace std;
 
-BloomFilter::BloomFilter(int size = 1024, int numHashes = 5) {
+BloomFilter::BloomFilter(int size, int numHashes) {
     this->size = size;
     this->numHashes = numHashes;
     this->bitVector = new char[size];

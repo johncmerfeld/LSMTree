@@ -16,7 +16,7 @@ class LsmTree {
 private:
 
     Level* diskLevels;
-    MemoryRun memRun;
+    MemoryRun* memRun;
 
     int levelsCount;
     int nextFileNumber;
@@ -25,6 +25,8 @@ private:
 
     string getNextFilename();
     void flushToDisk(Entry* entries);
+
+    int getFromDisk(int key);
 
 public:
     LsmTree();
@@ -37,6 +39,7 @@ public:
     void removeMany();
 
     int get(int key);
+
 
 
 };

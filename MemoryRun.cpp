@@ -14,10 +14,10 @@ int MemoryRun::numElements() {
 	return this->nextPos;
 }
 
-bool MemoryRun::insert(Entry e) {
+bool MemoryRun::insert(Entry* e) {
 
 	/* insert and increment */
-	entries[nextPos] = e;
+	entries[nextPos] = *e;
 	nextPos++;
 
 	/* if full: */
@@ -62,7 +62,7 @@ bool MemoryRun::remove(int key) {
 	}
 
 	/* we didn't find it */
-	Entry e = new Entry(key, NULL, true);
+	Entry* e = new Entry(key, NULL, true);
 	return this->insert(e);
 
 }
@@ -73,6 +73,10 @@ Entry* MemoryRun::getEntries() {
 
 Entry* MemoryRun::getEntriesSorted() {
 
+	Entry* resultSet[maxEntries];
+
+
+
 	// FILL THIS IN
-	return null;
+	return NULL;
 }

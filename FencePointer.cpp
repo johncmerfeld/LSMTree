@@ -4,7 +4,7 @@
 
 #include "FencePointer.h"
 
-FencePointer::FencePointer(int low = 0, int high = 0) :
+FencePointer::FencePointer(int low, int high) :
 						   lowest(low), highest(high) {}
 
 int FencePointer::getLowest() {return this->lowest ;}

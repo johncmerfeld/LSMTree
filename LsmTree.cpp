@@ -11,13 +11,7 @@ using namespace std;
 
 #define pageSize 4096
 
-LsmTree::LsmTree():LsmTree(4) {
-
-}
-
-
-
-LsmTree::LsmTree(int bitsPerValue) {
+LsmTree::LsmTree(short bitsPerValue) {
 	this->bitsPerValue = bitsPerValue;
 	this->levelsCount = 0;
 	this->nextFileNumber = 0;
@@ -37,11 +31,11 @@ void LsmTree::insert(int value) {
 void LsmTree::insert(int key, int value) {
 
 	/* make a new 'Insert' entry */
-	Entry e = new Entry(key, value, false);
+	Entry* e = new Entry(key, value, false);
 
 	/* insert into memory run. If it's full: */
-	if (! memRun.insert(e)) {
-		this->flushToDisk(memRun.getEntriesSorted());
+	if (! memRun->insert(e)) {
+		this->flushToDisk(memRun->getEntriesSorted());
 	}
 
 }
@@ -49,36 +43,43 @@ void LsmTree::insert(int key, int value) {
 void LsmTree::remove(int key) {
 
 	/* delete from memory run. If that fills it: */
-	if (! memRun.remove(key)) {
-		this->flushToDisk(memRun.getEntriesSorted());
+	if (! memRun->remove(key)) {
+		this->flushToDisk(memRun->getEntriesSorted());
 	}
 }
 
-/* returns NULl if not in tree */
+/* returns NULL if not in tree */
 int LsmTree::get(int key) {
 
-	int result = memRun.get(key);
+	int result = memRun->get(key);
 
 	/* if we can't find it in memory */
 	if (result == NULL) {
-		// result = search disk levels()
+		result = getFromDisk(key);
 	}
 	return result;
 }
 
 void LsmTree::flushToDisk(Entry* entries) {
 
-	BloomFilter bloomftr = new BloomFilter(); // args?
-	// insert into bloomftr
-	FencePointer fenceptr = new FencePointer(entries[0].value, entries[entriesPerRun - 1].value);
-	string filename = getNextFilename();
-	RunMetadata runmeta = new RunMetadata(bloomftr, fenceptr, filename);
+	BloomFilter* bloomftr = new BloomFilter(1024, 5); // args?
+	for (int i = 0; i < entriesPerRun; i++) {
+		bloomftr->add(entries[i].getKey());
+	}
 
-	/* write to the file and give the run metadata to disk tree */
+	FencePointer* fenceptr = new FencePointer(entries[0].getValue(), entries[entriesPerRun - 1].getValue());
+	string filename = getNextFilename();
+	RunMetadata* runmeta = new RunMetadata(bloomftr, fenceptr, filename);
+
+	/* TODO write to the file and give the run metadata to disk tree */
+}
+
+int LsmTree::getFromDisk(int key) {
+	return -1;
 }
 
 string LsmTree::getNextFilename() {
-	return "file" + (string) nextFileNumber++ + ".dat";
+	return "file" + std::to_string(nextFileNumber++) + ".dat";
 }
 
 

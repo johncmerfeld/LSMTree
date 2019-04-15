@@ -4,7 +4,7 @@
 
 #include "Entry.h"
 
-Entry::Entry(int key = 0, int value = 0, bool removeBit = false) :
+Entry::Entry(int key, int value, bool removeBit) :
 		key(key), value(value), removeBit(removeBit) {}
 
 int Entry::getKey() { return this->key ;}
