@@ -73,10 +73,32 @@ Entry* MemoryRun::getEntries() {
 
 Entry* MemoryRun::getEntriesSorted() {
 
+	int mindex = 0;
+	int minKey = entries[mindex];
+
+	for (int i = 1; i < maxEntries; i++) {
+		if (entries[i] < minKey) {
+			minKey = entries[i];
+			mindex = i;
+		}
+	}
+
 	Entry* resultSet[maxEntries];
+	/* hey, this is an insertion sort just to have a working thing.
+	   We can obviously speed it up */
+	for (int i = 0; i < maxEntries; i++) {
+		resultSet[i] = entries[mindex];
+		/* find the next mindex */
+		for (int i = 0; i < maxEntries; i++) {
+			/* if it's the next largest entry: */
+			if ((entries[i] < minKey) && (entries[i] > resultSet[i])) {
+				minKey = entries[i];
+				mindex = i;
+			}
+		}
 
-
+	}
 
 	// FILL THIS IN
-	return NULL;
+	return resultSet;
 }
