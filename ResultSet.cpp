@@ -1,5 +1,7 @@
 /*
  * ResultSet.cpp
+ *
+ * A dynamic array class to handle uncertain range query results
  */
 
 #include "ResultSet.h"
