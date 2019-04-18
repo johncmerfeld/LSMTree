@@ -5,6 +5,7 @@
 #include "LsmTree.h"
 #include "MemoryRun.h"
 #include "RunMetadata.h"
+#include "ResultSet.h"
 #include <string>
 
 using namespace std;
@@ -59,6 +60,17 @@ int LsmTree::get(int key) {
 	}
 	return result;
 }
+
+int* LsmTree::getRange(int low, int high) {
+
+	ResultSet memoryResults = memRun->getRange(low, high);
+	//ResultSet diskResults = diskLevels->getRange(low, high); /* need to implement this */
+	//return memoryResults.combine(diskResults);
+
+	return NULL;
+
+}
+
 
 void LsmTree::flushToDisk(Entry* entries) {
 

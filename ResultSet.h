@@ -26,5 +26,4 @@ public:
 };
 
 
-
 #endif /* RESULTSET_H_ */
