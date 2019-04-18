@@ -3,6 +3,7 @@
  */
 
 #include "MemoryRun.h"
+#include "ResultSet.h"
 
 MemoryRun::MemoryRun(int size) {
 	entries = new Entry[size];
@@ -17,8 +18,7 @@ int MemoryRun::numElements() {
 bool MemoryRun::insert(Entry* e) {
 
 	/* insert and increment */
-	entries[nextPos] = *e;
-	nextPos++;
+	entries[nextPos++] = *e;
 
 	/* if full: */
 	if (nextPos == maxEntries) {
@@ -42,11 +42,17 @@ int MemoryRun::get(int key) {
 
 int* MemoryRun::getRange(int low, int high) {
 
-	/* create an array the size of memrun?
-	 * fill it with everything that matches
-	 *
-	 * search each disk level. How to do this dynamically?
-	 */
+	ResultSet results = new ResultSet(maxEntries);
+
+	for (int i = 0; i < nextPos; i++) {
+		if ((entries[i].getKey() >= low) &&
+				(entries[i].getKey() <= high)) {
+			results.insert(entries[i].getValue());
+		}
+	}
+
+	return results.getResults();
+
 }
 
 bool MemoryRun::remove(int key) {
@@ -99,6 +105,5 @@ Entry* MemoryRun::getEntriesSorted() {
 
 	}
 
-	// FILL THIS IN
 	return resultSet;
 }

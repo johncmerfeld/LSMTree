@@ -39,7 +39,7 @@ public:
     void removeMany();
 
     int get(int key);
-
+    int* getRange(int low, int high);
 
 
 };
