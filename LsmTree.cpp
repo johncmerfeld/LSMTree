@@ -63,7 +63,7 @@ int LsmTree::get(int key) {
 
 int* LsmTree::getRange(int low, int high) {
 
-	ResultSet memoryResults = memRun->getRange(low, high);
+	int* memoryResults = memRun->getRange(low, high);
 	//ResultSet diskResults = diskLevels->getRange(low, high); /* need to implement this */
 	//return memoryResults.combine(diskResults);
 

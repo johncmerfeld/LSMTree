@@ -42,16 +42,16 @@ int MemoryRun::get(int key) {
 
 int* MemoryRun::getRange(int low, int high) {
 
-	ResultSet results = new ResultSet(maxEntries);
+	ResultSet* results = new ResultSet(maxEntries);
 
 	for (int i = 0; i < nextPos; i++) {
 		if ((entries[i].getKey() >= low) &&
 				(entries[i].getKey() <= high)) {
-			results.insert(entries[i].getValue());
+			results->insert(entries[i].getValue());
 		}
 	}
 
-	return results.getResults();
+	return results->getResults();
 
 }
 
@@ -80,11 +80,11 @@ Entry* MemoryRun::getEntries() {
 Entry* MemoryRun::getEntriesSorted() {
 
 	int mindex = 0;
-	int minKey = entries[mindex];
+	int minKey = entries[mindex].getKey();
 
 	for (int i = 1; i < maxEntries; i++) {
-		if (entries[i] < minKey) {
-			minKey = entries[i];
+		if (entries[i].getKey() < minKey) {
+			minKey = entries[i].getKey();
 			mindex = i;
 		}
 	}
@@ -93,17 +93,17 @@ Entry* MemoryRun::getEntriesSorted() {
 	/* hey, this is an insertion sort just to have a working thing.
 	   We can obviously speed it up */
 	for (int i = 0; i < maxEntries; i++) {
-		resultSet[i] = entries[mindex];
+		resultSet[i] = &entries[mindex];
 		/* find the next mindex */
 		for (int i = 0; i < maxEntries; i++) {
 			/* if it's the next largest entry: */
-			if ((entries[i] < minKey) && (entries[i] > resultSet[i])) {
-				minKey = entries[i];
+			if ((entries[i].getKey() < minKey) && (entries[i].getKey() > resultSet[i]->getKey())) {
+				minKey = entries[i].getKey();
 				mindex = i;
 			}
 		}
 
 	}
 
-	return resultSet;
+	return *resultSet;
 }
