@@ -22,6 +22,7 @@ public:
 	int* getResults();
 	void insert(int value);
 	int* combine(ResultSet rs);
+	void print();
 
 };
 

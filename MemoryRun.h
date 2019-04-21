@@ -8,6 +8,7 @@
 
 #include "Entry.h"
 #include "RunMetadata.h"
+#include "ResultSet.h"
 
 
 class MemoryRun {
@@ -22,12 +23,10 @@ public:
     int numElements();
     bool insert(Entry* e);
     int get(int key);
+    ResultSet getRange(int low, int high);
     bool remove(int key);
     Entry* getEntries();
     Entry* getEntriesSorted();
-
-    // not implemented
-    int* getRange(int low, int high);
 
 };
 

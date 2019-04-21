@@ -1,4 +1,5 @@
 #include "LsmTree.h"
+#include "ResultSet.h"
 #include <iostream>
 #include <unistd.h>
 
@@ -15,10 +16,10 @@ int main() {
 		}
 	}
 
-	for (int i = 1; i < 100; i++) {
-		cout << tree->get(i) << endl;
-	}
 
+	ResultSet rs = tree->getRange(10, 30);
+
+	rs.print();
 
 
 }

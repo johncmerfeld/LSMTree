@@ -41,18 +41,19 @@ int MemoryRun::get(int key) {
 	return INT_MIN; /* or some null sentinal */
 }
 
-int* MemoryRun::getRange(int low, int high) {
+ResultSet MemoryRun::getRange(int low, int high) {
 
 	ResultSet* results = new ResultSet(maxEntries);
 
 	for (int i = 0; i < nextPos; i++) {
 		if ((entries[i].getKey() >= low) &&
-				(entries[i].getKey() <= high)) {
+				(entries[i].getKey() <= high) &&
+				(!entries[i].isRemove())) {
 			results->insert(entries[i].getValue());
 		}
 	}
 
-	return results->getResults();
+	return *results;
 
 }
 

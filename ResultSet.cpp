@@ -5,6 +5,10 @@
  */
 
 #include "ResultSet.h"
+#include<iostream>
+#include<string>
+
+using namespace std;
 
 ResultSet::ResultSet(int size) {
 	this->size = size;
@@ -69,5 +73,17 @@ void ResultSet::resize() {
 
 	delete [] results;
 	results = newResults;
+}
+
+void ResultSet::print() {
+
+	string output = "[ ";
+
+	for (int i = 0; i < nextPos; i++) {
+		output += " " + to_string(results[i]);
+	}
+
+	output += "]";
+	cout << output << endl;
 }
 

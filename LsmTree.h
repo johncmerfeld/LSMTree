@@ -8,6 +8,7 @@
 #include "Level.h"
 #include "MemoryRun.h"
 #include "DiskRun.h"
+#include "ResultSet.h"
 #include <string>
 
 using namespace std;
@@ -39,7 +40,7 @@ public:
     void removeMany();
 
     int get(int key);
-    int* getRange(int low, int high);
+    ResultSet getRange(int low, int high);
 
 
 };
