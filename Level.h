@@ -11,36 +11,46 @@
 class Level {
 
 protected:
-    DiskRun* diskRuns;
+    DiskRun *diskRuns;
     int runsInLevel;
     static int maxRuns;
 
 public:
     Level();
 
-    Level(int runsInLevel = 0);
-
     static void setRunsPerLevel(int runs);
 
-    virtual bool insert(DiskRun run) = 0;
+//    virtual bool insert(DiskRun run) = 0;
 
     virtual bool mergeLevels(Level *level) = 0;
 
+    virtual bool hasSpace() = 0;
 
 };
 
 class TieringLevel : public Level {
 public:
-    bool insert(DiskRun run);
+
+    TieringLevel();
+
+//    bool insert(DiskRun run);
 
     bool mergeLevels(Level *level);
+
+    bool hasSpace();
 };
 
 class LevelingLevel : public Level {
+    int entriesPerLevel;
+    int currentEntriesInLevel;
 public:
-    bool insert(DiskRun run);
+    LevelingLevel();
+
+//    bool insert(DiskRun run);
 
     bool mergeLevels(Level *level);
+
+    bool hasSpace();
 };
 
 
