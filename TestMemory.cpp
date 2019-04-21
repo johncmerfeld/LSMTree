@@ -16,7 +16,6 @@ int main() {
 		}
 	}
 
-
 	ResultSet rs = tree->getRange(10, 30);
 
 	rs.print();
