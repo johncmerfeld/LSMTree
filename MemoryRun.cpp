@@ -4,6 +4,7 @@
 
 #include "MemoryRun.h"
 #include "ResultSet.h"
+#include<limits.h>
 
 MemoryRun::MemoryRun(int size) {
 	entries = new Entry[size];
@@ -37,7 +38,7 @@ int MemoryRun::get(int key) {
 			return entries[i].getValue();
 		}
 	}
-	return NULL; /* or some null sentinal */
+	return INT_MIN; /* or some null sentinal */
 }
 
 int* MemoryRun::getRange(int low, int high) {
@@ -68,7 +69,7 @@ bool MemoryRun::remove(int key) {
 	}
 
 	/* we didn't find it */
-	Entry* e = new Entry(key, NULL, true);
+	Entry* e = new Entry(key, INT_MIN, true);
 	return this->insert(e);
 
 }

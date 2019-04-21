@@ -3,6 +3,7 @@
 //
 
 #include "Entry.h"
+#include<limits.h>
 
 Entry::Entry(int key, int value, bool removeBit) :
 		key(key), value(value), removeBit(removeBit) {}
@@ -19,4 +20,10 @@ void Entry::updateValue(int newValue) {
 
 void Entry::updateRemove(bool newRemoveBit) {
 	this->removeBit = newRemoveBit;
+
+	// if this is a remove, set to sentinal value
+	if (newRemoveBit == true) {
+		this->value = INT_MIN;
+	}
+
 }
