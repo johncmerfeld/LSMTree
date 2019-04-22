@@ -38,7 +38,6 @@ void LsmTree::insert(int key, int value) {
 	if (! memRun->insert(e)) {
 		this->flushToDisk(memRun->getEntriesSorted());
 	}
-
 }
 
 void LsmTree::remove(int key) {
@@ -70,7 +69,6 @@ ResultSet LsmTree::getRange(int low, int high) {
 	return memoryResults;
 
 }
-
 
 void LsmTree::flushToDisk(Entry* entries) {
 
