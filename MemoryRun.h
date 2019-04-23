@@ -16,6 +16,7 @@ private:
     Entry *entries;
     int maxEntries;
     int nextPos;
+    MemoryRun merge(MemoryRun runToMerge, int left, int mid, int right);
 
 public:
     // implemented
@@ -25,9 +26,12 @@ public:
 
     int numElements();
 
-    bool insert(Entry *e);
+    bool insert(Entry* e);
+    void insertAtPos(Entry* e, int pos);
 
     int get(int key);
+
+    Entry at(int pos);
 
     ResultSet *getRange(int low, int high);
 
@@ -36,6 +40,10 @@ public:
     Entry *getEntries();
 
     Entry *getEntriesSorted();
+
+    MemoryRun combine(MemoryRun runToCombine);
+
+    MemoryRun mergeSort(MemoryRun runToMerge, int left, int right);
 
     void reset();
 

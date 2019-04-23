@@ -87,11 +87,10 @@ ResultSet *LsmTree::getRange(int low, int high) {
 
 void LsmTree::createMetadata(MemoryRun *memRunData) {
     int entriesPerRun = memRunData->getSize();
-    Entry *entries = memRunData->getEntries();
 
     BloomFilter *bloomftr = new BloomFilter(1024, 5); // args?
     for (int i = 0; i < entriesPerRun; i++) {
-        bloomftr->add(entries[i].getKey());
+        bloomftr->add(memRunData->at(i).getKey());
     }
 
     FencePointer *fenceptr = new FencePointer(entries[0].getValue(), entries[entriesPerRun - 1].getValue());
