@@ -13,21 +13,33 @@
 
 class MemoryRun {
 private:
-    Entry* entries;
+    Entry *entries;
     int maxEntries;
     int nextPos;
 
 public:
     // implemented
     MemoryRun(int size);
-    int numElements();
-    bool insert(Entry* e);
-    int get(int key);
-    ResultSet getRange(int low, int high);
-    bool remove(int key);
-    Entry* getEntries();
-    Entry* getEntriesSorted();
 
+    MemoryRun(Entry *entries, int size);
+
+    int numElements();
+
+    bool insert(Entry *e);
+
+    int get(int key);
+
+    ResultSet *getRange(int low, int high);
+
+    bool remove(int key);
+
+    Entry *getEntries();
+
+    Entry *getEntriesSorted();
+
+    void reset();
+
+    int getSize();
 };
 
 

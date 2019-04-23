@@ -7,11 +7,12 @@
 #define DISKRUN_H_
 
 
+
 class DiskRun {
-private:
-    int fileDesc;
-    BloomFilter* bloomfilter;
-    FencePointer* fencePointers;
+//private:
+//    int fileDesc;
+//    BloomFilter* bloomfilter;
+//    FencePointer* fencePointers;
 };
 
 

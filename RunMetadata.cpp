@@ -12,4 +12,8 @@ RunMetadata::RunMetadata(BloomFilter* bloomftr, FencePointer* fenceptr,
 	this->size = size;
 }
 
+void RunMetadata::setFilename(string levelNumber) {
+	this->filename = filename;
+}
+
 

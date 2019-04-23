@@ -18,6 +18,8 @@ void Entry::updateValue(int newValue) {
     this->value = newValue;
 }
 
+
+
 void Entry::updateRemove(bool newRemoveBit) {
 	this->removeBit = newRemoveBit;
 
@@ -27,3 +29,5 @@ void Entry::updateRemove(bool newRemoveBit) {
 	}
 
 }
+
+

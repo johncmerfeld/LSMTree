@@ -73,8 +73,8 @@ uint32_t BloomFilter::murmurhash(const int *key, uint32_t len, uint32_t seed) {
     uint32_t h = 0;
     uint32_t k = 0;
     uint8_t *d = (uint8_t *) key; // 32 bit extract from `key'
-    const uint32_t *chunks = NULL;
-    const uint8_t *tail = NULL; // tail - last 8 bytes
+    const uint32_t *chunks = nullptr;
+    const uint8_t *tail = nullptr; // tail - last 8 bytes
     int i = 0;
     int l = len / 4; // chunk length
 

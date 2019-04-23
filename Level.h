@@ -2,45 +2,64 @@
  * Level.h
  */
 
-#include "MemoryRun.h"
-#include "DiskRun.h"
 
 #ifndef LEVEL_H_
 #define LEVEL_H_
 
+
+#include "MemoryRun.h"
+#include "DiskRun.h"
+
+
 class Level {
 
 protected:
-    DiskRun* diskRuns;
+    RunMetadata **levelMetadata;
     int runsInLevel;
     static int maxRuns;
 
 public:
     Level();
 
-    Level(int runsInLevel = 0);
-
     static void setRunsPerLevel(int runs);
 
-    virtual bool insert(DiskRun run) = 0;
+//    virtual bool insert(DiskRun run) = 0;
 
-    virtual bool mergeLevels(Level *level) = 0;
+    virtual MemoryRun * mergeLevel(MemoryRun *memoRun) = 0;
 
+    virtual bool hasSpace() = 0;
+
+    virtual bool add(Entry *entries, int numOfEntries) = 0;
 
 };
 
 class TieringLevel : public Level {
 public:
-    bool insert(DiskRun run);
 
-    bool mergeLevels(Level *level);
+    TieringLevel();
+
+//    bool insert(DiskRun run);
+
+    MemoryRun  *mergeLevel(MemoryRun *memoRun);
+
+    bool hasSpace();
+
+    bool add(Entry *entries, int numOfEntries);
 };
 
 class LevelingLevel : public Level {
+    int entriesPerLevel;
+    int currentEntriesInLevel;
 public:
-    bool insert(DiskRun run);
+    LevelingLevel();
 
-    bool mergeLevels(Level *level);
+//    bool insert(DiskRun run);
+
+    MemoryRun  *mergeLevel(MemoryRun *memoRun);
+
+    bool hasSpace();
+
+    bool add(Entry *entries, int numOfEntries);
 };
 
 
