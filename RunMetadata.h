@@ -16,9 +16,10 @@ private:
 	BloomFilter* bloomfilter;
 	FencePointer* fencepointer;
 	string filename;
+	int size;
 
 public:
-	RunMetadata(BloomFilter* bloomftr, FencePointer* fenceptr, string filename);
+	RunMetadata(BloomFilter* bloomftr, FencePointer* fenceptr, string filename, int size);
 
 };
 
