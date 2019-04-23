@@ -6,7 +6,10 @@
 #include "MemoryRun.h"
 #include "RunMetadata.h"
 #include "ResultSet.h"
+#include "Level.h"
 #include <string>
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
@@ -16,8 +19,13 @@ LsmTree::LsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue) {
 
     this->bitsPerValue = bitsPerValue;
 
+    diskLevels = new TieringLevel[2];
+    cout << "constructor" << endl;
+    cout << diskLevels[0].hasSpace() << endl;
+    cout << "perase" << endl;
+    this->levelsCount = 2;
+    this->currentLevel = 0;
 
-    this->levelsCount = 0;
     this->nextFileNumber = 1;
 
 
@@ -41,7 +49,7 @@ void LsmTree::insert(int key, int value) {
 
     /* insert into memory run. If it's full: */
     if (!memRun->insert(e)) {
-        this->createMetadata(memRun->getEntriesSorted());
+        this->createMetadata(memRun);
     }
 
 }
@@ -50,7 +58,7 @@ void LsmTree::remove(int key) {
 
     /* delete from memory run. If that fills it: */
     if (!memRun->remove(key)) {
-        this->createMetadata(memRun->getEntriesSorted());
+        this->createMetadata(memRun);
     }
 }
 
@@ -66,18 +74,20 @@ int LsmTree::get(int key) {
     return result;
 }
 
-int *LsmTree::getRange(int low, int high) {
+ResultSet *LsmTree::getRange(int low, int high) {
 
-    int *memoryResults = memRun->getRange(low, high);
+    ResultSet *memoryResults = memRun->getRange(low, high);
     //ResultSet diskResults = diskLevels->getRange(low, high); /* need to implement this */
     //return memoryResults.combine(diskResults);
 
-	return memoryResults;
+    return memoryResults;
 
 }
 
 
-void LsmTree::createMetadata(Entry *entries) {
+void LsmTree::createMetadata(MemoryRun *memRunData) {
+    int entriesPerRun = memRunData->getSize();
+    Entry *entries = memRunData->getEntries();
 
     BloomFilter *bloomftr = new BloomFilter(1024, 5); // args?
     for (int i = 0; i < entriesPerRun; i++) {
@@ -99,6 +109,7 @@ string LsmTree::getNextFilename() {
     return "file" + std::to_string(nextFileNumber++) + ".dat";
 }
 
+
 //---------- Tier Level methods ----------
 TierLsmTree::TierLsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue)
         : LsmTree(entriesPerRun, maxRunsInLevel, bitsPerValue) {
@@ -106,27 +117,41 @@ TierLsmTree::TierLsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerVal
 }
 
 void TierLsmTree::insert(int key, int value) {
+//    LsmTree::insert(key, value);
     if (this->memRun->insert(new Entry(key, value))) {
-        this->flushToDisk();
+        this->flushToDisk(this->memRun);
+        TieringLevel *temp;
 
     }
 }
 
-void TierLsmTree::flushToDisk() {
-    if (diskLevels == nullptr)
-        cout << "hi" << endl;
+void TierLsmTree::flushToDisk(MemoryRun *data) {
+    MemoryRun *mergedData;
+    TieringLevel *temp;
+    int levelsCounter = 0;
+
+    while (levelsCounter < this->levelsCount) {
+        if (this->diskLevels[levelsCounter].hasSpace()) {
+            createMetadata(data);
+            diskLevels[levelsCounter].add(data->getEntries(), data->numElements());
+            return;
+        }
+        data = diskLevels[levelsCounter].mergeLevel(data);
+        levelsCounter++;
+    }
+
+    temp = new TieringLevel[levelsCount * 2];
+    memcpy(temp, diskLevels, levelsCounter * sizeof(TieringLevel));
+    delete diskLevels;
+    diskLevels = temp;
+    levelsCount *= 2;
+
+    diskLevels[levelsCounter].add(data->getEntries(), data->numElements());
+    //create metadata
+    //diskLevels[levelsCounter].add()
+
 }
 
-//---------- Leveling Level methods ----------
-
-LevelLsmTree::LevelLsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue)
-        : LsmTree(entriesPerRun, maxRunsInLevel, bitsPerValue) {
-
-}
-
-void LevelLsmTree::flushToDisk() {
-
-}
 
 
 

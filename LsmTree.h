@@ -22,8 +22,10 @@ protected:
     Level *diskLevels;
     MemoryRun *memRun;
 
+
     //---------- Tree metadata ----------
     int levelsCount;
+    int currentLevel;
     int nextFileNumber;
     int entriesPerRun;
     short bitsPerValue;
@@ -31,7 +33,7 @@ protected:
 
     string getNextFilename();
 
-    void createMetadata(Entry *entries);
+    void createMetadata(MemoryRun *memRunData);
 
     int getFromDisk(int key);
 
@@ -50,7 +52,7 @@ public:
 
     int get(int key);
 
-    ResultSet getRange(int low, int high);
+    ResultSet *getRange(int low, int high);
 
 
 };
@@ -59,7 +61,7 @@ class TierLsmTree : LsmTree {
 public:
     TierLsmTree(int, int, short bitsPerValue);
 
-    void flushToDisk();
+    void flushToDisk(MemoryRun *memRunData);
 
     void insert(int key, int value);
 };
@@ -68,7 +70,7 @@ class LevelLsmTree : LsmTree {
 public:
     LevelLsmTree(int, int, short bitsPerValue);
 
-    void flushToDisk();
+    void flushToDisk(MemoryRun *memRunData);
 
     void insert(int key, int value);
 };

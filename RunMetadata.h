@@ -19,7 +19,7 @@ private:
 
 public:
 	RunMetadata(BloomFilter* bloomftr, FencePointer* fenceptr, string filename);
-
+	void setFilename(string levelNumber);
 };
 
 #endif //RUNMETADATA_H
