@@ -5,6 +5,9 @@
 #include "MemoryRun.h"
 #include "ResultSet.h"
 #include<limits.h>
+#include<iostream>
+
+using namespace std;
 
 MemoryRun::MemoryRun(int size) {
     entries = new Entry[size];
@@ -23,10 +26,12 @@ int MemoryRun::numElements() {
     return this->nextPos;
 }
 
-bool MemoryRun::insert(Entry* e) {
+bool MemoryRun::insert(Entry e) {
 
     /* insert and increment */
-    entries[nextPos++] = *e;
+    entries[nextPos++] = e;
+
+    cout << nextPos << endl;
 
     /* if full: */
     if (nextPos == maxEntries) {
@@ -38,8 +43,8 @@ bool MemoryRun::insert(Entry* e) {
     return true;
 }
 
-void MemoryRun::insertAtPos(Entry* e, int pos) {
-	entries[pos] = *e;
+void MemoryRun::insertAtPos(Entry e, int pos) {
+	entries[pos] = e;
 }
 
 int MemoryRun::get(int key) {
@@ -87,7 +92,7 @@ bool MemoryRun::remove(int key) {
 
     /* we didn't find it */
     Entry *e = new Entry(key, INT_MIN, true);
-    return this->insert(e);
+    return this->insert(*e);
 
 }
 
@@ -106,17 +111,19 @@ MemoryRun MemoryRun::combine(MemoryRun runToCombine) {
 	int mySize = this->getSize();
 	int otherSize = runToCombine.getSize();
 
-	MemoryRun combined = new MemoryRun(mySize + otherSize);
+	MemoryRun* combined = new MemoryRun(mySize + otherSize);
 
 	for (int i = 0; i < mySize; i++) {
-		combined.insert(&entries[i]);
+		combined->insert(entries[i]);
 	}
 
 	for (int i = 0; i < otherSize; i++) {
-		combined.insert(&runToCombine.at(i));
+		combined->insert(runToCombine.at(i));
 	}
 
-	return combined;
+	//cout << combined->getSize() << endl;
+
+	return *combined;
 
 }
 
@@ -131,14 +138,14 @@ MemoryRun MemoryRun::merge(MemoryRun runToMerge, int left, int mid, int right)
     int n2 = right - mid;
 
     /* create temp arrays */
-    MemoryRun L = new MemoryRun(n1);
-    MemoryRun R = new MemoryRun(n2);
+    MemoryRun* L = new MemoryRun(n1);
+    MemoryRun* R = new MemoryRun(n2);
 
     /* Copy data to temp arrays L[] and R[] */
     for (i = 0; i < n1; i++)
-        L[i] = runToMerge.at(left + i);
+        L->insert(runToMerge.at(left + i));
     for (j = 0; j < n2; j++)
-        R[j] = runToMerge(mid + 1 + j);
+        R->insert(runToMerge.at(mid + 1 + j));
 
     /* Merge the temp arrays back into arr[l..r]*/
     i = 0; // Initial index of first subarray
@@ -146,14 +153,14 @@ MemoryRun MemoryRun::merge(MemoryRun runToMerge, int left, int mid, int right)
     k = left; // Initial index of merged subarray
     while (i < n1 && j < n2)
     {
-        if (L.at(i) <= R.at(j))
+        if (L->at(i).getKey() <= R->at(j).getKey())
         {
-        	runToMerge.insertAtPos(&L.at(i), k);
+        	runToMerge.insertAtPos(L->at(i), k);
             i++;
         }
         else
         {
-        	runToMerge.insertAtPos(&R.at(j), k);
+        	runToMerge.insertAtPos(R->at(j), k);
             j++;
         }
         k++;
@@ -163,7 +170,7 @@ MemoryRun MemoryRun::merge(MemoryRun runToMerge, int left, int mid, int right)
        are any */
     while (i < n1)
     {
-    	runToMerge.insertAtPos(&L.at(i), k);
+    	runToMerge.insertAtPos(L->at(i), k);
         i++;
         k++;
     }
@@ -172,7 +179,7 @@ MemoryRun MemoryRun::merge(MemoryRun runToMerge, int left, int mid, int right)
        are any */
     while (j < n2)
     {
-    	runToMerge.insertAtPos(&R.at(j), k);
+    	runToMerge.insertAtPos(R->at(j), k);
         j++;
         k++;
     }
@@ -184,8 +191,10 @@ MemoryRun MemoryRun::merge(MemoryRun runToMerge, int left, int mid, int right)
 // https://www.geeksforgeeks.org/merge-sort/
 /* l is for left index and r is right index of the
    sub-array of arr to be sorted */
-MemoryRun MemoryRun::mergeSort(MemoryRun runToSort, int left, int right)
-{
+MemoryRun MemoryRun::mergeSort(MemoryRun runToSort, int left, int right) {
+
+	cerr << "recursing" << endl;
+
     if (left < right)
     {
         int mid = right - left / 2;
@@ -204,6 +213,14 @@ void MemoryRun::reset() {
     entries = new Entry[maxEntries];
     nextPos = 0;
 
+}
+
+void MemoryRun::print() {
+	cout << "[";
+	for (int i = 0; i < nextPos; i++) {
+		cout << " " << entries[i].getValue();
+	}
+	cout << "]";
 }
 
 int MemoryRun::getSize() {

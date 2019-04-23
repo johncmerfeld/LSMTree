@@ -48,7 +48,7 @@ void LsmTree::insert(int key, int value) {
     Entry *e = new Entry(key, value, false);
 
     /* insert into memory run. If it's full: */
-    if (!memRun->insert(e)) {
+    if (!memRun->insert(*e)) {
         this->createMetadata(memRun);
     }
 
@@ -117,7 +117,7 @@ TierLsmTree::TierLsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerVal
 
 void TierLsmTree::insert(int key, int value) {
 //    LsmTree::insert(key, value);
-    if (this->memRun->insert(new Entry(key, value))) {
+    if (this->memRun->insert(*new Entry(key, value))) {
         this->flushToDisk(this->memRun);
         TieringLevel *temp;
 
