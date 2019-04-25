@@ -42,8 +42,7 @@ bool MemoryRun::insert(Entry e) {
     return true;
 }
 
-void MemoryRun::insertAtPos(Entry e, int pos) {
-	cout << "INSERTATPOS(" << e.getKey() << ", "<< pos << ")" << endl;
+void MemoryRun::insertAtPos(Entry e, int pos) {\
 	entries[pos] = e;
 }
 
@@ -102,19 +101,18 @@ Entry *MemoryRun::getEntries() {
 
 // Merges two memoryRuns
 // This should always be run such that the older run is
-// on the "left" and the newer run is on the "right"
-// I might change these variable names
-MemoryRun MemoryRun::merge(MemoryRun* left, MemoryRun* right) {
+// the first argument and the newer one is second
+MemoryRun MemoryRun::merge(MemoryRun* older, MemoryRun* newer) {
 
-	int leftSize = left->getSize();
-	int rightSize = right->getSize();
+	int olderSize = older->getSize();
+	int newerSize = newer->getSize();
 
-	MemoryRun* merged = new MemoryRun(leftSize + rightSize);
+	MemoryRun* merged = new MemoryRun(olderSize + newerSize);
 
     int i = 0;
     int j = 0;
 
-    while (i < leftSize && j < rightSize) {
+    while (i < olderSize && j < newerSize) {
     	/* REMOVING DUPLICATES
     	 *
     	 * The right-side run is newer. Therefore, if the keys are the same,
@@ -122,27 +120,27 @@ MemoryRun MemoryRun::merge(MemoryRun* left, MemoryRun* right) {
     	 * whether it be an insert or a delete, should be what propagates down
     	 * the tree.
     	 */
-    	if (left->at(i).getKey() == right->at(j).getKey()) {
+    	if (older->at(i).getKey() == newer->at(j).getKey()) {
     		i++;
     	}
-    	else if (left->at(i).getKey() < right->at(j).getKey()) {
-        	merged->insert(left->at(i));
+    	else if (older->at(i).getKey() < newer->at(j).getKey()) {
+        	merged->insert(older->at(i));
             i++;
         }
         else {
-        	merged->insert(right->at(j));
+        	merged->insert(newer->at(j));
         	j++;
         }
     }
 
     /* Copy the remaining elements, if any */
-    while (i < leftSize) {
-    	merged->insert(left->at(i));
+    while (i < olderSize) {
+    	merged->insert(older->at(i));
         i++;
     }
 
-    while (j < rightSize) {
-    	merged->insert(right->at(j));
+    while (j < newerSize) {
+    	merged->insert(newer->at(j));
     	j++;
     }
     return *merged;

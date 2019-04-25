@@ -26,17 +26,14 @@ int main() {
 		memRun2->insert(*e);
 	}
 
+	memRun1->sort();
+	memRun2->sort();
+
 	MemoryRun memRun3 = MemoryRun::merge(memRun1, memRun2);
 
-	memRun1->print();
-	cout << endl;
-	memRun2->print();
-	cout << endl;
-	memRun3.print();
-	cout << endl;
+	memRun3.sort();
 
-	memRun1->sort();
-	memRun1->print();
+	memRun3.print();
 	cout << endl;
 
 	//memRun1->print();
