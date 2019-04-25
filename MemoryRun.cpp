@@ -99,12 +99,6 @@ Entry *MemoryRun::getEntries() {
     return entries;
 }
 
-Entry *MemoryRun::getEntriesSorted() {
-
-   //mergeSort(this, 0, nextPos);
-    return entries;
-}
-
 // Merges two subarrays of arr[].
 // First subarray is arr[l..m]
 // Second subarray is arr[m+1..r]
@@ -151,11 +145,11 @@ MemoryRun MemoryRun::merge(MemoryRun* left, MemoryRun* right) {
 // https://www.geeksforgeeks.org/merge-sort/
 /* l is for left index and r is right index of the
    sub-array of arr to be sorted */
-void MemoryRun::sort(MemoryRun* runToSort) {
+void MemoryRun::sort() {
 
-	MemoryRun* temp = new MemoryRun(runToSort->getSize());
+	MemoryRun* temp = new MemoryRun(nextPos);
 
-	int size = runToSort->getSize();
+	int size = nextPos;
 
 	int rght, wid, rend;
 	int i,j,m,t;
@@ -167,31 +161,30 @@ void MemoryRun::sort(MemoryRun* runToSort) {
 			if (rend > size) rend = size;
 			m = left; i = left; j = rght;
 			while (i < rght && j < rend) {
-				if (runToSort->at(i).getKey() <= runToSort->at(j).getKey()) {
-					temp->insertAtPos(runToSort->at(i), m);
+				if (entries[i].getKey() <= entries[j].getKey()) {
+					temp->insertAtPos(entries[i], m);
 					i++;
 				} else {
-					temp->insertAtPos(runToSort->at(j), m);
+					temp->insertAtPos(entries[j], m);
 					j++;
 				}
 				m++;
 			}
 			while (i < rght) {
-				temp->insertAtPos(runToSort->at(i),m);
+				temp->insertAtPos(entries[i], m);
 				i++; m++;
 			}
 			while (j < rend) {
-				temp->insertAtPos(runToSort->at(j), m);
+				temp->insertAtPos(entries[j], m);
 				j++; m++;
 			}
 
 			for (m=left; m < rend; m++) {
-				runToSort->insertAtPos(temp->at(m), m);
+				entries[m] = temp->at(m);
 			}
 		}
 	}
 	delete temp;
-	//return runToSort;
 }
 
 void MemoryRun::reset() {

@@ -30,6 +30,7 @@ protected:
     int entriesPerRun;
     short bitsPerValue;
 
+    MemoryRun sortMerge(MemoryRun* left, MemoryRun* right);
 
     string getNextFilename();
 

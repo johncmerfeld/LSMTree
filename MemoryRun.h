@@ -38,11 +38,9 @@ public:
 
     Entry *getEntries();
 
-    Entry *getEntriesSorted();
-
     static MemoryRun merge(MemoryRun* left, MemoryRun* right);
 
-    static void sort(MemoryRun* runToSort);
+    void sort();
 
     void print();
 

@@ -35,7 +35,7 @@ int main() {
 	memRun3.print();
 	cout << endl;
 
-	MemoryRun::sort(memRun1);
+	memRun1->sort();
 	memRun1->print();
 	cout << endl;
 

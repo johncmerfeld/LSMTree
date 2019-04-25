@@ -50,6 +50,7 @@ void LsmTree::insert(int key, int value) {
     /* insert into memory run. If it's full: */
     if (!memRun->insert(*e)) {
         this->createMetadata(memRun);
+        memRun->reset();
     }
 
 }
@@ -93,11 +94,25 @@ void LsmTree::createMetadata(MemoryRun *memRunData) {
         bloomftr->add(memRunData->at(i).getKey());
     }
 
-    FencePointer *fenceptr = new FencePointer(entries[0].getValue(), entries[entriesPerRun - 1].getValue());
+    memRun->sort();
+
+    FencePointer *fenceptr = new FencePointer(memRun->at(0).getValue(),
+    		memRun->at(memRun->getSize() - 1).getValue());
     string filename = getNextFilename();
-    RunMetadata *runmeta = new RunMetadata(bloomftr, fenceptr, filename);
+    RunMetadata *runmeta = new RunMetadata(bloomftr, fenceptr, filename, memRun->getSize());
 
     /* TODO write to the file and give the run metadata to disk tree */
+}
+
+MemoryRun LsmTree::sortMerge(MemoryRun* left, MemoryRun* right) {
+
+	int totalSize = left->getSize() + right->getSize();
+
+	left->sort();
+	right->sort();
+
+	return MemoryRun::merge(left, right);
+
 }
 
 int LsmTree::getFromDisk(int key) {
