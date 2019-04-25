@@ -42,7 +42,7 @@ public:
 
     static MemoryRun merge(MemoryRun* left, MemoryRun* right);
 
-    static MemoryRun sort(MemoryRun* runToSort);
+    static void sort(MemoryRun* runToSort);
 
     void print();
 

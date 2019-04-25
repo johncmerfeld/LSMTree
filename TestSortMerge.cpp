@@ -15,7 +15,7 @@ int main() {
 
 
 	MemoryRun* memRun1 = new MemoryRun(10000);
-	for (int i = 0; i < 100 ; i+= 7) {
+	for (int i = 100; i > 0; i-= 7) {
 		Entry* e = new Entry(i, i);
 		memRun1->insert(*e);
 	}
@@ -35,7 +35,9 @@ int main() {
 	memRun3.print();
 	cout << endl;
 
-	//MemoryRun::mergeSort(memRun1, 0, memRun1->getSize() - 1);
+	MemoryRun::sort(memRun1);
+	memRun1->print();
+	cout << endl;
 
 	//memRun1->print();
 
