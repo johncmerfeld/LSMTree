@@ -33,7 +33,8 @@ bool MemoryRun::insert(Entry e) {
 
     /* if full: */
     if (nextPos == maxEntries) {
-        /* reset counter, tell LSMTree to flush me */
+        /* tell LSMTree to flush me and reset counter*/
+    	/* should we address duplicates here? */
         //nextPos = 0;
         return false;
     }
@@ -99,9 +100,10 @@ Entry *MemoryRun::getEntries() {
     return entries;
 }
 
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
+// Merges two memoryRuns
+// This should always be run such that the older run is
+// on the "left" and the newer run is on the "right"
+// I might change these variable names
 MemoryRun MemoryRun::merge(MemoryRun* left, MemoryRun* right) {
 
 	int leftSize = left->getSize();
@@ -113,11 +115,15 @@ MemoryRun MemoryRun::merge(MemoryRun* left, MemoryRun* right) {
     int j = 0;
 
     while (i < leftSize && j < rightSize) {
-    	/* remove duplicates - if the keys are equal,
-    	     just skip that entry of the 'right-side' run
+    	/* REMOVING DUPLICATES
+    	 *
+    	 * The right-side run is newer. Therefore, if the keys are the same,
+    	 * we always skip the left-side entry, because the newer instruction,
+    	 * whether it be an insert or a delete, should be what propagates down
+    	 * the tree.
     	 */
     	if (left->at(i).getKey() == right->at(j).getKey()) {
-    		j++;
+    		i++;
     	}
     	else if (left->at(i).getKey() < right->at(j).getKey()) {
         	merged->insert(left->at(i));
