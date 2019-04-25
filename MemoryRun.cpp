@@ -31,12 +31,10 @@ bool MemoryRun::insert(Entry e) {
     /* insert and increment */
     entries[nextPos++] = e;
 
-    cout << nextPos << endl;
-
     /* if full: */
     if (nextPos == maxEntries) {
         /* reset counter, tell LSMTree to flush me */
-        reset();
+        //nextPos = 0;
         return false;
     }
     /* otherwise, just return */
@@ -44,6 +42,7 @@ bool MemoryRun::insert(Entry e) {
 }
 
 void MemoryRun::insertAtPos(Entry e, int pos) {
+	cout << "INSERTATPOS(" << e.getKey() << ", "<< pos << ")" << endl;
 	entries[pos] = e;
 }
 
@@ -58,7 +57,7 @@ int MemoryRun::get(int key) {
 }
 
 Entry MemoryRun::at(int pos) {
-	// TODO throw error of out of range?
+	// TODO throw error if out of range?
 	return entries[pos];
 }
 
@@ -102,117 +101,65 @@ Entry *MemoryRun::getEntries() {
 
 Entry *MemoryRun::getEntriesSorted() {
 
-    return mergeSort(*this, 0, nextPos).getEntries();
+   //mergeSort(this, 0, nextPos);
+    return entries;
 }
-
-/* creates a full memoryRun from two others */
-MemoryRun MemoryRun::combine(MemoryRun runToCombine) {
-
-	int mySize = this->getSize();
-	int otherSize = runToCombine.getSize();
-
-	MemoryRun* combined = new MemoryRun(mySize + otherSize);
-
-	for (int i = 0; i < mySize; i++) {
-		combined->insert(entries[i]);
-	}
-
-	for (int i = 0; i < otherSize; i++) {
-		combined->insert(runToCombine.at(i));
-	}
-
-	//cout << combined->getSize() << endl;
-
-	return *combined;
-
-}
-
 
 // Merges two subarrays of arr[].
 // First subarray is arr[l..m]
 // Second subarray is arr[m+1..r]
-MemoryRun MemoryRun::merge(MemoryRun runToMerge, int left, int mid, int right)
-{
-    int i, j, k;
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+MemoryRun MemoryRun::merge(MemoryRun* left, MemoryRun* right) {
 
-    /* create temp arrays */
-    MemoryRun* L = new MemoryRun(n1);
-    MemoryRun* R = new MemoryRun(n2);
+	int leftSize = left->getSize();
+	int rightSize = right->getSize();
 
-    /* Copy data to temp arrays L[] and R[] */
-    for (i = 0; i < n1; i++)
-        L->insert(runToMerge.at(left + i));
-    for (j = 0; j < n2; j++)
-        R->insert(runToMerge.at(mid + 1 + j));
+	MemoryRun* merged = new MemoryRun(leftSize + rightSize);
 
-    /* Merge the temp arrays back into arr[l..r]*/
-    i = 0; // Initial index of first subarray
-    j = 0; // Initial index of second subarray
-    k = left; // Initial index of merged subarray
-    while (i < n1 && j < n2)
-    {
-        if (L->at(i).getKey() <= R->at(j).getKey())
-        {
-        	runToMerge.insertAtPos(L->at(i), k);
+    int i = 0;
+    int j = 0;
+
+    while (i < leftSize && j < rightSize) {
+    	/* remove duplicates - if the keys are equal,
+    	     just skip that entry of the 'right-side' run
+    	 */
+    	if (left->at(i).getKey() == right->at(j).getKey()) {
+    		j++;
+    	}
+    	else if (left->at(i).getKey() < right->at(j).getKey()) {
+        	merged->insert(left->at(i));
             i++;
         }
-        else
-        {
-        	runToMerge.insertAtPos(R->at(j), k);
-            j++;
+        else {
+        	merged->insert(right->at(j));
+        	j++;
         }
-        k++;
     }
 
-    /* Copy the remaining elements of L[], if there
-       are any */
-    while (i < n1)
-    {
-    	runToMerge.insertAtPos(L->at(i), k);
+    /* Copy the remaining elements, if any */
+    while (i < leftSize) {
+    	merged->insert(left->at(i));
         i++;
-        k++;
     }
 
-    /* Copy the remaining elements of R[], if there
-       are any */
-    while (j < n2)
-    {
-    	runToMerge.insertAtPos(R->at(j), k);
-        j++;
-        k++;
+    while (j < rightSize) {
+    	merged->insert(right->at(j));
+    	j++;
     }
-
-    return runToMerge;
+    return *merged;
 
 }
 
 // https://www.geeksforgeeks.org/merge-sort/
 /* l is for left index and r is right index of the
    sub-array of arr to be sorted */
-MemoryRun MemoryRun::mergeSort(MemoryRun runToSort, int left, int right) {
+MemoryRun MemoryRun::sort(MemoryRun* runToSort) {
 
-	cerr << "recursing" << endl;
-
-    if (left < right)
-    {
-        int mid = right - left / 2;
-
-        // Sort first and second halves
-        runToSort = mergeSort(runToSort, left, mid);
-        runToSort = mergeSort(runToSort, mid + 1, right);
-
-        runToSort = merge(runToSort, left, mid, right);
-    }
-    return runToSort;
 }
 
 void MemoryRun::reset() {
     delete entries;
     entries = new Entry[maxEntries];
     nextPos = 0;
-
 }
 
 void MemoryRun::print() {

@@ -16,7 +16,6 @@ private:
     Entry *entries;
     int maxEntries;
     int nextPos;
-    static MemoryRun merge(MemoryRun runToMerge, int left, int mid, int right);
 
 public:
     // implemented
@@ -41,9 +40,9 @@ public:
 
     Entry *getEntriesSorted();
 
-    MemoryRun combine(MemoryRun runToCombine);
+    static MemoryRun merge(MemoryRun* left, MemoryRun* right);
 
-    static MemoryRun mergeSort(MemoryRun runToMerge, int left, int right);
+    static MemoryRun sort(MemoryRun* runToSort);
 
     void print();
 
