@@ -23,13 +23,20 @@ public:
 
     static void setRunsPerLevel(int runs);
 
-//    virtual bool insert(DiskRun run) = 0;
 
-    virtual MemoryRun * mergeLevel(MemoryRun *memoRun) = 0;
+    virtual MemoryRun *mergeLevel(MemoryRun *memoRun) = 0;
 
     virtual bool hasSpace() = 0;
 
-    virtual bool add(Entry *entries, int numOfEntries) = 0;
+    virtual bool add(MemoryRun *data, RunMetadata *meta) = 0;
+
+
+    int getRuns();
+
+protected:
+    char *nameConvert(string filename);
+
+    MemoryRun *readEntries(RunMetadata *meta, char dlete);
 
 };
 
@@ -40,11 +47,12 @@ public:
 
 //    bool insert(DiskRun run);
 
-    MemoryRun  *mergeLevel(MemoryRun *memoRun);
+    MemoryRun *mergeLevel(MemoryRun *memoRun);
 
     bool hasSpace();
 
-    bool add(Entry *entries, int numOfEntries);
+    bool add(MemoryRun *data, RunMetadata *meta);
+
 };
 
 class LevelingLevel : public Level {
@@ -55,11 +63,11 @@ public:
 
 //    bool insert(DiskRun run);
 
-    MemoryRun  *mergeLevel(MemoryRun *memoRun);
+    MemoryRun *mergeLevel(MemoryRun *memoRun);
 
     bool hasSpace();
 
-    bool add(Entry *entries, int numOfEntries);
+    bool add(MemoryRun *data, RunMetadata *meta);
 };
 
 

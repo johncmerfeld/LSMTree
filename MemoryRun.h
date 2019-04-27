@@ -3,8 +3,8 @@
  *
  */
 
-#ifndef MEMORYRUN_H_
-#define MEMORYRUN_H_
+#ifndef MEMORYRUNn_H_
+#define MEMORYRUNn_H_
 
 #include "Entry.h"
 #include "RunMetadata.h"
@@ -26,6 +26,14 @@ public:
     int numElements();
 
     bool insert(Entry e);
+
+    bool insert(Entry *entry);
+
+
+
+//rggr
+
+
     void insertAtPos(Entry e, int pos);
 
     int get(int key);
@@ -38,7 +46,7 @@ public:
 
     Entry *getEntries();
 
-    static MemoryRun merge(MemoryRun* left, MemoryRun* right);
+    static MemoryRun *merge(MemoryRun *left, MemoryRun *right);
 
     void sort();
 
@@ -47,6 +55,8 @@ public:
     void reset();
 
     int getSize();
+
+    void printer();
 };
 
 

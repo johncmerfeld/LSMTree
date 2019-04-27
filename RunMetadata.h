@@ -13,14 +13,23 @@ using namespace std;
 class RunMetadata {
 
 private:
-	BloomFilter* bloomfilter;
-	FencePointer* fencepointer;
-	string filename;
-	int size;
+    BloomFilter *bloomfilter;
+    FencePointer *fencepointer;
+    string filename;
+    int size;
 
 public:
-	RunMetadata(BloomFilter* bloomftr, FencePointer* fenceptr, string filename, int size);
-	void setFilename(string levelNumber);
+    RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptr, string filename, int size);
+
+    RunMetadata(string filename);
+
+    void setFilename(string levelNumber);
+
+    string getFilename();
+
+    int getSize();
+
+    ~RunMetadata();
 };
 
 #endif //RUNMETADATA_H

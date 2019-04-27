@@ -4,8 +4,11 @@
 
 #include "MemoryRun.h"
 #include "ResultSet.h"
-#include<limits.h>
-#include<iostream>
+#include <limits.h>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+
 
 using namespace std;
 
@@ -28,22 +31,24 @@ int MemoryRun::numElements() {
 
 bool MemoryRun::insert(Entry e) {
 
-    /* insert and increment */
-    entries[nextPos++] = e;
 
+    /* insert and increment */
+    entries[nextPos].setEntry(&e);
+
+    nextPos += 1;
     /* if full: */
-    if (nextPos == maxEntries) {
-        /* tell LSMTree to flush me and reset counter*/
-    	/* should we address duplicates here? */
-        //nextPos = 0;
-        return false;
-    }
-    /* otherwise, just return */
-    return true;
+    return nextPos != maxEntries;
+
 }
 
-void MemoryRun::insertAtPos(Entry e, int pos) {\
-	entries[pos] = e;
+bool MemoryRun::insert(Entry *e) {
+    memcpy(&entries[nextPos], e, sizeof(Entry));
+    nextPos++;
+    return nextPos != maxEntries;
+}
+
+void MemoryRun::insertAtPos(Entry e, int pos) {
+    entries[pos].setEntry(&e);
 }
 
 int MemoryRun::get(int key) {
@@ -57,8 +62,8 @@ int MemoryRun::get(int key) {
 }
 
 Entry MemoryRun::at(int pos) {
-	// TODO throw error if out of range?
-	return entries[pos];
+    // TODO throw error if out of range?
+    return entries[pos];
 }
 
 ResultSet *MemoryRun::getRange(int low, int high) {
@@ -102,48 +107,47 @@ Entry *MemoryRun::getEntries() {
 // Merges two memoryRuns
 // This should always be run such that the older run is
 // the first argument and the newer one is second
-MemoryRun MemoryRun::merge(MemoryRun* older, MemoryRun* newer) {
+MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
 
-	int olderSize = older->getSize();
-	int newerSize = newer->getSize();
+    int olderSize = older->getSize();
+    int newerSize = newer->getSize();
 
-	MemoryRun* merged = new MemoryRun(olderSize + newerSize);
+    MemoryRun *merged = new MemoryRun(olderSize + newerSize);
 
     int i = 0;
     int j = 0;
 
     while (i < olderSize && j < newerSize) {
-    	/* REMOVING DUPLICATES
-    	 *
-    	 * The right-side run is newer. Therefore, if the keys are the same,
-    	 * we always skip the left-side entry, because the newer instruction,
-    	 * whether it be an insert or a delete, should be what propagates down
-    	 * the tree.
-    	 */
-    	if (older->at(i).getKey() == newer->at(j).getKey()) {
-    		i++;
-    	}
-    	else if (older->at(i).getKey() < newer->at(j).getKey()) {
-        	merged->insert(older->at(i));
+        /* REMOVING DUPLICATES
+         *
+         * The right-side run is newer. Therefore, if the keys are the same,
+         * we always skip the left-side entry, because the newer instruction,
+         * whether it be an insert or a delete, should be what propagates down
+         * the tree.
+         */
+        if (older->at(i).getKey() == newer->at(j).getKey()) {
             i++;
-        }
-        else {
-        	merged->insert(newer->at(j));
-        	j++;
+        } else if (older->at(i).getKey() < newer->at(j).getKey()) {
+            merged->insert(older->at(i));
+            i++;
+        } else {
+            merged->insert(newer->at(j));
+            j++;
         }
     }
 
     /* Copy the remaining elements, if any */
     while (i < olderSize) {
-    	merged->insert(older->at(i));
+        merged->insert(older->at(i));
         i++;
     }
 
     while (j < newerSize) {
-    	merged->insert(newer->at(j));
-    	j++;
+        merged->insert(newer->at(j));
+        j++;
     }
-    return *merged;
+//    printf("after merging the memrun has %d size\n", merged->getSize());
+    return merged;
 }
 
 // https://www.geeksforgeeks.org/merge-sort/
@@ -151,60 +155,76 @@ MemoryRun MemoryRun::merge(MemoryRun* older, MemoryRun* newer) {
    sub-array of arr to be sorted */
 void MemoryRun::sort() {
 
-	MemoryRun* temp = new MemoryRun(nextPos);
+    MemoryRun *temp = new MemoryRun(nextPos);
 
-	int size = nextPos;
+    int size = nextPos;
 
-	int rght, wid, rend;
-	int i,j,m,t;
+    int rght, wid, rend;
+    int i, j, m, t;
 
-	for (int k=1; k < size; k *= 2 ) {
-		for (int left=0; left + k < size; left += k*2 ) {
-			rght = left + k;
-			rend = rght + k;
-			if (rend > size) rend = size;
-			m = left; i = left; j = rght;
-			while (i < rght && j < rend) {
-				if (entries[i].getKey() <= entries[j].getKey()) {
-					temp->insertAtPos(entries[i], m);
-					i++;
-				} else {
-					temp->insertAtPos(entries[j], m);
-					j++;
-				}
-				m++;
-			}
-			while (i < rght) {
-				temp->insertAtPos(entries[i], m);
-				i++; m++;
-			}
-			while (j < rend) {
-				temp->insertAtPos(entries[j], m);
-				j++; m++;
-			}
+    for (int k = 1; k < size; k *= 2) {
+        for (int left = 0; left + k < size; left += k * 2) {
+            rght = left + k;
+            rend = rght + k;
+            if (rend > size) rend = size;
+            m = left;
+            i = left;
+            j = rght;
+            while (i < rght && j < rend) {
+                if (entries[i].getKey() <= entries[j].getKey()) {
+                    temp->insertAtPos(entries[i], m);
+                    i++;
+                } else {
+                    temp->insertAtPos(entries[j], m);
+                    j++;
+                }
+                m++;
+            }
+            while (i < rght) {
+                temp->insertAtPos(entries[i], m);
+                i++;
+                m++;
+            }
+            while (j < rend) {
+                temp->insertAtPos(entries[j], m);
+                j++;
+                m++;
+            }
 
-			for (m=left; m < rend; m++) {
-				entries[m] = temp->at(m);
-			}
-		}
-	}
-	delete temp;
+            for (m = left; m < rend; m++) {
+                entries[m] = temp->at(m);
+            }
+        }
+    }
+    delete temp;
 }
 
 void MemoryRun::reset() {
-    delete entries;
+//    delete entries;
     entries = new Entry[maxEntries];
     nextPos = 0;
 }
 
 void MemoryRun::print() {
-	cout << "[";
-	for (int i = 0; i < nextPos; i++) {
-		cout << " " << entries[i].getValue();
-	}
-	cout << "]";
+    cout << "[";
+    for (int i = 0; i < nextPos; i++) {
+        cout << " " << entries[i].getValue();
+    }
+    cout << "]";
 }
 
 int MemoryRun::getSize() {
     return this->nextPos;
+}
+
+
+void MemoryRun::printer() {
+    printf("Memrun contains %d entries : ", nextPos);
+    for (int i = 0; i < nextPos; i++) {
+        cout << entries[i].getKey();
+        cout << ":";
+        cout << entries[i].getValue();
+        cout << "|";
+    }
+    cout << endl;
 }

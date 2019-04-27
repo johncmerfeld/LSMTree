@@ -14,11 +14,22 @@ private:
 
 public:
     Entry(int key = 0, int value = 0, bool isDelete = false);
+
+    Entry(int key, int value);
+
     int getKey();
+
     int getValue();
+
     bool isRemove();
+
     void updateValue(int newValue);
+
     void updateRemove(bool newRemoveBit);
+
+    void setEntry(Entry *e);
+
+    void printer();
 };
 
 

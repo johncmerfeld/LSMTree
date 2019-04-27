@@ -25,25 +25,27 @@ protected:
 
     //---------- Tree metadata ----------
     int levelsCount;
-    int currentLevel;
-    int nextFileNumber;
     int entriesPerRun;
     short bitsPerValue;
 
-    MemoryRun sortMerge(MemoryRun* left, MemoryRun* right);
+    string filename;
+
+    MemoryRun sortMerge(MemoryRun *left, MemoryRun *right);
 
     string getNextFilename();
 
-    void createMetadata(MemoryRun *memRunData);
+    RunMetadata *createMetadata(MemoryRun *memRunData, string suffix);
 
     int getFromDisk(int key);
+
+    string suffix(int level, int run);
 
 public:
     LsmTree();
 
     LsmTree(int, int, short bitsPerValue);
 
-    void insert(int value);
+//    void insert(int value);
 
     void insert(int key, int value);
 
@@ -64,7 +66,13 @@ public:
 
     void flushToDisk(MemoryRun *memRunData);
 
+    void insert(int key, int value, int type);
+
     void insert(int key, int value);
+
+    void insert(Entry *temp);
+
+
 };
 
 class LevelLsmTree : LsmTree {
