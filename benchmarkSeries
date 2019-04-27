@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+bash makeBenchmark
+
+for i in 400 800 1200 1600 2000 2400 2800 3200 3600 4000 4400 4800 5200 5600 6000 6400; do
+  ./Benchmark $i 4 5 1000000 1000000 100 >> results.csv
+done
+
+
+
