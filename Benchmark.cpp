@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+/* TODO have this use averages, or put it in the R */
 int main(int argc, char *argv[]) {
 
 	if (argc < 7) {
