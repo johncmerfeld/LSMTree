@@ -1,10 +1,10 @@
 #include "RunMetadata.h"
 #include "BloomFilter.h"
 #include "LsmTree.h"
-#include "getTimeInMicroseconds.h"
 #include <iostream>
 #include <unistd.h>
 #include <random>
+#include "GetTimeMs64.h"
 
 using namespace std;
 
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     	tree->insert(r[i], r[i]);
     }
     uint64 end = GetTimeMs64();
-    cout << end - start << endl;
+    cout << runSize << ", " << end - start << endl;
 /*
     for (int i = 1; i < deletes; i++) {
     	r = uni(rng);
