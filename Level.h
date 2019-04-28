@@ -39,6 +39,7 @@ public:
     MemoryRun *readEntries(RunMetadata *meta, char dlete);
 
     void printMeta();
+};
 
 class TieringLevel : public Level {
 public:

@@ -30,7 +30,7 @@ protected:
 
     string filename;
 
-    MemoryRun sortMerge(MemoryRun *left, MemoryRun *right);
+    MemoryRun sortMerge(MemoryRun *older, MemoryRun *newer);
 
     string getNextFilename();
 
@@ -43,7 +43,7 @@ protected:
 public:
     LsmTree();
 
-    LsmTree(int, int, short bitsPerValue);
+    LsmTree(int entriesPerRun, int maxRunsPerLevel, short bitsPerValue);
 
 //    void insert(int value);
 

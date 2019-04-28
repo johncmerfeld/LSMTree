@@ -32,6 +32,7 @@ public:
 
     bool isInRange(int query);
     bool rangeOverlaps(int low, int high);
+    bool mightContain(int query);
 
     int getSize();
 

@@ -35,7 +35,7 @@ public:
 
     Entry at(int pos);
 
-    ResultSet *getRange(int low, int high);
+    MemoryRun *getRange(int low, int high);
 
     bool remove(int key);
 

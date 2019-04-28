@@ -52,6 +52,10 @@ bool RunMetadata::rangeOverlaps(int low, int high) {
 	return fencepointer->rangeOverlaps(low, high);
 }
 
+bool RunMetadata::mightContain(int query) {
+	return bloomfilter->contains(query);
+}
+
 int RunMetadata::getSize() {
     return this->size;
 }

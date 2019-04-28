@@ -65,7 +65,7 @@ Entry MemoryRun::at(int pos) {
     return entries[pos];
 }
 
-ResultSet *MemoryRun::getRange(int low, int high) {
+MemoryRun *MemoryRun::getRange(int low, int high) {
 
     MemoryRun *results = new MemoryRun(maxEntries);
 

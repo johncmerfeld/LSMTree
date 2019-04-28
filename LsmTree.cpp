@@ -59,6 +59,19 @@ int LsmTree::get(int key) {
     return result;
 }
 
+int LsmTree::getFromDisk(int key) {
+    for (int i = 0; i < levelsCount; i++) {
+		/* get the array of metadata */
+		RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
+		/* for each run in the level: */
+		for (int j = 0; j < diskLevels[i].getRuns(); j++) {
+
+		}
+    }
+    /* we didn't find it */
+    return INT_MIN;
+}
+
 /* gets a range from the LSM tree
  * First, gets the range from
  */
@@ -91,7 +104,7 @@ MemoryRun* LsmTree::getRange(int low, int high) {
     }
 
 
-    return memoryResults;
+    return results;
 
 }
 
@@ -132,10 +145,6 @@ MemoryRun LsmTree::sortMerge(MemoryRun *left, MemoryRun *right) {
 
     return *MemoryRun::merge(left, right);
 
-}
-
-int LsmTree::getFromDisk(int key) {
-    return -1;
 }
 
 string LsmTree::suffix(int level, int run) {
