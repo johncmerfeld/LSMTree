@@ -53,7 +53,7 @@ public:
 
     void removeMany();
 
-    int get(int key);
+    Entry* get(int key);
 
     MemoryRun* getRange(int low, int high);
 

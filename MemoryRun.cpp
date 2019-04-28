@@ -109,6 +109,9 @@ bool MemoryRun::isEmpty() {
 // the first argument and the newer one is second
 MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
 
+	older->print();
+	newer->print();
+
     int olderSize = older->getSize();
     int newerSize = newer->getSize();
 
@@ -149,7 +152,8 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
         merged->insert(newer->at(j));
         j++;
     }
-//    printf("after merging the memrun has %d size\n", merged->getSize());
+    merged->print();
+    cout << endl;
     return merged;
 }
 
@@ -169,7 +173,9 @@ void MemoryRun::sort() {
         for (int left = 0; left + k < size; left += k * 2) {
             rght = left + k;
             rend = rght + k;
-            if (rend > size) rend = size;
+            if (rend > size) {
+            	rend = size;
+            }
             m = left;
             i = left;
             j = rght;
@@ -230,7 +236,6 @@ void MemoryRun::removeDeletes() {
 	}
 	delete [] entries;
 	entries = cleaned;
-
 }
 
 int MemoryRun::getSize() {

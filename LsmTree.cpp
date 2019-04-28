@@ -48,7 +48,7 @@ LsmTree::LsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue) {
 
 
 //-------------------- Common methods --------------------
-int LsmTree::get(int key) {
+Entry* LsmTree::get(int key) {
 
     Entry* result = memRun->get(key);
 
@@ -63,7 +63,7 @@ int LsmTree::get(int key) {
     	return NULL;
     }
 
-    return result->getValue();
+    return result;
 }
 
 Entry* LsmTree::getFromDisk(int key) {

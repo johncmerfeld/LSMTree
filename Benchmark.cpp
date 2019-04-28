@@ -40,26 +40,32 @@ int main(int argc, char *argv[]) {
 
     /* load random numbers */
     int n_rands = 1000000;
-    int r [n_rands];
+    int r1 [n_rands];
+    int r2 [n_rands];
     for (int i = 0; i < n_rands; i++) {
-    	r[i] = uni(rng);
+    	r1[i] = uni(rng);
+    	r2[i] = uni(rng);
     }
 
 
 
     uint64 start = GetTimeMs64();
     for (int i = 0; i < writes; i++) {
-    	tree->insert(r[i], r[i]);
+    	tree->insert(r1[i], r1[i]);
     }
 
-
-    for (int i = 0; i < reads; i++) {
-    	cout << i << ": " << tree->get(r[i]) << ", ";
-    }
 /*
-    MemoryRun* range = tree->getRange(0, 50);
+    Entry* e;
+    for (int i = 0; i < reads; i++) {
+    	e = tree->get(r2[i]);
+    	if (e != NULL) {
+    		cout << i << ": " << e->getValue() << ", ";
+    	}
+    }
+*/
+    MemoryRun* range = tree->getRange(0, 10);
 
-    range->print(); */
+    range->print();
     uint64 end = GetTimeMs64();
     cout << runSize << ", " << end - start << endl;
 /*
