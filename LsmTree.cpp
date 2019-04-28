@@ -78,11 +78,14 @@ Entry* LsmTree::getFromDisk(int key) {
 					(diskRunMetadata[j]->isInRange(key))) {
 				diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
 				Entry* result = diskRun->get(key);
-				if (result->isRemove()) {
+				if (result == NULL) {
 					/* found a delete */
+					continue;
+				}
+				else if (result->isRemove()) {
 					return NULL;
 				}
-				else if (result != NULL) {
+				else {
 					return result;
 				}
 			}

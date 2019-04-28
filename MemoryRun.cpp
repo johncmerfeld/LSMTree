@@ -126,7 +126,7 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
          * the tree.
          */
         if (older->at(i).getKey() == newer->at(j).getKey()) {
-        	cout << "dupe!" << endl;
+        	//cout << "dupe!" << endl;
             i++;
         }
         else if (older->at(i).getKey() < newer->at(j).getKey()) {

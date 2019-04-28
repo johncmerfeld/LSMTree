@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 	std::mt19937 rng(rd());
 
 	// guaranteed unbiased
-	std::uniform_int_distribution<int> uni(-100,100);
+	std::uniform_int_distribution<int> uni(-1000,1000);
 
     //ResultSet *rs;
     TierLsmTree *tree = new TierLsmTree(runSize, levelSize, bloomSize);
@@ -52,13 +52,14 @@ int main(int argc, char *argv[]) {
     	tree->insert(r[i], r[i]);
     }
 
+
     for (int i = 0; i < reads; i++) {
     	cout << i << ": " << tree->get(r[i]) << ", ";
     }
+/*
+    MemoryRun* range = tree->getRange(0, 50);
 
-    //MemoryRun* range = tree->getRange(0, 50);
-
-    //range->print();
+    range->print(); */
     uint64 end = GetTimeMs64();
     cout << runSize << ", " << end - start << endl;
 /*
