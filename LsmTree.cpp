@@ -50,6 +50,7 @@ LsmTree::LsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue) {
 //-------------------- Common methods --------------------
 int LsmTree::get(int key) {
 
+	cerr << "GET(" << key << ")" << endl;
     Entry* result = memRun->get(key);
 
     /* if we can't find it in memory */

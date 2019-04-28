@@ -51,6 +51,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < writes; i++) {
     	tree->insert(r[i], r[i]);
     }
+    cerr << "DONE INSERTING" << endl;
 
     for (int i = 0; i < reads; i++) {
     	cout << tree->get(r[i]) << ", ";
