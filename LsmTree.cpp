@@ -64,8 +64,18 @@ int LsmTree::getFromDisk(int key) {
 		/* get the array of metadata */
 		RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
 		/* for each run in the level: */
+		MemoryRun* diskRun;
 		for (int j = 0; j < diskLevels[i].getRuns(); j++) {
+			/* if it might be there, read from disk */
+			if ((diskRunMetadata[j]->mightContain(key)) &&
+					(diskRunMetadata[j]->isInRange(key))) {
+				diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
+			}
 
+			int result = diskRun->get(key);
+			if (result != INT_MIN) {
+				return result;
+			}
 		}
     }
     /* we didn't find it */
@@ -91,6 +101,7 @@ MemoryRun* LsmTree::getRange(int low, int high) {
     		MemoryRun* diskRun;
     		/* only checking fence pointer because I don't think it
     		 * makes sense to check bloom filters for a large range */
+    		/* if it might be there, read from disk */
     		if (diskRunMetadata[j]->rangeOverlaps(low, high)) {
     			diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
 
