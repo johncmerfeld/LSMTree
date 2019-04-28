@@ -64,7 +64,7 @@ class TierLsmTree : LsmTree {
 public:
     TierLsmTree(int, int, short bitsPerValue);
 
-    void flushToDisk(MemoryRun *memRunData);
+    void flushToDisk();
 
     void insert(int key, int value, int type);
 
@@ -79,7 +79,7 @@ class LevelLsmTree : LsmTree {
 public:
     LevelLsmTree(int, int, short bitsPerValue);
 
-    void flushToDisk(MemoryRun *memRunData);
+    void flushToDisk();
 
     void insert(int key, int value);
 };

@@ -57,6 +57,8 @@ public:
     int getSize();
 
     void printer();
+
+    ~MemoryRun();
 };
 
 

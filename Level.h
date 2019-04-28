@@ -33,6 +33,8 @@ public:
 
     int getRuns();
 
+    void printMeta();
+
 protected:
     char *nameConvert(string filename);
 

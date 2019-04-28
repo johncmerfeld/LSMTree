@@ -48,6 +48,8 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {
     char *fname = nameConvert(meta->getFilename());
     Entry *data = (Entry *) malloc(sizeof(Entry) * meta->getSize());
 
+
+    printf("just read %d\n", meta->getSize());
     //---------- Read from filedescriptor ----------
     filedesc = open(fname, O_RDONLY);
     if (filedesc < 0)
@@ -61,7 +63,15 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {
     if (dlete)
         remove(fname);
 
+    delete[] fname;
     return new MemoryRun(data, numOfEntries);;
+}
+
+
+void Level::printMeta() {
+    for (int i = 0; i < this->runsInLevel; i++) {
+        printf("meta has %d\n", levelMetadata[i]->getSize());
+    }
 }
 
 
@@ -77,21 +87,30 @@ bool TieringLevel::hasSpace() {
 
 
 MemoryRun *TieringLevel::mergeLevel(MemoryRun *memoRun) {
-    MemoryRun *memRun;
+    MemoryRun *older, *newer, *merged;
+
 
     if (runsInLevel > 0)
-        memRun = readEntries(levelMetadata[0], 1);
+        older = readEntries(levelMetadata[0], 1);
     else
         return memoRun;
 
+
     for (int i = 1; i < runsInLevel; i++) {
-        memRun = MemoryRun::merge(memRun, readEntries(levelMetadata[i], 1));
+        newer = readEntries(levelMetadata[i], 1);
+        merged = MemoryRun::merge(older, newer);
+
+        delete older;
+        delete newer;
+
+        older = merged;
         delete levelMetadata[i];
     }
 
-    memRun = MemoryRun::merge(memRun, memoRun);
+    merged = MemoryRun::merge(older, memoRun);
+    delete older;
     this->runsInLevel = 0;
-    return memRun;
+    return merged;
 }
 
 
@@ -114,8 +133,7 @@ bool TieringLevel::add(MemoryRun *mdata, RunMetadata *meta) {
     runsInLevel += 1;
     close(filedesc);
 
-
-    delete entries;
+    delete[] fname;
     return 1;
 
 }

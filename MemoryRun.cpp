@@ -127,10 +127,12 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
          */
         if (older->at(i).getKey() == newer->at(j).getKey()) {
             i++;
-        } else if (older->at(i).getKey() < newer->at(j).getKey()) {
+        }
+        else if (older->at(i).getKey() < newer->at(j).getKey()) {
             merged->insert(older->at(i));
             i++;
-        } else {
+        }
+        else {
             merged->insert(newer->at(j));
             j++;
         }
@@ -174,7 +176,8 @@ void MemoryRun::sort() {
                 if (entries[i].getKey() <= entries[j].getKey()) {
                     temp->insertAtPos(entries[i], m);
                     i++;
-                } else {
+                }
+                else {
                     temp->insertAtPos(entries[j], m);
                     j++;
                 }
@@ -201,7 +204,7 @@ void MemoryRun::sort() {
 
 void MemoryRun::reset() {
 //    delete entries;
-    entries = new Entry[maxEntries];
+//    entries = new Entry[maxEntries];
     nextPos = 0;
 }
 
@@ -227,4 +230,8 @@ void MemoryRun::printer() {
         cout << "|";
     }
     cout << endl;
+}
+
+MemoryRun::~MemoryRun() {
+    delete[] this->entries;
 }

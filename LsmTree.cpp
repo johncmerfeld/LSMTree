@@ -71,13 +71,16 @@ ResultSet *LsmTree::getRange(int low, int high) {
 
 
 RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
-    int entriesPerRun = memRunData->getSize();
+    int entriesInRun = memRunData->getSize();
     Entry *entries = memRunData->getEntries();
 
+//    printf("i will create metadata with size %d for entries:\n", memRunData->getSize());
+//    memRunData->printer();
+
     //---------- Initialize Bloomfilter ----------
-    int bloomFilterSize = entriesPerRun * bitsPerValue / 8 + 1;
+    int bloomFilterSize = entriesInRun * bitsPerValue / 8 + 1;
     BloomFilter *bloomftr = new BloomFilter(bloomFilterSize, bitsPerValue);
-    for (int i = 0; i < entriesPerRun; i++)
+    for (int i = 0; i < entriesInRun; i++)
         bloomftr->add(entries[i].getKey());
 
     //---------- Initialize Fence Pointers ----------
@@ -89,7 +92,7 @@ RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
     string filename = this->filename + suffix;
 
     //---------- Create the metadata  ----------
-    RunMetadata *metadata = new RunMetadata(bloomftr, fenceptr, filename, memRun->getSize());
+    RunMetadata *metadata = new RunMetadata(bloomftr, fenceptr, filename, entriesInRun);
 
     return metadata;
 }
@@ -132,7 +135,7 @@ void TierLsmTree::insert(int key, int value, int type) {
     //---------- Insert the entry in the Memory Run ----------
     if (!this->memRun->insert(temp)) {
         //---------- If Memory Run fills up, flush to disk and reset the memoryRun ----------
-        this->flushToDisk(this->memRun);
+        this->flushToDisk();
         memRun->reset();
     }
 
@@ -140,40 +143,75 @@ void TierLsmTree::insert(int key, int value, int type) {
 }
 
 
-void TierLsmTree::flushToDisk(MemoryRun *data) {
-    MemoryRun *mergedData;
-    TieringLevel *temp;
-    RunMetadata *meta;
-    int levelsCounter = 0;
-    bool flag = 0;
+void TierLsmTree::flushToDisk() {
+    MemoryRun *data, *merged;
 
-    do {
+    TieringLevel *temp;
+    RunMetadata *meta = nullptr;
+
+    bool flag = false;
+//    cout << "----------------------" << endl;
+//    for (int i = 0; i < levelsCount; i++) {
+//        diskLevels[i].printMeta();
+//    }
+//    cout << endl;
+
+    //---------- Check if we can insert in the first level ----------
+    //---------- After that get and use the merged data of the 1st level ----------
+    if (diskLevels[0].hasSpace()) {
+        meta = createMetadata(this->memRun, suffix(0, diskLevels[0].getRuns()));
+        diskLevels[0].add(this->memRun, meta);
+//        cout << "----------------" << endl;
+        return;
+    }
+    else
+        merged = diskLevels[0].mergeLevel(this->memRun);
+
+//    memRun->reset();
+
+    int levelsCounter = 1;
+//    printf("merged before has %d \n", merged->getSize());
+//    merged->printer();
+//    cout << endl;
+
+    while (levelsCounter < levelsCount && !flag) {
         flag = false;
+//        cout << "mpike" << endl;
         if (diskLevels[levelsCounter].hasSpace()) {
-            meta = createMetadata(data, suffix(levelsCounter, diskLevels[levelsCounter].getRuns()));
-            diskLevels[levelsCounter].add(data, meta);
+            meta = createMetadata(merged, suffix(levelsCounter, diskLevels[levelsCounter].getRuns()));
+            diskLevels[levelsCounter].add(merged, meta);
             flag = true;
-        } else {
-            data = diskLevels[levelsCounter].mergeLevel(data);
+        }
+        else {
+            data = merged;
+            merged = diskLevels[levelsCounter].mergeLevel(merged);
+            delete data;
+//            printf("merged has %d \n", merged->getSize());
         }
         levelsCounter++;
-    } while (levelsCounter < levelsCount && !flag);
+    }
 
-    //---------- If we managed to add the memory run to some level return ----------
-    if (flag)
-        return;
+    //---------- If we did not manage to add the memory run to some existing level ----------
+    if (!flag) {
+        //---------- Add new level and insert the run in that level ----------
+//        cout << "time for a new level" << endl;
+        temp = new TieringLevel[levelsCount + 1];
+        memcpy(temp, diskLevels, levelsCount * sizeof(TieringLevel));
+        delete[] diskLevels;
+        diskLevels = temp;
+        levelsCount += 1;
 
+        //---------- Insert the new run in the disk ----------
+//        cout << "before creating metadata for new level ";
+//        cout << meta->getSize();
+        meta = createMetadata(merged, suffix(levelsCounter, diskLevels[levelsCounter].getRuns()));
+        cout << "after creating metadata for new level ";
+        cout << meta->getSize();
+        diskLevels[levelsCounter].add(merged, meta);
 
-    //---------- Add new level and insert the run in that level ----------
-
-    temp = new TieringLevel[levelsCount + 1];
-    memcpy(temp, diskLevels, levelsCounter * sizeof(TieringLevel));
-    delete diskLevels;
-    diskLevels = temp;
-    levelsCount += 1;
-
-    meta = createMetadata(data, suffix(levelsCounter, diskLevels[levelsCounter].getRuns()));
-    diskLevels[levelsCounter].add(data, meta);
+    }
+//    cout << "----------------------" << endl;
+//    delete merged;
 }
 
 
