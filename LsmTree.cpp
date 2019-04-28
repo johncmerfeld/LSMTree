@@ -50,7 +50,6 @@ LsmTree::LsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue) {
 //-------------------- Common methods --------------------
 int LsmTree::get(int key) {
 
-	cerr << "GET(" << key << ")" << endl;
     Entry* result = memRun->get(key);
 
     /* if we can't find it in memory */
@@ -73,20 +72,19 @@ Entry* LsmTree::getFromDisk(int key) {
 		RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
 		/* for each run in the level: */
 		MemoryRun* diskRun;
-		for (int j = 0; j < diskLevels[i].getRuns(); j++) {
+		for (int j = diskLevels[i].getRuns()-1; j >= 0;  j--) {
 			/* if it might be there, read from disk */
 			if ((diskRunMetadata[j]->mightContain(key)) &&
 					(diskRunMetadata[j]->isInRange(key))) {
 				diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
-			}
-
-			Entry* result = diskRun->get(key);
-			if (result->isRemove()) {
-				/* found a delete */
-				return NULL;
-			}
-			else if (result != NULL) {
-				return result;
+				Entry* result = diskRun->get(key);
+				if (result->isRemove()) {
+					/* found a delete */
+					return NULL;
+				}
+				else if (result != NULL) {
+					return result;
+				}
 			}
 		}
     }
@@ -108,7 +106,7 @@ MemoryRun* LsmTree::getRange(int low, int high) {
     	/* get the array of metadata */
     	RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
     	/* for each run in the level: */
-    	for (int j = 0; j < diskLevels[i].getRuns(); j++) {
+    	for (int j = diskLevels[i].getRuns()-1; j >= 0;  j--) {
 
     		MemoryRun* diskRun;
     		/* only checking fence pointer because I don't think it

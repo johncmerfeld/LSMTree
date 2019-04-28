@@ -51,16 +51,14 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < writes; i++) {
     	tree->insert(r[i], r[i]);
     }
-    cerr << "DONE INSERTING" << endl;
 
     for (int i = 0; i < reads; i++) {
-    	cout << tree->get(r[i]) << ", ";
+    	cout << i << ": " << tree->get(r[i]) << ", ";
     }
 
-    MemoryRun* range = tree->getRange(0, 50);
+    //MemoryRun* range = tree->getRange(0, 50);
 
-    range->print();
-
+    //range->print();
     uint64 end = GetTimeMs64();
     cout << runSize << ", " << end - start << endl;
 /*
