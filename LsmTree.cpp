@@ -50,16 +50,23 @@ LsmTree::LsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue) {
 //-------------------- Common methods --------------------
 int LsmTree::get(int key) {
 
-    int result = memRun->get(key);
+    Entry* result = memRun->get(key);
 
     /* if we can't find it in memory */
-    if (result == 0) {
+    if (result == NULL) {
         result = getFromDisk(key);
     }
-    return result;
+
+    /* if we found a delete in memory */
+    else if (result->isRemove()) {
+    	/* say we didn't find it */
+    	return NULL;
+    }
+
+    return result->getValue();
 }
 
-int LsmTree::getFromDisk(int key) {
+Entry* LsmTree::getFromDisk(int key) {
     for (int i = 0; i < levelsCount; i++) {
 		/* get the array of metadata */
 		RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
@@ -72,14 +79,18 @@ int LsmTree::getFromDisk(int key) {
 				diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
 			}
 
-			int result = diskRun->get(key);
-			if (result != INT_MIN) {
+			Entry* result = diskRun->get(key);
+			if (result->isRemove()) {
+				/* found a delete */
+				return NULL;
+			}
+			else if (result != NULL) {
 				return result;
 			}
 		}
     }
     /* we didn't find it */
-    return INT_MIN;
+    return NULL;
 }
 
 /* gets a range from the LSM tree
@@ -114,7 +125,8 @@ MemoryRun* LsmTree::getRange(int low, int high) {
     	}
     }
 
-
+    /* remove deletes from result set */
+    results->removeDeletes();
     return results;
 
 }

@@ -50,14 +50,14 @@ void MemoryRun::insertAtPos(Entry e, int pos) {
     entries[pos].setEntry(&e);
 }
 
-int MemoryRun::get(int key) {
+Entry* MemoryRun::get(int key) {
     for (int i = nextPos; i >= 0; i--) {
         if (entries[i].getKey() == key) {
             /* if the entry is a delete entry, we will get the delete sentinal */
-            return entries[i].getValue();
+            return &entries[i];
         }
     }
-    return INT_MIN; /* or some null sentinal */
+    return NULL;
 }
 
 Entry MemoryRun::at(int pos) {
@@ -91,7 +91,7 @@ bool MemoryRun::remove(int key) {
     }
 
     /* we didn't find it */
-    Entry *e = new Entry(key, INT_MIN, true);
+    Entry *e = new Entry(key, INT_MAX, true);
     return this->insert(*e);
 
 }
@@ -214,6 +214,22 @@ void MemoryRun::print() {
         cout << " " << entries[i].getValue();
     }
     cout << "]";
+}
+
+void MemoryRun::removeDeletes() {
+	Entry* cleaned = new Entry[maxEntries];
+
+	int cleanedNext = 0;
+
+	for (int i = 0; i < nextPos; i++) {
+		if (entries[i].isRemove()) {
+			cleaned[cleanedNext] = entries[i];
+			cleanedNext++;
+		}
+	}
+	delete [] entries;
+	entries = cleaned;
+
 }
 
 int MemoryRun::getSize() {

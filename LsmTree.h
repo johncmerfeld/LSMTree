@@ -36,7 +36,7 @@ protected:
 
     RunMetadata *createMetadata(MemoryRun *memRunData, string suffix);
 
-    int getFromDisk(int key);
+    Entry* getFromDisk(int key);
 
     string suffix(int level, int run);
 

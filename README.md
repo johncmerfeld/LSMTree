@@ -3,6 +3,7 @@ Implementation of the Log-Structured Merge Tree data structure
 
 by Efstathios Karatsiolis & John C. Merfeld
 
+
 ## Data model
 
 Our LSM tree implementation stores pairs of key-value integers. Each key can only correspond to a single value.

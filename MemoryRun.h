@@ -31,7 +31,7 @@ public:
 
     void insertAtPos(Entry e, int pos);
 
-    int get(int key);
+    Entry* get(int key);
 
     Entry at(int pos);
 
@@ -50,6 +50,8 @@ public:
     void print();
 
     void reset();
+
+    void removeDeletes();
 
     int getSize();
 
