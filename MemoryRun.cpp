@@ -222,7 +222,7 @@ void MemoryRun::removeDeletes() {
 	int cleanedNext = 0;
 
 	for (int i = 0; i < nextPos; i++) {
-		if (entries[i].isRemove()) {
+		if (! entries[i].isRemove()) {
 			cleaned[cleanedNext] = entries[i];
 			cleanedNext++;
 		}

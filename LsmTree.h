@@ -60,7 +60,7 @@ public:
 
 };
 
-class TierLsmTree : LsmTree {
+class TierLsmTree : public LsmTree {
 public:
     TierLsmTree(int, int, short bitsPerValue);
 
@@ -75,7 +75,7 @@ public:
 
 };
 
-class LevelLsmTree : LsmTree {
+class LevelLsmTree : public LsmTree {
 public:
     LevelLsmTree(int, int, short bitsPerValue);
 

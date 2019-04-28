@@ -53,7 +53,7 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {
     Entry *data = (Entry *) malloc(sizeof(Entry) * meta->getSize());
 
 
-    printf("just read %d\n", meta->getSize());
+    //printf("just read %d\n", meta->getSize());
     //---------- Read from filedescriptor ----------
     filedesc = open(fname, O_RDONLY);
     if (filedesc < 0)
