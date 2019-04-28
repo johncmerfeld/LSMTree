@@ -40,6 +40,10 @@ char *Level::nameConvert(string filename) {
     return fname;
 }
 
+RunMetadata** Level::getMetadata() {
+	return levelMetadata;
+}
+
 
 //---------- Reads whole run for merging and deletes file if flag is specified ----------
 MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {

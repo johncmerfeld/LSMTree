@@ -59,11 +59,37 @@ int LsmTree::get(int key) {
     return result;
 }
 
-ResultSet *LsmTree::getRange(int low, int high) {
+/* gets a range from the LSM tree
+ * First, gets the range from
+ */
+MemoryRun* LsmTree::getRange(int low, int high) {
 
-    ResultSet *memoryResults = memRun->getRange(low, high);
-    //ResultSet diskResults = diskLevels->getRange(low, high); /* need to implement this */
-    //return memoryResults.combine(diskResults);
+	/* first get memory results */
+    MemoryRun* results = memRun->getRange(low, high);
+    results->sort();
+
+    /* for each level: */
+    for (int i = 0; i < levelsCount; i++) {
+    	/* get the array of metadata */
+    	RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
+    	/* for each run in the level: */
+    	for (int j = 0; j < diskLevels[i].getRuns(); j++) {
+
+    		MemoryRun* diskRun;
+    		/* only checking fence pointer because I don't think it
+    		 * makes sense to check bloom filters for a large range */
+    		if (diskRunMetadata[j]->rangeOverlaps(low, high)) {
+    			diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
+
+    			MemoryRun* diskResults = diskRun->getRange(low, high);
+    			diskResults->sort();
+
+    			results = MemoryRun::merge(diskResults, results);
+
+    		}
+    	}
+    }
+
 
     return memoryResults;
 

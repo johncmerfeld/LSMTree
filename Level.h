@@ -17,6 +17,7 @@ protected:
     RunMetadata **levelMetadata;
     int runsInLevel;
     static int maxRuns;
+    char *nameConvert(string filename);
 
 public:
     Level();
@@ -33,14 +34,11 @@ public:
 
     int getRuns();
 
-    void printMeta();
-
-protected:
-    char *nameConvert(string filename);
+    RunMetadata** getMetadata();
 
     MemoryRun *readEntries(RunMetadata *meta, char dlete);
 
-};
+    void printMeta();
 
 class TieringLevel : public Level {
 public:

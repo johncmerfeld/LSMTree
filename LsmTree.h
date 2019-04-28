@@ -55,7 +55,7 @@ public:
 
     int get(int key);
 
-    ResultSet *getRange(int low, int high);
+    MemoryRun* getRange(int low, int high);
 
 
 };

@@ -36,6 +36,22 @@ string RunMetadata::getFilename() {
     return this->filename;
 }
 
+BloomFilter* RunMetadata::getBloomFilter() {
+	return this->bloomfilter;
+}
+
+FencePointer* RunMetadata::getFencePointer() {
+	return this->fencepointer;
+}
+
+bool RunMetadata::isInRange(int query) {
+	return fencepointer->isInRange(query);
+}
+
+bool RunMetadata::rangeOverlaps(int low, int high) {
+	return fencepointer->rangeOverlaps(low, high);
+}
+
 int RunMetadata::getSize() {
     return this->size;
 }

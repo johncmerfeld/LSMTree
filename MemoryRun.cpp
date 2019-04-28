@@ -1,5 +1,5 @@
 /*
- * Run.cpp
+ * MemoryRun.cpp
  */
 
 #include "MemoryRun.h"
@@ -8,7 +8,6 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
-
 
 using namespace std;
 
@@ -68,18 +67,15 @@ Entry MemoryRun::at(int pos) {
 
 ResultSet *MemoryRun::getRange(int low, int high) {
 
-    ResultSet *results = new ResultSet(maxEntries);
+    MemoryRun *results = new MemoryRun(maxEntries);
 
     for (int i = 0; i < nextPos; i++) {
         if ((entries[i].getKey() >= low) &&
-            (entries[i].getKey() <= high) &&
-            (!entries[i].isRemove())) {
-            results->insert(entries[i].getValue());
+            (entries[i].getKey() <= high)) {
+            results->insert(entries[i]);
         }
     }
-
     return results;
-
 }
 
 bool MemoryRun::remove(int key) {
@@ -102,6 +98,10 @@ bool MemoryRun::remove(int key) {
 
 Entry *MemoryRun::getEntries() {
     return entries;
+}
+
+bool MemoryRun::isEmpty() {
+	return (nextPos == 0);
 }
 
 // Merges two memoryRuns
@@ -152,7 +152,7 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
     return merged;
 }
 
-// https://www.geeksforgeeks.org/merge-sort/
+// https://stackoverflow.com/questions/1557894/non-recursive-merge-sort
 /* l is for left index and r is right index of the
    sub-array of arr to be sorted */
 void MemoryRun::sort() {

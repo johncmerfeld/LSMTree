@@ -18,3 +18,11 @@ void FencePointer::setLowest(int newLow) {
 void FencePointer::setHighest(int newHigh) {
 	this->highest = newHigh;
 }
+
+bool FencePointer::isInRange(int query) {
+	return ((query >= lowest) && (query <= highest));
+}
+
+bool FencePointer::rangeOverlaps(int low, int high) {
+	return ((low <= highest) && (high >= lowest));
+}

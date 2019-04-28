@@ -29,11 +29,6 @@ public:
 
     bool insert(Entry *entry);
 
-
-
-//rggr
-
-
     void insertAtPos(Entry e, int pos);
 
     int get(int key);
@@ -46,7 +41,9 @@ public:
 
     Entry *getEntries();
 
-    static MemoryRun *merge(MemoryRun *left, MemoryRun *right);
+    static MemoryRun *merge(MemoryRun *older, MemoryRun *newer);
+
+    bool isEmpty();
 
     void sort();
 

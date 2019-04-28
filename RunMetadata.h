@@ -27,6 +27,12 @@ public:
 
     string getFilename();
 
+    BloomFilter* getBloomFilter();
+    FencePointer* getFencePointer();
+
+    bool isInRange(int query);
+    bool rangeOverlaps(int low, int high);
+
     int getSize();
 
     ~RunMetadata();
