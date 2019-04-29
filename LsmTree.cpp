@@ -139,11 +139,6 @@ MemoryRun *LsmTree::getRange(int low, int high) {
 
 }
 
-void LsmTree::remove(int key) {
-    memRun->remove(key);
-}
-
-
 RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
     int entriesInRun = memRunData->getSize();
     Entry *entries = memRunData->getEntries();
@@ -196,11 +191,15 @@ TierLsmTree::TierLsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerVal
 }
 
 void TierLsmTree::insert(int key, int value) {
-    this->insert(key, value, 0);
+    this->insert(key, value, false);
 }
 
-void TierLsmTree::insert(int key, int value, int type) {
-    Entry *temp = new Entry(key, value, 0);
+void TierLsmTree::remove(int key) {
+	this->insert(key, 0, true);
+}
+
+void TierLsmTree::insert(int key, int value, bool isRemove) {
+    Entry *temp = new Entry(key, value, isRemove);
 
     //---------- Insert the entry in the Memory Run ----------
     if (!this->memRun->insert(temp)) {

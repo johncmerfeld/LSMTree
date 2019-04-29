@@ -48,10 +48,6 @@ public:
 
 //    void insert(int value);
 
-    void insert(int key, int value);
-
-    void remove(int key);
-
     void removeMany();
 
     Entry* get(int key);
@@ -67,9 +63,11 @@ public:
 
     void flushToDisk();
 
-    void insert(int key, int value, int type);
+    void insert(int key, int value, bool isRemove);
 
     void insert(int key, int value);
+
+    void remove(int key);
 
     void insert(Entry *temp);
 
