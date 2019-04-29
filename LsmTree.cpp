@@ -133,6 +133,10 @@ MemoryRun* LsmTree::getRange(int low, int high) {
 
 }
 
+void LsmTree::remove(int key) {
+	memRun->remove(key);
+}
+
 
 RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
     int entriesInRun = memRunData->getSize();
