@@ -25,74 +25,66 @@ int main(int argc, char *argv[]) {
 	int numLines = stoi(argv[5]);
     ifstream file(filename.c_str());
 
-    char *commands = new char[numLines];
-    int *keys = new int[numLines];
-    int *vals = new int[numLines];
-
     string type, key, val;
+    char command;
     int k, v;
 
     int i = 0;
+
+    TierLsmTree *tree = new TierLsmTree(runSize, levelSize, bloomSize);
+    uint64 start = GetTimeMs64();
+
     if(file.is_open()) {
     	if (i < numLines) {
     		while(getline(file, type,  ',')) {
 
-    			commands[i] = type[0];
+    			command = type[0];
 
 				if ((type == "i") || (type == "u") || (type == "r")) {
 					getline(file, key, ',');
-					keys[i] = stoi(key);
+					k = stoi(key);
 
 					getline(file, val);
-					vals[i] = stoi(val);
+					v = stoi(val);
 				}
 				else {
 					//cerr << "second type" << endl;
 					getline(file, key);
-					keys[i] = stoi(key);
+					k = stoi(key);
 				}
 				//cerr << keys[i] << endl;
 				//cout << numLines - i << endl;
 				i++;
+
+				switch (command) {
+					case 'i':
+						tree->insert(k, v);
+						break;
+					case 'd':
+						tree->remove(k);
+						break;
+					case 'u':
+						tree->insert(k, v);
+						break;
+					case 'g':
+						tree->get(k);
+						break;
+					case 'r':
+						tree->getRange(k, v);
+						break;
+				}
+
     		}
     	}
 	  file.close();
     }
-
-    TierLsmTree *tree = new TierLsmTree(runSize, levelSize, bloomSize);
-
     cerr << "Setup0" << endl;
 
-    uint64 start = GetTimeMs64();
-    for (int i = 0; i < numLines; i++) {
-    	cout << commands[i] << endl;
-    	switch (commands[i]) {
-    		case 'i':
-    			tree->insert(keys[i], vals[i]);
-    			break;
-    		case 'd':
-    			tree->remove(keys[i]);
-    			break;
-    		case 'u':
-    			tree->insert(keys[i], vals[i]);
-    			break;
-    		case 'g':
-    			tree->get(keys[i]);
-    			break;
-    		case 'r':
-    			tree->getRange(keys[i], vals[i]);
-    			break;
-    	}
-    }
     uint64 end = GetTimeMs64();
 
     cerr << "Setup1" << endl;
 
     cout << end - start << endl;
-
-    delete [] commands;
-    delete [] keys;
-    delete [] vals;
 
     return 0;
 
@@ -112,6 +104,10 @@ int main(int argc, char *argv[]) {
 
     //ResultSet *rs;
 }
+
+
+
+
 
 
 

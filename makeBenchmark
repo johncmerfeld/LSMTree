@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-g++ -std=c++11 -stdlib=libc++ Benchmark.cpp LsmTree.cpp RunMetadata.cpp BloomFilter.cpp Entry.cpp MemoryRun.cpp Level.cpp FencePointer.cpp ResultSet.cpp -o Benchmark
+g++ -mmacosx-version-min=10.7 -std=c++11 -stdlib=libc++ Benchmark.cpp LsmTree.cpp RunMetadata.cpp BloomFilter.cpp Entry.cpp MemoryRun.cpp Level.cpp FencePointer.cpp ResultSet.cpp -o Benchmark
 
