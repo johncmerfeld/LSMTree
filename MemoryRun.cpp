@@ -154,8 +154,6 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
         merged->insert(newer->at(j));
         j++;
     }
-    merged->print();
-    cout << endl;
     return merged;
 }
 

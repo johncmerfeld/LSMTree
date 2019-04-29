@@ -32,29 +32,37 @@ int main(int argc, char *argv[]) {
     string type, key, val;
     int k, v;
 
+    cerr << "Setup1" << endl;
+
     int i = 0;
     if(file.is_open()) {
     	while(getline(file, type,  ',')) {
+    		if (i < numLines) {
+    			commands[i] = type[0];
 
-    		commands[i] = type[0];
+				if ((type == "i") || (type == "u") || (type == "r")) {
+					getline(file, key, ',');
+					keys[i] = stoi(key);
 
-    		if ((type == "i") || (type == "u") || (type == "r")) {
-				getline(file, key, ',');
-				keys[i] = stoi(key);
-
-    			getline(file, val);
-    			vals[i] = stoi(val);
+					getline(file, val);
+					vals[i] = stoi(val);
+				}
+				else {
+					//cerr << "second type" << endl;
+					getline(file, key);
+					keys[i] = stoi(key);
+				}
+				//cerr << keys[i] << endl;
+				//cout << numLines - i << endl;
+				i++;
     		}
-    		else {
-    			getline(file, key);
-    			keys[i] = stoi(key);
-    		}
-    		i++;
     	}
 	  file.close();
     }
 
     TierLsmTree *tree = new TierLsmTree(runSize, levelSize, bloomSize);
+
+    cerr << "Setup1" << endl;
 
     uint64 start = GetTimeMs64();
     for (int i = 0; i < numLines; i++) {
