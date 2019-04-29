@@ -13,7 +13,7 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
     int lines = stoi(argv[1]);
-    printf("%d\n", lines + lines / 2);
+//    printf("%d\n", lines + lines / 2);
     srand(time(NULL));
 
 
@@ -26,8 +26,9 @@ int main(int argc, char *argv[]) {
 
     for (int i = 0; i < lines; i++) {
         if (rand() % 100 < dels + upds) {
-            if (rand() % 2 == 0)
-                printf("r,%d\n", g1[rand() % (g1.size())]);
+            if (rand() % 2 == 0) {
+                printf("d,%d\n", g1[rand() % (g1.size())]);
+            }
             else {
                 if (g1.size() != 0) {
                     printf("u,%d,%d\n", g1[rand() % g1.size()], rand() % lines);
