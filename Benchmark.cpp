@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 /* TODO have this use averages, or put it in the R */
 int main(int argc, char *argv[]) {
 
@@ -29,7 +28,6 @@ int main(int argc, char *argv[]) {
     char commands[numLines];
     int keys[numLines];
     int vals[numLines];
-
 
     string type, key, val;
     int k, v;
@@ -57,8 +55,6 @@ int main(int argc, char *argv[]) {
     }
 
     TierLsmTree *tree = new TierLsmTree(runSize, levelSize, bloomSize);
-
-    cerr << "set up" << endl;
 
     uint64 start = GetTimeMs64();
     for (int i = 0; i < numLines; i++) {
