@@ -12,6 +12,7 @@
 #include "DiskRun.h"
 #include "ResultSet.h"
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -36,7 +37,7 @@ protected:
 
     RunMetadata *createMetadata(MemoryRun *memRunData, string suffix);
 
-    Entry* getFromDisk(int key);
+    Entry *getFromDisk(int key);
 
     string suffix(int level, int run);
 
@@ -55,9 +56,9 @@ public:
 
     Entry* get(int key);
 
-    MemoryRun* getRange(int low, int high);
+    MemoryRun *getRange(int low, int high);
 
-
+    ~LsmTree();
 };
 
 class TierLsmTree : public LsmTree {

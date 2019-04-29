@@ -130,3 +130,7 @@ uint32_t BloomFilter::murmurhash(const int *key, uint32_t len, uint32_t seed) {
 
 
 int BloomFilter::getSize() { return this->size; }
+
+BloomFilter::~BloomFilter() {
+    delete[] bitVector;
+}

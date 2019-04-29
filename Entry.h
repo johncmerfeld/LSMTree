@@ -13,7 +13,9 @@ private:
     bool removeBit;    //0 for insert/update - 1 for delete
 
 public:
-    Entry(int key = 0, int value = 0, bool isDelete = false);
+    Entry();
+
+    Entry(int key, int value, bool isDelete = false);
 
     Entry(int key, int value);
 

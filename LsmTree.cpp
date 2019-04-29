@@ -46,50 +46,56 @@ LsmTree::LsmTree(int entriesPerRun, int maxRunsInLevel, short bitsPerValue) {
     filename = "files/f";
 }
 
+LsmTree::~LsmTree() {
+    delete memRun;
+    delete[] diskLevels;
+}
 
 //-------------------- Common methods --------------------
-Entry* LsmTree::get(int key) {
+Entry *LsmTree::get(int key) {
 
-    Entry* result = memRun->get(key);
+    Entry *result = memRun->get(key);
 
     /* if we can't find it in memory */
-    if (result == NULL) {
+    if (result == nullptr) {
         result = getFromDisk(key);
     }
 
-    /* if we found a delete in memory */
+    if (result == nullptr)
+        return NULL;
+        /* if we found a delete in memory */
     else if (result->isRemove()) {
-    	/* say we didn't find it */
-    	return NULL;
+        /* say we didn't find it */
+        return NULL;
     }
 
     return result;
 }
 
-Entry* LsmTree::getFromDisk(int key) {
+Entry *LsmTree::getFromDisk(int key) {
     for (int i = 0; i < levelsCount; i++) {
-		/* get the array of metadata */
-		RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
-		/* for each run in the level: */
-		MemoryRun* diskRun;
-		for (int j = diskLevels[i].getRuns()-1; j >= 0;  j--) {
-			/* if it might be there, read from disk */
-			if ((diskRunMetadata[j]->mightContain(key)) &&
-					(diskRunMetadata[j]->isInRange(key))) {
-				diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
-				Entry* result = diskRun->get(key);
-				if (result == NULL) {
-					/* found a delete */
-					continue;
-				}
-				else if (result->isRemove()) {
-					return NULL;
-				}
-				else {
-					return result;
-				}
-			}
-		}
+        /* get the array of metadata */
+        RunMetadata **diskRunMetadata = diskLevels[i].getMetadata();
+        /* for each run in the level: */
+        MemoryRun *diskRun;
+        for (int j = diskLevels[i].getRuns() - 1; j >= 0; j--) {
+            /* if it might be there, read from disk */
+            if ((diskRunMetadata[j]->mightContain(key)) &&
+                (diskRunMetadata[j]->isInRange(key))) {
+                diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
+                Entry *result = diskRun->get(key);
+                if (result == NULL) {
+                    /* found a delete */
+                    continue;
+                }
+                else if (result->isRemove()) {
+                    return nullptr;
+                }
+                else {
+                    return result;
+                }
+            }
+        }
     }
     /* we didn't find it */
     return NULL;
@@ -98,33 +104,33 @@ Entry* LsmTree::getFromDisk(int key) {
 /* gets a range from the LSM tree
  * First, gets the range from
  */
-MemoryRun* LsmTree::getRange(int low, int high) {
+MemoryRun *LsmTree::getRange(int low, int high) {
 
-	/* first get memory results */
-    MemoryRun* results = memRun->getRange(low, high);
+    /* first get memory results */
+    MemoryRun *results = memRun->getRange(low, high);
     results->sort();
 
     /* for each level: */
     for (int i = 0; i < levelsCount; i++) {
-    	/* get the array of metadata */
-    	RunMetadata** diskRunMetadata = diskLevels[i].getMetadata();
-    	/* for each run in the level: */
-    	for (int j = diskLevels[i].getRuns()-1; j >= 0;  j--) {
+        /* get the array of metadata */
+        RunMetadata **diskRunMetadata = diskLevels[i].getMetadata();
+        /* for each run in the level: */
+        for (int j = diskLevels[i].getRuns() - 1; j >= 0; j--) {
 
-    		MemoryRun* diskRun;
-    		/* only checking fence pointer because I don't think it
-    		 * makes sense to check bloom filters for a large range */
-    		/* if it might be there, read from disk */
-    		if (diskRunMetadata[j]->rangeOverlaps(low, high)) {
-    			diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
+            MemoryRun *diskRun;
+            /* only checking fence pointer because I don't think it
+             * makes sense to check bloom filters for a large range */
+            /* if it might be there, read from disk */
+            if (diskRunMetadata[j]->rangeOverlaps(low, high)) {
+                diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
 
-    			MemoryRun* diskResults = diskRun->getRange(low, high);
-    			diskResults->sort();
+                MemoryRun *diskResults = diskRun->getRange(low, high);
+                diskResults->sort();
 
-    			results = MemoryRun::merge(diskResults, results);
+                results = MemoryRun::merge(diskResults, results);
 
-    		}
-    	}
+            }
+        }
     }
 
     /* remove deletes from result set */
@@ -134,7 +140,7 @@ MemoryRun* LsmTree::getRange(int low, int high) {
 }
 
 void LsmTree::remove(int key) {
-	memRun->remove(key);
+    memRun->remove(key);
 }
 
 
@@ -199,6 +205,7 @@ void TierLsmTree::insert(int key, int value, int type) {
     //---------- Insert the entry in the Memory Run ----------
     if (!this->memRun->insert(temp)) {
         //---------- If Memory Run fills up, flush to disk and reset the memoryRun ----------
+        memRun->removeDuplicates();
         this->flushToDisk();
         memRun->reset();
     }

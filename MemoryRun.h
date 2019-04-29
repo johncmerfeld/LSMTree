@@ -31,7 +31,7 @@ public:
 
     void insertAtPos(Entry e, int pos);
 
-    Entry* get(int key);
+    Entry *get(int key);
 
     Entry at(int pos);
 
@@ -53,9 +53,11 @@ public:
 
     void removeDeletes();
 
-    //void removeDuplicates();
+    void removeDuplicates();
 
     int getSize();
+
+    void setSize(int size);
 
     void printer();
 

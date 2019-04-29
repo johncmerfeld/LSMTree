@@ -8,11 +8,13 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
 MemoryRun::MemoryRun(int size) {
     entries = new Entry[size];
+//    memset(entries, size*sizeof(Entry), 0);
     nextPos = 0;
     maxEntries = size;
 }
@@ -50,7 +52,7 @@ void MemoryRun::insertAtPos(Entry e, int pos) {
     entries[pos].setEntry(&e);
 }
 
-Entry* MemoryRun::get(int key) {
+Entry *MemoryRun::get(int key) {
     for (int i = nextPos; i >= 0; i--) {
         if (entries[i].getKey() == key) {
             /* if the entry is a delete entry, we will get the delete sentinal */
@@ -101,7 +103,7 @@ Entry *MemoryRun::getEntries() {
 }
 
 bool MemoryRun::isEmpty() {
-	return (nextPos == 0);
+    return (nextPos == 0);
 }
 
 // Merges two memoryRuns
@@ -109,8 +111,8 @@ bool MemoryRun::isEmpty() {
 // the first argument and the newer one is second
 MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
 
-	older->print();
-	newer->print();
+    older->print();
+    newer->print();
 
     int olderSize = older->getSize();
     int newerSize = newer->getSize();
@@ -129,7 +131,7 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
          * the tree.
          */
         if (older->at(i).getKey() == newer->at(j).getKey()) {
-        	//cout << "dupe!" << endl;
+            //cout << "dupe!" << endl;
             i++;
         }
         else if (older->at(i).getKey() < newer->at(j).getKey()) {
@@ -157,6 +159,26 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
     return merged;
 }
 
+void MemoryRun::removeDuplicates() {
+    this->sort();
+    //------------------------Keep only latest version in memory run after sorting ---------------------
+    Entry *entries = this->getEntries();
+    Entry *entries2 = new Entry[this->getSize()];
+    int j = 0;
+    for (int i = 0; i < this->getSize() - 1; i++) {
+        if (entries[i].getKey() != entries[i + 1].getKey()) {
+            memcpy(&entries2[j], &entries[i], sizeof(Entry));
+            j++;
+        }
+    }
+    memcpy(&entries2[j], &entries[this->getSize() - 1], sizeof(Entry));
+    j++;
+
+    memcpy(this->getEntries(), entries2, j * sizeof(Entry));
+    this->setSize(j);
+    //------------------------------------------------------------
+}
+
 // https://stackoverflow.com/questions/1557894/non-recursive-merge-sort
 /* l is for left index and r is right index of the
    sub-array of arr to be sorted */
@@ -174,7 +196,7 @@ void MemoryRun::sort() {
             rght = left + k;
             rend = rght + k;
             if (rend > size) {
-            	rend = size;
+                rend = size;
             }
             m = left;
             i = left;
@@ -224,18 +246,18 @@ void MemoryRun::print() {
 }
 
 void MemoryRun::removeDeletes() {
-	Entry* cleaned = new Entry[maxEntries];
+    Entry *cleaned = new Entry[maxEntries];
 
-	int cleanedNext = 0;
+    int cleanedNext = 0;
 
-	for (int i = 0; i < nextPos; i++) {
-		if (! entries[i].isRemove()) {
-			cleaned[cleanedNext] = entries[i];
-			cleanedNext++;
-		}
-	}
-	delete [] entries;
-	entries = cleaned;
+    for (int i = 0; i < nextPos; i++) {
+        if (!entries[i].isRemove()) {
+            cleaned[cleanedNext] = entries[i];
+            cleanedNext++;
+        }
+    }
+    delete[] entries;
+    entries = cleaned;
 }
 
 int MemoryRun::getSize() {
@@ -254,6 +276,10 @@ void MemoryRun::printer() {
     cout << endl;
 }
 
+void MemoryRun::setSize(int size) {
+    this->nextPos = size;
+}
+
 MemoryRun::~MemoryRun() {
-    delete[] this->entries;
+//    delete[] this->entries;
 }

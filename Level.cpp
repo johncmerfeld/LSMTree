@@ -20,8 +20,16 @@ int Level::maxRuns;
 Level::Level() {
     this->runsInLevel = 0;
     this->levelMetadata = new RunMetadata *[Level::maxRuns];
+    for (int i = 0; i < maxRuns; i++) {
+        levelMetadata[i] = nullptr;
+    }
 }
 
+Level::~Level() {
+//    for (int i = 0; i < runsInLevel; i++)
+//        delete levelMetadata[i];
+//    delete[] levelMetadata;
+}
 
 //-------------------- Common methods --------------------
 void Level::setRunsPerLevel(int runs) {
@@ -35,13 +43,13 @@ int Level::getRuns() {
 char *Level::nameConvert(string filename) {
 
     char *fname = new char[filename.length() + 1];
-    memcpy(fname, filename.c_str(), filename.length() + 1);
-
+    memcpy(fname, filename.c_str(), filename.length());
+    fname[filename.length()] = '\0';
     return fname;
 }
 
-RunMetadata** Level::getMetadata() {
-	return levelMetadata;
+RunMetadata **Level::getMetadata() {
+    return levelMetadata;
 }
 
 
@@ -50,7 +58,7 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {
 
     int filedesc, numOfEntries = meta->getSize();
     char *fname = nameConvert(meta->getFilename());
-    Entry *data = (Entry *) malloc(sizeof(Entry) * meta->getSize());
+    Entry *data = new Entry[meta->getSize()];
 
 
     //printf("just read %d\n", meta->getSize());
@@ -124,6 +132,9 @@ bool TieringLevel::add(MemoryRun *mdata, RunMetadata *meta) {
     int filedesc = open(fname, O_WRONLY | O_APPEND | O_CREAT | O_TRUNC, 0644);
     if (filedesc < 0)
         return 2;
+
+
+
 
     int size = mdata->getSize() * sizeof(Entry);
     Entry *entries = mdata->getEntries();

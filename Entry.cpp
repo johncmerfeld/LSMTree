@@ -7,6 +7,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+Entry::Entry(){}
+
 Entry::Entry(int key, int value, bool removeBit) :
         key(key), value(value), removeBit(removeBit) {}
 
