@@ -25,14 +25,12 @@ int main(int argc, char *argv[]) {
 	int numLines = stoi(argv[5]);
     ifstream file(filename.c_str());
 
-    char commands[numLines];
-    int keys[numLines];
-    int vals[numLines];
+    char *commands = new char[numLines];
+    int *keys = new int[numLines];
+    int *vals = new int[numLines];
 
     string type, key, val;
     int k, v;
-
-    cerr << "Setup1" << endl;
 
     int i = 0;
     if(file.is_open()) {
@@ -62,8 +60,6 @@ int main(int argc, char *argv[]) {
 
     TierLsmTree *tree = new TierLsmTree(runSize, levelSize, bloomSize);
 
-    cerr << "Setup1" << endl;
-
     uint64 start = GetTimeMs64();
     for (int i = 0; i < numLines; i++) {
     	switch (commands[i]) {
@@ -86,7 +82,13 @@ int main(int argc, char *argv[]) {
     }
     uint64 end = GetTimeMs64();
 
+    cerr << "Setup1" << endl;
+
     cout << end - start << endl;
+
+    delete [] commands;
+    delete [] keys;
+    delete [] vals;
 
     return 0;
 

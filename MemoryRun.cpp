@@ -111,9 +111,6 @@ bool MemoryRun::isEmpty() {
 // the first argument and the newer one is second
 MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
 
-    older->print();
-    newer->print();
-
     int olderSize = older->getSize();
     int newerSize = newer->getSize();
 
