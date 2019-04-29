@@ -93,7 +93,7 @@ bool MemoryRun::remove(int key) {
     }
 
     /* we didn't find it */
-    Entry *e = new Entry(key, INT_MAX, true);
+    Entry *e = new Entry(key, 0, true);
     return this->insert(*e);
 
 }
