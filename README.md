@@ -13,7 +13,10 @@ To benchmark on a certain workload, run the newly-created Benchmark script with 
 ```
 ./Benchmark runSize levelSize bloomSize file lines
 ```
-Where `runSize` is the number of entries in the memory run, `levelSize` is the number of runs in a level (and thus the scale factor of the "tree"), `bloomSize` is the number of bits in a bloom filter, `file` is the name of the workload file, and `lines` is the number of lines in that file.
+Where `runSize` is the number of entries in the memory run, `levelSize` is the number of runs in a level (and thus the scale factor of the "tree"), `bloomSize` is the number of bits in a bloom filter, `file` is the name of the workload file, and `lines` is the number of lines in that file. So, for example:
+```
+ ./Benchmark2 4000 4 5 inputs/mini_output 150000
+```
 
 The workload file should be a CSV of this format:
 ```
