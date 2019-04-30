@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
 	if (argc < 6) {
 		cout << "Insufficient arguments." << endl;
-		cout << "Usage: './Benchmark runSize levelSize bloomSize file lines'" << endl;
+		cout << "Usage: 'l'" << endl;
 		return 1;
 	}
 
