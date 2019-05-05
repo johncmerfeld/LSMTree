@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  29 APR 2019 23:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  5 MAY 2019 18:51
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -839,14 +839,14 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
 
-<./images/memRunWrites.jpeg, id=43, 1172.38pt x 557.08125pt>
+<./images/memRunWrites.jpeg, id=47, 1172.38pt x 557.08125pt>
 File: ./images/memRunWrites.jpeg Graphic file (type jpg)
 
 <use ./images/memRunWrites.jpeg>
 Package pdftex.def Info: ./images/memRunWrites.jpeg used on input line 71.
 (pdftex.def)             Requested size: 469.75502pt x 223.21106pt.
 
-<./images/memRunReads.jpeg, id=44, 1096.095pt x 557.08125pt>
+<./images/memRunReads.jpeg, id=48, 1096.095pt x 557.08125pt>
 File: ./images/memRunReads.jpeg Graphic file (type jpg)
 
 <use ./images/memRunReads.jpeg>
@@ -856,31 +856,46 @@ Package pdftex.def Info: ./images/memRunReads.jpeg used on input line 79.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[4 <./images/memRunWrites.jpeg>] [5 <./images/memRunReads.jpeg>] [6]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 100.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 100.
+[4 <./images/memRunWrites.jpeg>] [5 <./images/memRunReads.jpeg>]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 95.
 
-(./report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 100.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 100.
+(/usr/local/texlive/2015/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 95.
+
+Overfull \hbox (392.09901pt too wide) in paragraph at lines 105--106
+[]\OT1/cmr/m/n/12 [3] J. El-lis (2011, Oc-to-ber 11). Lev-eled Com-paction in A
+pache Cas-san-dra. https://web.archive.org/web/20140213134601/http://www.datast
+ax.com/dev/blog/leveled-
+ []
+
+[6]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 110.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 110.
+ (./report.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 110.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 110.
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: E7EAAC9DF44ABCDFC8E7BED9D5B7DD73;223.
+(rerunfilecheck)             Checksum: 675904C1753AADB8FE9BDB756D1B96C5;286.
  ) 
 Here is how much of TeX's memory you used:
- 23286 strings out of 493089
- 477852 string characters out of 6134842
+ 23306 strings out of 493089
+ 478189 string characters out of 6134842
  595166 words of memory out of 5000000
- 26380 multiletter control sequences out of 15000+600000
- 7442 words of font info for 29 fonts, out of 8000000 for 9000
+ 26396 multiletter control sequences out of 15000+600000
+ 7699 words of font info for 30 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 61i,7n,69p,1201b,395s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 61i,7n,69p,1201b,449s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 ></usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
-/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on report.pdf (6 pages, 155498 bytes).
+/usr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></u
+sr/local/texlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+Output written on report.pdf (6 pages, 163994 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 63 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
- 63 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 85 PDF objects out of 1000 (max. 8388607)
+ 70 compressed objects within 1 object stream
+ 16 named destinations out of 1000 (max. 500000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 

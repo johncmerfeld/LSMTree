@@ -33,6 +33,8 @@ public:
 
     Entry *get(int key);
 
+    Entry *getBinarySearch(int key);
+
     Entry at(int pos);
 
     MemoryRun *getRange(int low, int high);

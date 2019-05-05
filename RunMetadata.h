@@ -14,6 +14,8 @@ class RunMetadata {
 
 private:
     BloomFilter *bloomfilter;
+
+    /* TODO change this to an array of fence pointers */
     FencePointer *fencepointer;
     string filename;
     int size;

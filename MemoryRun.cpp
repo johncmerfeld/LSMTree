@@ -62,6 +62,17 @@ Entry *MemoryRun::get(int key) {
     return NULL;
 }
 
+Entry *MemoryRun::getBinarySearch(int key) {
+	/* TODO change this! */
+    for (int i = nextPos; i >= 0; i--) {
+        if (entries[i].getKey() == key) {
+            /* if the entry is a delete entry, we will get the delete sentinal */
+            return &entries[i];
+        }
+    }
+    return NULL;
+}
+
 Entry MemoryRun::at(int pos) {
     // TODO throw error if out of range?
     return entries[pos];
