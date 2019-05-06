@@ -15,12 +15,13 @@ using namespace std;
 #include <sys/types.h>
 #include <sys/stat.h>
 
-RunMetadata::RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptr,
-                         string filename, int size) {
+RunMetadata::RunMetadata(BloomFilter *bloomftr, FencePointer **fenceptrs,
+                         string filename, int size, int numFencePtrs) {
     this->bloomfilter = bloomftr;
-    this->fencepointer = fenceptr;
+    this->fencepointers = fenceptrs;
     this->filename = filename;
     this->size = size;
+    this->numFencePointers = numFencePtrs;
 
 }
 
@@ -40,16 +41,20 @@ BloomFilter* RunMetadata::getBloomFilter() {
 	return this->bloomfilter;
 }
 
-FencePointer* RunMetadata::getFencePointer() {
-	return this->fencepointer;
+FencePointer** RunMetadata::getFencePointers() {
+	return this->fencepointers;
 }
 
 bool RunMetadata::isInRange(int query) {
-	return fencepointer->isInRange(query);
+	//TODO fix this
+	// return fencepointer->isInRange(query);
+	return false;
 }
 
 bool RunMetadata::rangeOverlaps(int low, int high) {
-	return fencepointer->rangeOverlaps(low, high);
+	// TODO fix this
+	//return fencepointer->rangeOverlaps(low, high);
+	return false;
 }
 
 bool RunMetadata::mightContain(int query) {

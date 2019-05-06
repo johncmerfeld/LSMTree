@@ -15,13 +15,13 @@ class RunMetadata {
 private:
     BloomFilter *bloomfilter;
 
-    /* TODO change this to an array of fence pointers */
-    FencePointer *fencepointer;
+    FencePointer **fencepointers;
     string filename;
     int size;
+    int numFencePointers;
 
 public:
-    RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptr, string filename, int size);
+    RunMetadata(BloomFilter *bloomftr, FencePointer **fenceptrs, string filename, int size);
 
     RunMetadata(string filename);
 
@@ -30,7 +30,7 @@ public:
     string getFilename();
 
     BloomFilter* getBloomFilter();
-    FencePointer* getFencePointer();
+    FencePointer** getFencePointers();
 
     bool isInRange(int query);
     bool rangeOverlaps(int low, int high);
