@@ -83,12 +83,12 @@ Entry *LsmTree::getFromDisk(int key) {
             if ((diskRunMetadata[j]->mightContain(key)) &&
                 (diskRunMetadata[j]->isInRange(key))) {
                 diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
-                Entry *result = diskRun->get(key);
+                Entry *result = diskRun->getBinarySearch(key);
                 if (result == NULL) {
-                    /* found a delete */
                     continue;
                 }
                 else if (result->isRemove()) {
+                	/* found a delete */
                     return nullptr;
                 }
                 else {
@@ -98,7 +98,7 @@ Entry *LsmTree::getFromDisk(int key) {
         }
     }
     /* we didn't find it */
-    return NULL;
+    return nullptr;
 }
 
 /* gets a range from the LSM tree

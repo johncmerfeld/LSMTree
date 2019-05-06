@@ -59,18 +59,29 @@ Entry *MemoryRun::get(int key) {
             return &entries[i];
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 Entry *MemoryRun::getBinarySearch(int key) {
 	/* TODO change this! */
-    for (int i = nextPos; i >= 0; i--) {
-        if (entries[i].getKey() == key) {
-            /* if the entry is a delete entry, we will get the delete sentinal */
-            return &entries[i];
-        }
-    }
-    return NULL;
+
+	int left = 0;
+	int right = nextPos;
+	int mid;
+
+	while (left <= right) {
+		mid = (right - left) / 2;
+		if (entries[mid].getKey() == key) {
+			return &entries[mid];
+		}
+		else if (entries[mid].getKey() > key) {
+			left = mid + 1;
+		}
+		else {
+			right = mid - 1;
+		}
+	}
+	return nullptr;
 }
 
 Entry MemoryRun::at(int pos) {
