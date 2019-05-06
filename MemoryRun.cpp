@@ -70,7 +70,7 @@ Entry *MemoryRun::getBinarySearch(int key) {
 	int mid;
 
 	while (left <= right) {
-		mid = (right - left) / 2;
+		mid = (right + left) / 2;
 		if (entries[mid].getKey() == key) {
 			return &entries[mid];
 		}
