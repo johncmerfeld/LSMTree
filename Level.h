@@ -37,7 +37,7 @@ public:
 
     RunMetadata **getMetadata();
 
-    MemoryRun *readEntries(RunMetadata *meta, char dlete);
+    MemoryRun *readEntries(RunMetadata *meta, char dlete, int page);
 
     void printMeta();
 

@@ -45,16 +45,26 @@ FencePointer** RunMetadata::getFencePointers() {
 	return this->fencepointers;
 }
 
-bool RunMetadata::isInRange(int query) {
-	//TODO fix this
-	// return fencepointer->isInRange(query);
-	return false;
+int RunMetadata::pageInRange(int query) {
+
+	for (int i = 0; i < numFencePointers; i++) {
+		if (fencepointers[i]->isInRange(query)) {
+			return i;
+		}
+	}
+	/* not in range */
+	return -1;
 }
 
-bool RunMetadata::rangeOverlaps(int low, int high) {
-	// TODO fix this
-	//return fencepointer->rangeOverlaps(low, high);
-	return false;
+int RunMetadata::pageRangeOverlaps(int low, int high) {
+
+	for (int i = 0; i < numFencePointers; i++) {
+			if (fencepointers[i]->rangeOverlaps(low, high)) {
+				return i;
+			}
+		}
+	/* no overlap */
+	return -1;
 }
 
 bool RunMetadata::mightContain(int query) {

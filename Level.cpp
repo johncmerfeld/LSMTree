@@ -54,7 +54,7 @@ RunMetadata **Level::getMetadata() {
 
 
 //---------- Reads whole run for merging and deletes file if flag is specified ----------
-MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {
+MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
 
     int filedesc, numOfEntries = meta->getSize();
     char *fname = nameConvert(meta->getFilename());

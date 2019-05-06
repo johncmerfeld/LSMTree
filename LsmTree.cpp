@@ -73,6 +73,9 @@ Entry *LsmTree::get(int key) {
 }
 
 Entry *LsmTree::getFromDisk(int key) {
+
+	int page = -1;
+
     for (int i = 0; i < levelsCount; i++) {
         /* get the array of metadata */
         RunMetadata **diskRunMetadata = diskLevels[i].getMetadata();
@@ -80,20 +83,24 @@ Entry *LsmTree::getFromDisk(int key) {
         MemoryRun *diskRun;
         for (int j = diskLevels[i].getRuns() - 1; j >= 0; j--) {
             /* if it might be there, read from disk */
-            if ((diskRunMetadata[j]->mightContain(key)) &&
-                (diskRunMetadata[j]->isInRange(key))) {
-                diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
-                Entry *result = diskRun->getBinarySearch(key);
-                if (result == NULL) {
-                    continue;
-                }
-                else if (result->isRemove()) {
-                	/* found a delete */
-                    return nullptr;
-                }
-                else {
-                    return result;
-                }
+            if (diskRunMetadata[j]->mightContain(key)) {
+
+            	page = diskRunMetadata[j]->pageInRange(key);
+            	/* if it's in the range of a page, read disk */
+            	if (page != -1) {
+            		diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0, page);
+					Entry *result = diskRun->getBinarySearch(key);
+					if (result == NULL) {
+						continue;
+					}
+					else if (result->isRemove()) {
+						/* found a delete */
+						return nullptr;
+					}
+					else {
+						return result;
+					}
+            	}
             }
         }
     }
@@ -110,6 +117,8 @@ MemoryRun *LsmTree::getRange(int low, int high) {
     MemoryRun *results = memRun->getRange(low, high);
     results->sort();
 
+    int page = -1;
+
     /* for each level: */
     for (int i = 0; i < levelsCount; i++) {
         /* get the array of metadata */
@@ -118,17 +127,16 @@ MemoryRun *LsmTree::getRange(int low, int high) {
         for (int j = diskLevels[i].getRuns() - 1; j >= 0; j--) {
 
             MemoryRun *diskRun;
-            /* only checking fence pointer because I don't think it
-             * makes sense to check bloom filters for a large range */
-            /* if it might be there, read from disk */
-            if (diskRunMetadata[j]->rangeOverlaps(low, high)) {
-                diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0);
+
+            page = diskRunMetadata[j]->pageRangeOverlaps(low, high);
+			/* if it's in the range of a page, read disk */
+			if (page != -1) {
+                diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0, page);
 
                 MemoryRun *diskResults = diskRun->getRange(low, high);
                 diskResults->sort();
 
                 results = MemoryRun::merge(diskResults, results);
-
             }
         }
     }
@@ -136,7 +144,6 @@ MemoryRun *LsmTree::getRange(int low, int high) {
     /* remove deletes from result set */
     results->removeDeletes();
     return results;
-
 }
 
 RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
