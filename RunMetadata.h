@@ -21,7 +21,7 @@ private:
     int numFencePointers;
 
 public:
-    RunMetadata(BloomFilter *bloomftr, FencePointer **fenceptrs, string filename, int size);
+    RunMetadata(BloomFilter *bloomftr, FencePointer **fenceptrs, string filename, int size, int numFencePtrs);
 
     RunMetadata(string filename);
 

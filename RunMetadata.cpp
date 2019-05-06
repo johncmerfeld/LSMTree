@@ -25,7 +25,7 @@ RunMetadata::RunMetadata(BloomFilter *bloomftr, FencePointer **fenceptrs,
 
 }
 
-RunMetadata::RunMetadata(string filename) : RunMetadata(nullptr, nullptr, filename, 0) {
+RunMetadata::RunMetadata(string filename) : RunMetadata(nullptr, nullptr, filename, 0, 0) {
 
 }
 
@@ -77,5 +77,5 @@ int RunMetadata::getSize() {
 
 RunMetadata::~RunMetadata() {
     delete bloomfilter;
-    delete fencepointer;
+    delete fencepointers;
 }
