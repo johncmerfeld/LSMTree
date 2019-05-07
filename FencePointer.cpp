@@ -36,7 +36,7 @@ int FencePointer::isInRange(int query) {
 	else return -1;
 }
 
-bool FencePointer::rangeOverlaps(int low, int high) {
+int FencePointer::rangeOverlaps(int low, int high) {
     return ((low <= highest) && (high >= lowest));
 
     if ((low <= highest) && (high >= lowest)) {

@@ -20,7 +20,7 @@ public:
 	void setHighest(int newHigh);
 	void setPointers(int low, int high);
 	int isInRange(int query);
-	bool rangeOverlaps(int low, int high);
+	int rangeOverlaps(int low, int high);
 
 };
 
