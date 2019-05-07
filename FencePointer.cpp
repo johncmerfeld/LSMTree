@@ -30,7 +30,7 @@ void FencePointer::setPointers(int low, int high) {
 int FencePointer::isInRange(int query) {
 //    printf("low is %d and high is %d\n", lowest, highest);
 
-	cout << "My lowest is " << lowest << "; my highest is " << highest << ". I'm looking for " << query << "\n";
+	cerr << "My lowest is " << lowest << "; my highest is " << highest << ". I'm looking for " << query << "\n";
 
 	if ((query >= lowest) && (query <= highest)) {
 		return 0;
