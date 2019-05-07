@@ -12,35 +12,36 @@
 
 using namespace std;
 
-int main(int argc, char *argv[]) {
-    ResultSet *rs;
-    TierLsmTree *tree = new TierLsmTree(20, 2, 5);
-
-    for (int i = 0; i < atoi(argv[1]); i++) {
-        tree->insert(i, i);
-    }
-//    tree->printMeta();
-    cout << tree->get(10)->getValue();
+//int main(int argc, char *argv[]) {
+//    ResultSet *rs;
+//    TierLsmTree *tree = new TierLsmTree(4000, 2, 5);
 //
-//    delete tree;
-//
-//    cout << "----------------";
-//    MemoryRun *temp = new MemoryRun(20);
-//
-//    for (int i = 0; i < 9; i++)
-//        temp->insert(new Entry(i, i, 0));
-//
-//
-//    for (int i = 0; i < 9; i++)
-//        temp->insert(new Entry(i % 2, 2 * i, 0));
-//
-//
-//    temp->removeDuplicates();
-//
-//
-//    temp->printer();
-//
-//    int news = temp->getSize() / 2;
-////    MemoryRun *temp2 = new MemoryRun(entries2, j);
-//
-}
+//    for (int i = 0; i < atoi(argv[1]); i++) {
+//        tree->insert(i, i);
+//    }
+////    tree->printMeta();
+//    tree->get(3999)->printer();
+//    tree->getRange(10, 50)->printer();
+////
+////    delete tree;
+////
+////    cout << "----------------";
+////    MemoryRun *temp = new MemoryRun(20);
+////
+////    for (int i = 0; i < 9; i++)
+////        temp->insert(new Entry(i, i, 0));
+////
+////
+////    for (int i = 0; i < 9; i++)
+////        temp->insert(new Entry(i % 2, 2 * i, 0));
+////
+////
+////    temp->removeDuplicates();
+////
+////
+////    temp->printer();
+////
+////    int news = temp->getSize() / 2;
+//////    MemoryRun *temp2 = new MemoryRun(entries2, j);
+////
+//}

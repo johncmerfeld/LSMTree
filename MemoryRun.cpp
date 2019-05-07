@@ -78,7 +78,7 @@ Entry *MemoryRun::getBinarySearch(int key) {
 		if (entries[mid].getKey() == key) {
 			return &entries[mid];
 		}
-		else if (entries[mid].getKey() > key) {
+		else if (entries[mid].getKey() < key) {
 			left = mid + 1;
 		}
 		else {

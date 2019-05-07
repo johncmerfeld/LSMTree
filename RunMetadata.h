@@ -34,6 +34,7 @@ public:
     BloomFilter* getBloomFilter();
     FencePointer* getFencePointers();
 
+    int getNumFncPtrs();
     int pageInRange(int query);
     int pageRangeOverlaps(int low, int high);
     bool mightContain(int query);

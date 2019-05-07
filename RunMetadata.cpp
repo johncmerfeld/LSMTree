@@ -47,10 +47,15 @@ FencePointer *RunMetadata::getFencePointers() {
     return this->fencepointers;
 }
 
+int RunMetadata::getNumFncPtrs() { return this->numFencePointers; }
+
 int RunMetadata::pageInRange(int query) {
-    printf("we have %d fencepointers\n", numFencePointers);
+//    printf("we have %d fencepointers\n", numFencePointers);
+//    printf("metadata has %d fence pointers\n", numFencePointers);
     for (int i = 0; i < numFencePointers; i++) {
+//        printf("we just searched %d-%d\n", fencepointers[i].getLowest(), fencepointers[i].getHighest());
         if (fencepointers[i].isInRange(query)) {
+
             return i;
         }
     }
@@ -79,5 +84,5 @@ int RunMetadata::getSize() {
 
 RunMetadata::~RunMetadata() {
     delete bloomfilter;
-    delete fencepointers;
+    delete[] fencepointers;
 }

@@ -82,14 +82,19 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
 
     int filedesc, numOfEntries = meta->getSize();
     char *fname = nameConvert(meta->getFilename());
-    Entry *data = new Entry[getpagesize()];
+    Entry *data = new Entry[numOfEntries];
 
     //---------- Read from filedescriptor ----------
     filedesc = open(fname, O_RDONLY | O_DIRECT);
     if (filedesc < 0)
         write(2, "An error occurred in the read.\n", 31);
 
-    if (read(filedesc, data, numOfEntries * sizeof(Entry)) < 0)
+    int numOfFencePointers = meta->getNumFncPtrs();
+    int step = meta->getSize() / numOfFencePointers + int((meta->getSize() % numOfFencePointers) != 0);
+
+    int offset = page * step * sizeof(Entry);
+    int readd = 0;
+    if ((readd = pread(filedesc, data, step * sizeof(Entry), offset)) < 0)
         write(2, "An error occurred in the read.\n", 31);
 
 
@@ -98,7 +103,7 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
         remove(fname);
 
     delete[] fname;
-    return new MemoryRun(data, numOfEntries);;
+    return new MemoryRun(data, readd / sizeof(Entry));
 }
 
 void Level::printMeta() {
