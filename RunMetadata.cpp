@@ -62,7 +62,7 @@ int RunMetadata::pageInRange(int query) {
 		if (outcome == 0) {
 			return mid;
 		}
-		else if (outcome == -1) {
+		else if (outcome == 1) {
 			left = mid + 1;
 		}
 		else {
@@ -86,7 +86,7 @@ int RunMetadata::pageRangeOverlaps(int low, int high) {
 		if (outcome == 0) {
 			return mid;
 		}
-		else if (outcome == -1) {
+		else if (outcome == 1) {
 			left = mid + 1;
 		}
 		else {
