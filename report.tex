@@ -94,7 +94,16 @@ Furthermore, the tree clearly performs better on writes than reads. Notice how a
 \begin{itemize}
 \item Added citations and corrections to the report.
 \item Actually implemented binary search when scanning disk runs in memory.
+\item The following work on reading pages from the disk:
 \end{itemize}
+
+First, we found a major bug in the previous implementation that was giving artificially good results for reads (even though they were still quite slow in absolute terms). The bug was that during merging of lower levels of the tree, the new disk runs' fence pointer was being created based on the values of the \textbf{current} memory run. This resulted in false negatives being reported for get() operations, meaning no reads from disk would actually take place. This bug has been fixed, significantly increasing read times but giving correct results.
+
+Second, the run metadata object now contains an array of fence pointers, with one assigned to each page of the run. During point and range queries, a binary search through the fence pointers returns either a negative result or the number of the page to read from the disk. pread() is used to turn this into an offset and read the data in question.
+
+Unfortunately, this change does not appear to speed up our reads significantly; it certainly does not offset the slowdown that comes from fixing our previous bug. Furthermore, there is an unresolved memory allocation problem for large datasets as a result of the change.
+
+In short, Version 1.1 of our LSM tree has tight semantic guarantees and smarter internal logic, but its throughput is no better than Version 1.0.
 
 \section*{Sources}
 \indent \indent [1] P. E. O'Neil, E. Cheng, D. Gawlick, and E. J. O'Neil. The
