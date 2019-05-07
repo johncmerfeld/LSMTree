@@ -43,7 +43,12 @@ bool MemoryRun::insert(Entry e) {
 }
 
 bool MemoryRun::insert(Entry *e) {
+//    cout << "----------";
+//    cout << e->getKey();
+//    cout << endl;
     memcpy(&entries[nextPos], e, sizeof(Entry));
+//    cout << entries[nextPos].getKey();
+//    cout << "------" << endl;
     nextPos++;
     return nextPos != maxEntries;
 }

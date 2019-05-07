@@ -33,6 +33,10 @@ int main(int argc, char *argv[]) {
                 if (g1.size() != 0) {
                     printf("u,%d,%d\n", g1[rand() % g1.size()], rand() % lines);
                 }
+                else {
+                    int elem = rand() % (lines * 100);
+                    g1.push_back(elem);
+                }
             }
         }
         else {
@@ -41,13 +45,20 @@ int main(int argc, char *argv[]) {
             printf("i,%d,%d\n", elem, rand() % lines);
         }
     }
+//
+//    for (int i = 0; i < lines / 2; i++) {
+//        if (rand() % 100 < existGets) {
+//            printf("g,%d\n", g1[rand() % g1.size()]);
+//        }
+//        else {
+//            printf("g,%d\n", rand() % (lines * 100));
+//        }
+//    }
+
 
     for (int i = 0; i < lines / 2; i++) {
-        if (rand() % 100 < existGets) {
-            printf("g,%d\n", g1[rand() % g1.size()]);
-        }
-        else {
-            printf("g,%d\n", rand() % (lines * 100));
-        }
+        int r1 = rand() % (lines * 100);
+        int r2 = r1 + lines;
+        printf("r,%d,%d\n", r1, r2);
     }
 }

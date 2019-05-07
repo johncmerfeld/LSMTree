@@ -54,16 +54,14 @@ RunMetadata **Level::getMetadata() {
 
 
 //---------- Reads whole run for merging and deletes file if flag is specified ----------
-MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
+MemoryRun *Level::readEntries(RunMetadata *meta, char dlete) {
 
     int filedesc, numOfEntries = meta->getSize();
     char *fname = nameConvert(meta->getFilename());
     Entry *data = new Entry[meta->getSize()];
 
-
-    //printf("just read %d\n", meta->getSize());
     //---------- Read from filedescriptor ----------
-    filedesc = open(fname, O_RDONLY);
+    filedesc = open(fname, O_RDONLY | O_DIRECT);
     if (filedesc < 0)
         write(2, "An error occurred in the read.\n", 31);
 
@@ -79,10 +77,33 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
     return new MemoryRun(data, numOfEntries);;
 }
 
+//---------- Reads single page as specified by offset ----------
+MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
+
+    int filedesc, numOfEntries = meta->getSize();
+    char *fname = nameConvert(meta->getFilename());
+    Entry *data = new Entry[getpagesize()];
+
+    //---------- Read from filedescriptor ----------
+    filedesc = open(fname, O_RDONLY | O_DIRECT);
+    if (filedesc < 0)
+        write(2, "An error occurred in the read.\n", 31);
+
+    if (read(filedesc, data, numOfEntries * sizeof(Entry)) < 0)
+        write(2, "An error occurred in the read.\n", 31);
+
+
+    close(filedesc);
+    if (dlete)
+        remove(fname);
+
+    delete[] fname;
+    return new MemoryRun(data, numOfEntries);;
+}
 
 void Level::printMeta() {
     for (int i = 0; i < this->runsInLevel; i++) {
-        printf("meta has %d\n", levelMetadata[i]->getSize());
+        printf("meta has %s %d\n", levelMetadata[i]->getFilename(), levelMetadata[i]->getSize());
     }
 }
 
@@ -132,9 +153,6 @@ bool TieringLevel::add(MemoryRun *mdata, RunMetadata *meta) {
     int filedesc = open(fname, O_WRONLY | O_APPEND | O_CREAT | O_TRUNC, 0644);
     if (filedesc < 0)
         return 2;
-
-
-
 
     int size = mdata->getSize() * sizeof(Entry);
     Entry *entries = mdata->getEntries();

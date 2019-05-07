@@ -15,13 +15,15 @@ class RunMetadata {
 private:
     BloomFilter *bloomfilter;
 
-    FencePointer **fencepointers;
+    FencePointer *fencepointers;
     string filename;
     int size;
     int numFencePointers;
 
 public:
-    RunMetadata(BloomFilter *bloomftr, FencePointer **fenceptrs, string filename, int size, int numFencePtrs);
+    RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptrs, string filename, int size, int numFencePtrs);
+
+    RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptrs, string filename, int size);
 
     RunMetadata(string filename);
 
@@ -30,7 +32,7 @@ public:
     string getFilename();
 
     BloomFilter* getBloomFilter();
-    FencePointer** getFencePointers();
+    FencePointer* getFencePointers();
 
     int pageInRange(int query);
     int pageRangeOverlaps(int low, int high);

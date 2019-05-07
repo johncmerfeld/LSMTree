@@ -74,33 +74,42 @@ Entry *LsmTree::get(int key) {
 
 Entry *LsmTree::getFromDisk(int key) {
 
-	int page = -1;
+    int page = -1;
 
     for (int i = 0; i < levelsCount; i++) {
         /* get the array of metadata */
+        printf("gonna get meta from level %d\n", i);
+        getchar();
         RunMetadata **diskRunMetadata = diskLevels[i].getMetadata();
+        printf("i got the meta from level %d\n\n", i);
         /* for each run in the level: */
         MemoryRun *diskRun;
+        printf("runs in  level %d are %d\n", i, diskLevels[i].getRuns() - 1);
         for (int j = diskLevels[i].getRuns() - 1; j >= 0; j--) {
             /* if it might be there, read from disk */
+            printf("entered level %d\n", i);
+            getchar();
+            diskLevels[j].printMeta();
             if (diskRunMetadata[j]->mightContain(key)) {
-
-            	page = diskRunMetadata[j]->pageInRange(key);
-            	/* if it's in the range of a page, read disk */
-            	if (page != -1) {
-            		diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0, page);
-					Entry *result = diskRun->getBinarySearch(key);
-					if (result == NULL) {
-						continue;
-					}
-					else if (result->isRemove()) {
-						/* found a delete */
-						return nullptr;
-					}
-					else {
-						return result;
-					}
-            	}
+                printf("we ARE in the might contain\n");
+                page = diskRunMetadata[j]->pageInRange(key);
+                printf("found it in page %d\n", page);
+                /* if it's in the range of a page, read disk */
+                if (page != -1) {
+                    printf("in here\n");
+                    diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0, page);
+                    Entry *result = diskRun->getBinarySearch(key);
+                    if (result == NULL) {
+                        continue;
+                    }
+                    else if (result->isRemove()) {
+                        /* found a delete */
+                        return nullptr;
+                    }
+                    else {
+                        return result;
+                    }
+                }
             }
         }
     }
@@ -129,8 +138,8 @@ MemoryRun *LsmTree::getRange(int low, int high) {
             MemoryRun *diskRun;
 
             page = diskRunMetadata[j]->pageRangeOverlaps(low, high);
-			/* if it's in the range of a page, read disk */
-			if (page != -1) {
+            /* if it's in the range of a page, read disk */
+            if (page != -1) {
                 diskRun = diskLevels[i].readEntries(diskRunMetadata[j], 0, page);
 
                 MemoryRun *diskResults = diskRun->getRange(low, high);
@@ -150,8 +159,6 @@ RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
     int entriesInRun = memRunData->getSize();
     Entry *entries = memRunData->getEntries();
 
-//    printf("i will create metadata with size %d for entries:\n", memRunData->getSize());
-//    memRunData->printer();
 
     //---------- Initialize Bloomfilter ----------
     int bloomFilterSize = entriesInRun * bitsPerValue / 8 + 1;
@@ -161,16 +168,23 @@ RunMetadata *LsmTree::createMetadata(MemoryRun *memRunData, string suffix) {
 
     //---------- Initialize Fence Pointers ----------
     memRun->sort();
-    FencePointer *fenceptr = new FencePointer(memRun->at(0).getValue(),
-                                              memRun->at(memRun->getSize() - 1).getValue());
+    FencePointer *fenceptr = new FencePointer[1];
+    printf("low is %d and high is %d\n", memRunData->at(0).getValue(),
+           memRunData->at(memRunData->getSize() - 1).getValue());
+    fenceptr[0].setPointers(memRunData->at(0).getValue(), memRunData->at(memRunData->getSize() - 1).getValue());
 
     //---------- Initialize filename ----------
     string filename = this->filename + suffix;
 
     //---------- Create the metadata  ----------
-    RunMetadata *metadata = new RunMetadata(bloomftr, fenceptr, filename, entriesInRun);
+    RunMetadata *metadata = new RunMetadata(bloomftr, fenceptr, filename, entriesInRun, 1);
 
     return metadata;
+}
+
+void LsmTree::printMeta() {
+    for (int i = 0; i < levelsCount; i++)
+        diskLevels[i].printMeta();
 }
 
 MemoryRun LsmTree::sortMerge(MemoryRun *left, MemoryRun *right) {
@@ -202,7 +216,7 @@ void TierLsmTree::insert(int key, int value) {
 }
 
 void TierLsmTree::remove(int key) {
-	this->insert(key, 0, true);
+    this->insert(key, 0, true);
 }
 
 void TierLsmTree::insert(int key, int value, bool isRemove) {
@@ -227,33 +241,21 @@ void TierLsmTree::flushToDisk() {
     RunMetadata *meta = nullptr;
 
     bool flag = false;
-//    cout << "----------------------" << endl;
-//    for (int i = 0; i < levelsCount; i++) {
-//        diskLevels[i].printMeta();
-//    }
-//    cout << endl;
-
     //---------- Check if we can insert in the first level ----------
     //---------- After that get and use the merged data of the 1st level ----------
     if (diskLevels[0].hasSpace()) {
         meta = createMetadata(this->memRun, suffix(0, diskLevels[0].getRuns()));
         diskLevels[0].add(this->memRun, meta);
-//        cout << "----------------" << endl;
         return;
     }
     else
         merged = diskLevels[0].mergeLevel(this->memRun);
 
 //    memRun->reset();
-
+    printf("size of merged is %d\n", merged->getSize());
     int levelsCounter = 1;
-//    printf("merged before has %d \n", merged->getSize());
-//    merged->printer();
-//    cout << endl;
-
     while (levelsCounter < levelsCount && !flag) {
         flag = false;
-//        cout << "mpike" << endl;
         if (diskLevels[levelsCounter].hasSpace()) {
             meta = createMetadata(merged, suffix(levelsCounter, diskLevels[levelsCounter].getRuns()));
             diskLevels[levelsCounter].add(merged, meta);
@@ -263,7 +265,6 @@ void TierLsmTree::flushToDisk() {
             data = merged;
             merged = diskLevels[levelsCounter].mergeLevel(merged);
             delete data;
-//            printf("merged has %d \n", merged->getSize());
         }
         levelsCounter++;
     }
@@ -271,7 +272,6 @@ void TierLsmTree::flushToDisk() {
     //---------- If we did not manage to add the memory run to some existing level ----------
     if (!flag) {
         //---------- Add new level and insert the run in that level ----------
-//        cout << "time for a new level" << endl;
         temp = new TieringLevel[levelsCount + 1];
         memcpy(temp, diskLevels, levelsCount * sizeof(TieringLevel));
         delete[] diskLevels;
@@ -279,15 +279,9 @@ void TierLsmTree::flushToDisk() {
         levelsCount += 1;
 
         //---------- Insert the new run in the disk ----------
-//        cout << "before creating metadata for new level ";
-//        cout << meta->getSize();
         meta = createMetadata(merged, suffix(levelsCounter, diskLevels[levelsCounter].getRuns()));
-        cout << "after creating metadata for new level ";
-        cout << meta->getSize();
         diskLevels[levelsCounter].add(merged, meta);
-
     }
-//    cout << "----------------------" << endl;
 //    delete merged;
 }
 

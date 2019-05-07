@@ -41,6 +41,7 @@ protected:
 
     string suffix(int level, int run);
 
+
 public:
     LsmTree();
 
@@ -50,9 +51,11 @@ public:
 
     void removeMany();
 
-    Entry* get(int key);
+    Entry *get(int key);
 
     MemoryRun *getRange(int low, int high);
+
+    void printMeta();
 
     ~LsmTree();
 };
