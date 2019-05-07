@@ -68,10 +68,9 @@ Entry *MemoryRun::get(int key) {
 }
 
 Entry *MemoryRun::getBinarySearch(int key) {
-	/* TODO change this! */
 
 	int left = 0;
-	int right = nextPos;
+	int right = nextPos - 1;
 	int mid;
 
 	while (left <= right) {
