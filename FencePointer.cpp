@@ -24,11 +24,26 @@ void FencePointer::setPointers(int low, int high) {
     this->highest = high;
 }
 
-bool FencePointer::isInRange(int query) {
+int FencePointer::isInRange(int query) {
 //    printf("low is %d and high is %d\n", lowest, highest);
-    return ((query >= lowest) && (query <= highest));
+
+	if ((query >= lowest) && (query <= highest)) {
+		return 0;
+	}
+	else if (query > highest) {
+		return 1;
+	}
+	else return -1;
 }
 
 bool FencePointer::rangeOverlaps(int low, int high) {
     return ((low <= highest) && (high >= lowest));
+
+    if ((low <= highest) && (high >= lowest)) {
+		return 0;
+	}
+	else if (low > highest) {
+		return 1;
+	}
+	else return -1;
 }

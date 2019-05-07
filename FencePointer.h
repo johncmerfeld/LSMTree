@@ -19,7 +19,7 @@ public:
 	void setLowest(int newLow);
 	void setHighest(int newHigh);
 	void setPointers(int low, int high);
-	bool isInRange(int query);
+	int isInRange(int query);
 	bool rangeOverlaps(int low, int high);
 
 };

@@ -49,29 +49,52 @@ FencePointer *RunMetadata::getFencePointers() {
 
 int RunMetadata::getNumFncPtrs() { return this->numFencePointers; }
 
+/* binary search over fence pointers */
 int RunMetadata::pageInRange(int query) {
-//    printf("we have %d fencepointers\n", numFencePointers);
-//    printf("metadata has %d fence pointers\n", numFencePointers);
-    for (int i = 0; i < numFencePointers; i++) {
-//        printf("we just searched %d-%d\n", fencepointers[i].getLowest(), fencepointers[i].getHighest());
-        if (fencepointers[i].isInRange(query)) {
 
-            return i;
-        }
-    }
-    /* not in range */
-    return -1;
+	int left = 0;
+	int right = numFencePointers - 1;
+	int mid, outcome;
+
+	while (left <= right) {
+		mid = (right + left) / 2;
+		outcome = fencepointers[mid].isInRange(query);
+		if (outcome == 0) {
+			return mid;
+		}
+		else if (outcome == -1) {
+			left = mid + 1;
+		}
+		else {
+			right = mid - 1;
+		}
+	}
+	/* didn't find it */
+	return -1;
 }
+
 
 int RunMetadata::pageRangeOverlaps(int low, int high) {
 
-    for (int i = 0; i < numFencePointers; i++) {
-        if (fencepointers[i].rangeOverlaps(low, high)) {
-            return i;
-        }
-    }
-    /* no overlap */
-    return -1;
+	int left = 0;
+	int right = numFencePointers - 1;
+	int mid, outcome;
+
+	while (left <= right) {
+		mid = (right + left) / 2;
+		outcome = fencepointers[mid].rangeOverlaps(low, high);
+		if (outcome == 0) {
+			return mid;
+		}
+		else if (outcome == -1) {
+			left = mid + 1;
+		}
+		else {
+			right = mid - 1;
+		}
+	}
+	/* didn't find it */
+	return -1;
 }
 
 bool RunMetadata::mightContain(int query) {
