@@ -13,10 +13,9 @@ To benchmark on a certain workload, run the newly-created Benchmark script with 
 ./Benchmark [runSize] [runs per level] [bits per entry] [filename] [lines]
 ```
 Folder inputs contains inputs files that you can test:
-All input files have lines inserts/updates/deletes plus lines/2 point queries. All files have 10% deletes and 10% updates and for all files
-about 50% of the queries exist in the tree and the other 50% does not.
+All input files have lines inserts/updates/deletes plus lines/2 point queries. All files have 10% deletes and 10% updates and for all files about 50% of the queries exist in the tree and the other 50% does not.
 
-mini_output 1000 inserts 500 queries
+mini_output 1000 inserts 500 queries </br>
 medium_output 100000 inserts 50000 queries
 large_output 1000000 inserts 500000 queries
 large_output2 1000000 inserts 500000 queries
