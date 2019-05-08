@@ -47,7 +47,8 @@ Further tests were performed in other implementations
 </br>
 In folder inputs you can compile the file `createInput.cp` using the command: </br>
 
-``` g++ -o createInput.cpp inputs
+``` 
+g++ -o createInput.cpp inputs
 ```
 You can run inputs as follows to create input files:
 
