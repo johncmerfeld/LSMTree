@@ -44,6 +44,22 @@ where `i,k,v` inserts key `k` and value `v`; `u,k,v` updates key `k` with new va
 The program will output how long the writing and reading portions took in total.
 Further tests were performed in other implementations
 
+</br>
+In folder inputs you can compile the file `createInput.cpp` using the command: </br>
+``` g++ -o createInput.cpp inputs
+```
+You can run inputs as follows to create input files:
+```
+inputs [number of insers] [deletes as percentage of the total inserts] [updates as percentage of total inserts] [percentage of point queries that will exist in the tree]
+
+```
+Example run :
+```
+inputs 1000 10 10 80
+
+```
+That command will create an input file with approximately 800 insers, 100 updates, 100 deletes and 500 point queries out of which 400 will exist in the tree and 100 will not
+
 ## Learn more about the data model
 Request access to our [report](https://docs.google.com/document/d/1aiCbnJg5yD3l76P94VKcshdjGhhWwCCbiu9C8AN-hqc/edit) and [slides](https://docs.google.com/presentation/d/1a4LdrVUd1Ng1kvCgmm9wlFmXZA3SsGBnbjlhzKDQPww/edit#slide=id.g58f6518e26_0_777) on this project.
 
