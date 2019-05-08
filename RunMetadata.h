@@ -27,20 +27,27 @@ public:
 
     RunMetadata(string filename);
 
-    void setFilename(string levelNumber);
-
+    // --------------------------------------------------------------
     string getFilename();
 
-    BloomFilter* getBloomFilter();
-    FencePointer* getFencePointers();
+    BloomFilter *getBloomFilter();
+
+    FencePointer *getFencePointers();
 
     int getNumFncPtrs();
-    int pageInRange(int query);
-    int pageRangeOverlaps(int low, int high);
-    bool mightContain(int query);
 
     int getSize();
 
+    void setFilename(string levelNumber);
+
+    // --------------------------------------------------------------
+    int pageInRange(int query);
+
+    int pageRangeOverlaps(int low, int high);
+
+    bool mightContain(int query);
+
+    // --------------------------------------------------------------
     ~RunMetadata();
 };
 

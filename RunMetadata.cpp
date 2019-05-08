@@ -15,6 +15,8 @@ using namespace std;
 #include <sys/types.h>
 #include <sys/stat.h>
 
+
+//------------------------ Constructors ---------------------
 RunMetadata::RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptrs, string filename, int size,
                          int numFencePtrs) {
     this->bloomfilter = bloomftr;
@@ -31,9 +33,8 @@ RunMetadata::RunMetadata(BloomFilter *bloomftr, FencePointer *fenceptrs,
 RunMetadata::RunMetadata(string filename) : RunMetadata(nullptr, nullptr, filename, 1) {
 }
 
-void RunMetadata::setFilename(string levelNumber) {
-    this->filename = levelNumber;
-}
+
+//------------------------ Getters ---------------------
 
 string RunMetadata::getFilename() {
     return this->filename;
@@ -47,8 +48,23 @@ FencePointer *RunMetadata::getFencePointers() {
     return this->fencepointers;
 }
 
-int RunMetadata::getNumFncPtrs() { return this->numFencePointers; }
+int RunMetadata::getNumFncPtrs() {
+	return this->numFencePointers;
+}
 
+int RunMetadata::getSize() {
+	return this->size;
+}
+
+
+//------------------------ Setters ---------------------
+
+void RunMetadata::setFilename(string levelNumber) {
+	this->filename = levelNumber;
+}
+
+
+//------------------------ Range search ---------------------
 /* binary search over fence pointers */
 int RunMetadata::pageInRange(int query) {
 
@@ -69,7 +85,7 @@ int RunMetadata::pageInRange(int query) {
 			right = mid - 1;
 		}
 	}
-	/* didn't find it */
+	/* didn' find it */
 	return -1;
 }
 
@@ -101,10 +117,8 @@ bool RunMetadata::mightContain(int query) {
     return bloomfilter->contains(query);
 }
 
-int RunMetadata::getSize() {
-    return this->size;
-}
 
+//------------------------ Destructor ---------------------
 RunMetadata::~RunMetadata() {
     delete bloomfilter;
     delete[] fencepointers;

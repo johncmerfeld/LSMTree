@@ -31,8 +31,6 @@ int MemoryRun::numElements() {
 }
 
 bool MemoryRun::insert(Entry e) {
-
-
     /* insert and increment */
     entries[nextPos].setEntry(&e);
 
@@ -43,12 +41,7 @@ bool MemoryRun::insert(Entry e) {
 }
 
 bool MemoryRun::insert(Entry *e) {
-//    cout << "----------";
-//    cout << e->getKey();
-//    cout << endl;
     memcpy(&entries[nextPos], e, sizeof(Entry));
-//    cout << entries[nextPos].getKey();
-//    cout << "------" << endl;
     nextPos++;
     return nextPos != maxEntries;
 }
@@ -69,23 +62,23 @@ Entry *MemoryRun::get(int key) {
 
 Entry *MemoryRun::getBinarySearch(int key) {
 
-	int left = 0;
-	int right = nextPos - 1;
-	int mid;
+    int left = 0;
+    int right = nextPos - 1;
+    int mid;
 
-	while (left <= right) {
-		mid = (right + left) / 2;
-		if (entries[mid].getKey() == key) {
-			return &entries[mid];
-		}
-		else if (entries[mid].getKey() < key) {
-			left = mid + 1;
-		}
-		else {
-			right = mid - 1;
-		}
-	}
-	return nullptr;
+    while (left <= right) {
+        mid = (right + left) / 2;
+        if (entries[mid].getKey() == key) {
+            return new Entry(entries[mid].getKey(), entries[mid].getValue(), 0);
+        }
+        else if (entries[mid].getKey() < key) {
+            left = mid + 1;
+        }
+        else {
+            right = mid - 1;
+        }
+    }
+    return nullptr;
 }
 
 Entry MemoryRun::at(int pos) {
@@ -182,6 +175,7 @@ MemoryRun *MemoryRun::merge(MemoryRun *older, MemoryRun *newer) {
 
 void MemoryRun::removeDuplicates() {
     this->sort();
+    
     //------------------------Keep only latest version in memory run after sorting ---------------------
     Entry *entries = this->getEntries();
     Entry *entries2 = new Entry[this->getSize()];

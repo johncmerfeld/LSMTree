@@ -7,13 +7,19 @@
 
 using namespace std;
 
+
+//-------------------- Constructor --------------------
 FencePointer::FencePointer(int low, int high) :
         lowest(low), highest(high) {}
 
+
+//-------------------- Getters --------------------
 int FencePointer::getLowest() { return this->lowest; }
 
 int FencePointer::getHighest() { return this->highest; }
 
+
+//-------------------- Setters --------------------
 void FencePointer::setLowest(int newLow) {
     this->lowest = newLow;
 }
@@ -27,28 +33,17 @@ void FencePointer::setPointers(int low, int high) {
     this->highest = high;
 }
 
+//-------------------- Range checks --------------------
 int FencePointer::isInRange(int query) {
-//    printf("low is %d and high is %d\n", lowest, highest);
-
-	cerr << "My lowest is " << lowest << "; my highest is " << highest << ". I'm looking for " << query << "\n";
-
-	if ((query >= lowest) && (query <= highest)) {
+	if ((query >= lowest) && (query <= highest))
 		return 0;
-	}
-	else if (query > highest) {
+	else if (query > highest)
 		return 1;
-	}
-	else return -1;
+	else
+		return -1;
 }
 
 int FencePointer::rangeOverlaps(int low, int high) {
     return ((low <= highest) && (high >= lowest));
 
-    if ((low <= highest) && (high >= lowest)) {
-		return 0;
-	}
-	else if (low > highest) {
-		return 1;
-	}
-	else return -1;
 }

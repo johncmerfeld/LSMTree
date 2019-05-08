@@ -8,7 +8,6 @@
 
 
 #include "MemoryRun.h"
-#include "DiskRun.h"
 
 
 class Level {
@@ -25,21 +24,19 @@ public:
 
     static void setRunsPerLevel(int runs);
 
-
     virtual MemoryRun *mergeLevel(MemoryRun *memoRun) = 0;
 
     virtual bool hasSpace() = 0;
 
     virtual bool add(MemoryRun *data, RunMetadata *meta) = 0;
 
+    MemoryRun *readEntries(RunMetadata *meta, char dlete, int offset);
+
+    MemoryRun *readEntries(RunMetadata *meta, char dlete);
 
     int getRuns();
 
     RunMetadata **getMetadata();
-
-    MemoryRun *readEntries(RunMetadata *meta, char dlete, int offset);
-
-    MemoryRun *readEntries(RunMetadata *meta, char dlete);
 
     void printMeta();
 
@@ -50,8 +47,6 @@ class TieringLevel : public Level {
 public:
 
     TieringLevel();
-
-//    bool insert(DiskRun run);
 
     MemoryRun *mergeLevel(MemoryRun *memoRun);
 
@@ -64,10 +59,9 @@ public:
 class LevelingLevel : public Level {
     int entriesPerLevel;
     int currentEntriesInLevel;
+
 public:
     LevelingLevel();
-
-//    bool insert(DiskRun run);
 
     MemoryRun *mergeLevel(MemoryRun *memoRun);
 

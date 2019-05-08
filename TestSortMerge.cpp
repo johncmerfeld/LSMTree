@@ -23,8 +23,7 @@ using namespace std;
 //	MemoryRun* memRun2 = new MemoryRun(10000);
 //	for (int i = 0; i < 100; i += 5) {
 //		Entry* e = new Entry(i, i);
-//		memRun2->insert(*e);
-//	}
+//		memRun2->insert(*e);//	}
 //
 //	memRun1->sort();
 //	memRun2->sort();

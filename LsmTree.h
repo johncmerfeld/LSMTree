@@ -9,7 +9,6 @@
 
 #include "Level.h"
 #include "MemoryRun.h"
-#include "DiskRun.h"
 #include "ResultSet.h"
 #include <string>
 #include <vector>
@@ -46,8 +45,6 @@ public:
     LsmTree();
 
     LsmTree(int entriesPerRun, int maxRunsPerLevel, short bitsPerValue);
-
-//    void insert(int value);
 
     void removeMany();
 

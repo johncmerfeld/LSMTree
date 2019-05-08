@@ -32,12 +32,18 @@ Level::~Level() {
 }
 
 //-------------------- Common methods --------------------
-void Level::setRunsPerLevel(int runs) {
-    Level::maxRuns = runs;
-}
+
 
 int Level::getRuns() {
     return this->runsInLevel;
+}
+
+RunMetadata **Level::getMetadata() {
+    return levelMetadata;
+}
+
+void Level::setRunsPerLevel(int runs) {
+    Level::maxRuns = runs;
 }
 
 char *Level::nameConvert(string filename) {
@@ -46,10 +52,6 @@ char *Level::nameConvert(string filename) {
     memcpy(fname, filename.c_str(), filename.length());
     fname[filename.length()] = '\0';
     return fname;
-}
-
-RunMetadata **Level::getMetadata() {
-    return levelMetadata;
 }
 
 
@@ -90,7 +92,7 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
         write(2, "An error occurred in the read.\n", 31);
 
     int numOfFencePointers = meta->getNumFncPtrs();
-    int step = meta->getSize() / numOfFencePointers + int((meta->getSize() % numOfFencePointers) != 0);
+    int step = meta->getSize() / numOfFencePointers;
 
     int offset = page * step * sizeof(Entry);
     int readd = 0;
@@ -113,9 +115,10 @@ void Level::printMeta() {
 }
 
 
-//-------------------- Tier Level Methods --------------------
+//---------------------------------------- Tier Level Methods ----------------------------------------
 
 
+//-------------------- Constructors --------------------
 TieringLevel::TieringLevel() : Level() {}
 
 
@@ -123,7 +126,7 @@ bool TieringLevel::hasSpace() {
     return (runsInLevel < (Level::maxRuns - 1));
 }
 
-
+//-------------------- Merge level and return merged result --------------------
 MemoryRun *TieringLevel::mergeLevel(MemoryRun *memoRun) {
     MemoryRun *older, *newer, *merged;
 
@@ -151,7 +154,7 @@ MemoryRun *TieringLevel::mergeLevel(MemoryRun *memoRun) {
     return merged;
 }
 
-
+//-------------------- Create a new run and a new file in the level --------------------
 bool TieringLevel::add(MemoryRun *mdata, RunMetadata *meta) {
 
     char *fname = nameConvert(meta->getFilename());
@@ -176,9 +179,7 @@ bool TieringLevel::add(MemoryRun *mdata, RunMetadata *meta) {
 
 }
 
-
-
-//-------------------- Leveling Level Methods --------------------
+//---------------------------------------- Leveling Level Methods ----------------------------------------
 
 MemoryRun *LevelingLevel::mergeLevel(MemoryRun *memRunData) {}
 
