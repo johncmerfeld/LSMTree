@@ -110,7 +110,7 @@ MemoryRun *Level::readEntries(RunMetadata *meta, char dlete, int page) {
 
 void Level::printMeta() {
     for (int i = 0; i < this->runsInLevel; i++) {
-        printf("meta has %s %d\n", levelMetadata[i]->getFilename(), levelMetadata[i]->getSize());
+        printf("meta has size %d\n", levelMetadata[i]->getSize());
     }
 }
 
