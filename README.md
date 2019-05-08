@@ -12,15 +12,15 @@ To benchmark on a certain workload, run the newly-created Benchmark script with 
 ```
 ./Benchmark [runSize] [runs per level] [bits per entry] [filename] [lines]
 ```
-Folder inputs contains inputs files that you can test:
+Folder inputs contains inputs files that you can test:</br>
 All input files have lines inserts/updates/deletes plus lines/2 point queries. All files have 10% deletes and 10% updates and for all files about 50% of the queries exist in the tree and the other 50% does not.
 
 mini_output 1000 inserts 500 queries </br>
-medium_output 100000 inserts 50000 queries
-large_output 1000000 inserts 500000 queries
-large_output2 1000000 inserts 500000 queries
+medium_output 100000 inserts 50000 queries </br>
+large_output 1000000 inserts 500000 queries </br>
+large_output2 1000000 inserts 500000 queries </br>
 
-In order to use these files as input to the lsmTree use the file name using the local path and the number of inserts as a the lines number
+In order to use these files as input to the lsmTree use the file name using the local path and the number of inserts as the lines number</br>
 
 Where `runSize` is the number of entries in the memory run, `levelSize` is the number of runs in a level (and thus the scale factor of the "tree"), `bloomSize` is the number of bits in a bloom filter, `file` is the name of the workload file, and `lines` is the number of lines in that file. So, for example:
 ```
