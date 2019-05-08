@@ -49,14 +49,14 @@ In folder inputs you can compile the file `createInput.cpp` using the command: <
 ``` g++ -o createInput.cpp inputs
 ```
 You can run inputs as follows to create input files:
+
 ```
 inputs [number of insers] [deletes as percentage of the total inserts] [updates as percentage of total inserts] [percentage of point queries that will exist in the tree]
-
 ```
 Example run :
+
 ```
 inputs 1000 10 10 80
-
 ```
 That command will create an input file with approximately 800 insers, 100 updates, 100 deletes and 500 point queries out of which 400 will exist in the tree and 100 will not
 
